@@ -1,0 +1,31 @@
+# © 2024 Fraunhofer-Gesellschaft e.V., München
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+name: web_lint
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: extract node version
+      uses: ./.github/actions/extract-node-version
+    - uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+    - name: install dependencies
+      run: |  
+        cd web
+        npm install
+    - name: web_lint
+      run: | 
+        cd web
+        mkdir eslint
+        npm run lint

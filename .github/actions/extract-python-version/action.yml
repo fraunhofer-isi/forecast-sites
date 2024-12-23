@@ -1,0 +1,21 @@
+# © 2024 Fraunhofer-Gesellschaft e.V., München
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+name: Extract Python Version
+description: Extracts the Python version from pyproject.toml
+author: Stefan Eidelloth
+runs:
+  using: "composite"
+  steps:
+    - name: install python dependencies for current python version (assumes python is already available)
+      run: |
+        pip install toml
+      shell: bash
+    - name: extract python version from pyproject.toml
+      id: python_version
+      run: |
+        PYTHON_VERSION=$(python -c 'import toml; pyproject = toml.load("pyproject.toml"); python_version_specifier = pyproject["project"]["requires-python"]; python_version=python_version_specifier.replace("==","").replace(">=","").replace("<=","").strip(); print(python_version)')
+        echo "PYTHON_VERSION=$PYTHON_VERSION"
+        echo "PYTHON_VERSION=$PYTHON_VERSION" >> $GITHUB_ENV
+      shell: bash

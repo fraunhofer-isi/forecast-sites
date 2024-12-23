@@ -1,0 +1,120 @@
+# © 2024 Fraunhofer-Gesellschaft e.V., München
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+# This file is the central configuration file for a python project.
+# It specified the required python dependencies/packages.
+# It also contains settings for tools like pytest.
+#
+# In order to install all required packages use the command
+#
+# pip install .[dev]
+#
+# Also see
+# * pyproject.toml vs requirements.txt:
+# https://stackoverflow.com/questions/74508024/is-requirements-txt-still-needed-when-using-pyproject-toml
+# * poetry vs. pip:
+# https://gitlab.cc-asp.fraunhofer.de/isi/micat/-/issues/99
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = 'forecast-sites'
+version = '0.0.1'
+requires-python = '>=3.12'
+license = {text = 'GNU Affero General Public License v3 or later (AGPLv3+)'}
+
+dependencies = [      
+    'pandas==2.2.3',
+	'geopandas==1.0.1',
+    'numpy==2.0.2', # required by numba 0.60.0: numpy<2.1  # 2.1.3', also see .github/renovate.json5 if you change this
+	'mesa==3.1.1',
+	'mesa-geo==0.9.0a1',
+    'mesa_viz_tornado==0.1.3',
+    'numba>=0.60.0', # required by mesa-geo
+	'libpysal==4.12.1',
+	'fiona==1.10.1',
+	'shapely==2.0.6',  # 2.0.6 has a bug; working versions not compatible to python 3.12: https://github.com/shapely/shapely/issues/2186
+	'pyproj==3.7.0',
+	'rtree==1.3.0',
+	'scipy==1.14.1',
+	'jsonpickle==4.0.1',
+	'matplotlib==3.10.0',
+]
+
+[project.optional-dependencies]
+lint = [
+    'dill==0.3.9',
+]
+
+format = [
+    'black[d]==24.10.0',
+]
+
+test = [
+    'pytest==8.3.4',
+    'pytest-cov==6.0.0',
+    'coverage==7.6.9',
+    'mock==5.1.0',
+]
+
+license = [
+    'licensecheck==2024.3',  
+    'license_scanner==0.2.7',
+    'reuse==5.0.2',
+    'pipreqs==0.5.0',
+    'third-party-license-file-generator==2024.8.23'
+
+]
+
+dev = ['forecast-sites[lint, format, test, license]']
+
+[tool.hatch.build.targets.wheel]
+packages = ['src', 'test/test_utils']
+
+[tool.hatch.build.targets.wheel.sources]
+'test/test_utils' = 'test_utils'
+
+[tool.licensecheck]
+using = 'PEP631'
+zero = true  # results in non-zero exit code if incompatibilities are found
+ignore_licenses = ['ZOPE PUBLIC LICENSE', 'REPOZE PUBLIC LICENSE', 'Apache Software License']
+
+
+[tool.black]
+line-length = 120
+skip-string-normalization = true
+
+[tool.isort]
+profile = 'black'
+
+
+[tool.pytest.ini_options]
+# Also see
+# https://docs.pytest.org/en/7.1.x/customize.html#pyproject-toml
+# https://pytest-cov.readthedocs.io/en/latest/config.html
+# If you want to see console output from tests, include -s flag
+addopts = [
+    # !! do not include --cov option here because it would destroy PyCharm debug feature !!
+    # Also see https://stackoverflow.com/questions/40718760/unable-to-debug-in-pycharm-with-pytest
+    '--import-mode=importlib',
+    '--junitxml=report.xml',
+    '-s'  # enables logging output in console while debugging tests
+]
+pythonpath = ['src', 'test']
+testpaths = 'test'
+
+[tool.coverage.run]
+source = ['src']
+
+[tool.coverage.report]
+# Also see
+# https://coverage.readthedocs.io/en/6.4.4/config.html#config
+fail_under = 100
+show_missing = true
+include_namespace_packages = true
+
+[tool.coverage.html]
+directory = '.coverage'

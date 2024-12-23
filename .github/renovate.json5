@@ -1,0 +1,41 @@
+// © 2024 Fraunhofer-Gesellschaft e.V., München
+//
+// SPDX-License-Identifier: AGPL-3.0-or-later
+
+// This is the configuration for renovate bot, referenced from
+// github workflow .github/workflows/renovate.yml
+// Also see
+// https://github.com/renovatebot/github-action
+// https://docs.renovatebot.com/self-hosted-configuration/
+
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    ":disableDependencyDashboard"
+  ],
+  "forkProcessing": "enabled",
+  "packageRules": [
+    {
+     "description": "lockFileMaintenance",
+     "matchUpdateTypes": [
+       "pin",
+       "digest",
+       "patch",
+       "minor",
+       "major",
+       "lockFileMaintenance"
+     ],
+     "automerge": true,
+     "automergeType": "branch",
+     "ignoreTests": true, // set to false if you want updates only to be installed if tests pass
+     "dependencyDashboardApproval": false,
+     "minimumReleaseAge": null
+    },
+     {
+      "description": "Pin numpy to version 2.0.2, required by numba/mesa-geo",
+      "matchPackageNames": ["numpy"],
+      "allowedVersions": "2.0.2"  // Replace with the desired version
+    }
+  ]
+}

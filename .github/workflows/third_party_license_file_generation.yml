@@ -1,0 +1,42 @@
+# © 2024 Fraunhofer-Gesellschaft e.V., München
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+name: third_party_license_file_generation
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: extract python version
+      uses: ./.github/actions/extract-python-version
+    - uses: actions/setup-python@v5
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+    - name: install dependencies
+      run: |
+        pip install .[license]
+    - name: generate temp requirements.txt
+      run: |
+        pipreqs --force .
+    - name: show python path
+      run: |
+        which python3
+    - name: third party license file generation
+      run: |
+        python3 -m third_party_license_file_generator -r requirements.txt -o THIRDPARTY.md -p $(which python3) -g
+    - name: delete temp requirements.txt file
+      run: |
+        rm requirements.txt
+    - name: push changes
+      # also see https://github.com/stefanzweifel/git-auto-commit-action
+      uses: stefanzweifel/git-auto-commit-action@v5
+      with:
+        commit_message: updated third party license file

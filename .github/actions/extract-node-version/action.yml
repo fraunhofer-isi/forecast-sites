@@ -1,0 +1,15 @@
+# © 2024 Fraunhofer-Gesellschaft e.V., München
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+name: Extract node.js Version
+description: Extracts the node.js version from package.json
+author: Stefan Eidelloth
+runs:
+  using: "composite"
+  steps:
+    - name: extract node.js version from package.json
+      id: node_version
+      run: |
+        echo "NODE_VERSION=$(node -p "require('./web/package.json').engines.node")" >> $GITHUB_ENV
+      shell: bash

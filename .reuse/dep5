@@ -1,0 +1,37 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+
+Files: *.xlsx
+Copyright: 2024 Fraunhofer-Gesellschaft e.V., München
+License: AGPL-3.0-or-later
+
+Files: *.sqlite
+Copyright: 2024 Fraunhofer-Gesellschaft e.V., München
+License: AGPL-3.0-or-later
+
+Files: *.json
+Copyright: 2024 Fraunhofer-Gesellschaft e.V., München
+License: AGPL-3.0-or-later
+
+Files: package.json
+Copyright: 2024 Fraunhofer-Gesellschaft e.V., München
+License: AGPL-3.0-or-later
+
+Files: *.geojson
+Copyright: 2024 Fraunhofer-Gesellschaft e.V., München
+License: AGPL-3.0-or-later
+
+Files: *.ipynb
+Copyright: 2024 Fraunhofer-Gesellschaft e.V., München
+License: AGPL-3.0-or-later
+
+Files: *.png
+Copyright: 2024 Fraunhofer-Gesellschaft e.V., München
+License: AGPL-3.0-or-later
+
+Files: *.svg
+Copyright: 2024 Fraunhofer-Gesellschaft e.V., München
+License: AGPL-3.0-or-later
+
+Files: *.ico
+Copyright: 2024 Fraunhofer-Gesellschaft e.V., München
+License: AGPL-3.0-or-later

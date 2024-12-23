@@ -1,0 +1,46 @@
+# © 2024 Fraunhofer-Gesellschaft e.V., München
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+name: web_coverage
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  coverage:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: extract node version
+      uses: ./.github/actions/extract-node-version
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+    - name: install dependencies
+      run: |      
+        cd web
+        npm install
+    - name: test
+      run: |      
+        cd web
+        mkdir .coverage
+        npm run test-coverage | tee ./.coverage/coverage.log     
+        JEST_COVERAGE=$(awk '$1 == "All" {print $4+0}' ./.coverage/coverage.log)
+        echo "JEST_COVERAGE=$JEST_COVERAGE" >> $GITHUB_ENV
+        echo "Jest test coverage is $JEST_COVERAGE"
+    - name: badge
+      uses: schneegans/dynamic-badges-action@v1.7.0
+      with:
+        auth: ${{ secrets.GIST_SECRET }}
+        gistID: ${{ secrets.GIST_ID }}
+        filename: forecast-sites_web_coverage.json
+        label: coverage
+        message: ${{ env.JEST_COVERAGE }}
+        valColorRange: ${{ env.JEST_COVERAGE }}
+        maxColorRange: 100
+        minColorRange: 0

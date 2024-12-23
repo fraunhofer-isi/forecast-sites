@@ -1,0 +1,19 @@
+# © 2024 Fraunhofer-Gesellschaft e.V., München
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+name: reuse_compliance
+
+on:
+  workflow_run:
+    workflows: [ "reuse_annotate" ]
+    types: [ completed ]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: reuse compliance check
+        # also see https://reuse.readthedocs.io/en/v2.1.0/usage.html
+        uses: fsfe/reuse-action@v5
