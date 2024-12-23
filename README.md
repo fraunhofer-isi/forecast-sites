@@ -1,4 +1,8 @@
-span
+<!--
+© 2024 Fraunhofer-Gesellschaft e.V., München
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
 
 # FORECAST-Sites - A technology dffusion model to simulate industry transformation scenarios with high spatial resolution for energy-intensive industry branches
 
