@@ -15,6 +15,7 @@
     ":disableDependencyDashboard"
   ],
   "forkProcessing": "enabled",
+    "autodiscoverFilter": ["fraunhofer-isi/forecast-sites"],
   "packageRules": [
     {
      "description": "lockFileMaintenance",
