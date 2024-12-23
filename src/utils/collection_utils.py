@@ -2,7 +2,6 @@
 #
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
-
 def min_object(collection, min_function, default_object):
     """
     Loops over the collection and returns the default_object or
