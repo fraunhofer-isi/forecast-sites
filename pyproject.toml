@@ -31,7 +31,7 @@ dependencies = [
 	'geopandas==1.0.1',
     'numpy==2.0.2', # required by numba 0.60.0: numpy<2.1  # 2.1.3', also see .github/renovate.json5 if you change this
 	'mesa==3.1.1',
-	'mesa-geo==0.9.0a1',
+	'mesa-geo==0.9.0',
     'mesa_viz_tornado==0.1.3',
     'numba>=0.60.0', # required by mesa-geo
 	'libpysal==4.12.1',
