@@ -84,9 +84,9 @@ def test__save(sut):
     TabularResultVisitor._create_empty_table_for_df = create_empty_table
 
 
-def test__create_empty_table_for_df(sut):
+def test__create_empty_table_for_df():
     df = pd.DataFrame({'foo': [1], 'baa': [10]})
-    df.set_index(['foo'], inplace=True)
+    df = df.set_index(['foo'])
 
     mocked_connection = MagicMock()
     mocked_connection.execute = MagicMock()
@@ -120,8 +120,8 @@ class TestAddEntryAt:
 
     def test_existing_index(self, sut):
         df = pd.DataFrame({'id_region': [1], 'id_site': [10]})
-        df.set_index(['id_region', 'id_site'], inplace=True)
-        keys = tuple([1, 10])
+        df = df.set_index(['id_region', 'id_site'])
+        keys = tuple(1, 10)
 
         sut._add_entry_at(df, keys, year=2020, value=1000)
 
@@ -132,8 +132,8 @@ class TestAddEntryAt:
 
     def test_not_existing_index(self, sut):
         df = pd.DataFrame({'id_region': [1], 'id_site': [10]})
-        df.set_index(['id_region', 'id_site'], inplace=True)
-        keys = tuple([2, 20])
+        df = df.set_index(['id_region', 'id_site'])
+        keys = tuple(2, 20)
         sut._add_entry_at(df, keys, year=2020, value=1000)
 
         assert list(df.columns) == ['Y2020']
@@ -154,12 +154,12 @@ def test__initialize_emission_df(sut):
 
 def test__initialize_final_energy_demand_df(sut):
     result = sut._initialize_final_energy_demand_df()
-    assert result.index.names == sut._base_column_names + ['id_energy_carrier']
+    assert result.index.names == [*sut._base_column_names, 'id_energy_carrier']
 
 
 def test__initialize_production_cost_df(sut):
     result = sut._initialize_production_cost_df()
-    assert result.index.names == sut._base_column_names + ['id_energy_carrier']
+    assert result.index.names == [*sut._base_column_names, 'id_energy_carrier']
 
 
 def test_initialize_production_cost_per_ton_df(sut):
@@ -169,7 +169,7 @@ def test_initialize_production_cost_per_ton_df(sut):
 
 def test__initialize_energy_cost_df(sut):
     result = sut._initialize_energy_cost_df()
-    assert result.index.names == sut._base_column_names + ['id_energy_carrier']
+    assert result.index.names == [*sut._base_column_names, 'id_energy_carrier']
 
 
 def test__base_row(sut):

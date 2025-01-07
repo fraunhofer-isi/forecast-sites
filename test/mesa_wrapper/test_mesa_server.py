@@ -5,11 +5,9 @@
 import pytest
 from mesa_viz_tornado.ModularVisualization import ModularServer
 from mesa_viz_tornado.modules import ChartModule
-
-from mesa_wrapper.map_module import MapModule
-
 from mock import MagicMock, patch
 
+from mesa_wrapper.map_module import MapModule
 from mesa_wrapper.mesa_server import MesaServer
 from mesa_wrapper.mesa_simulation import MesaSimulation
 

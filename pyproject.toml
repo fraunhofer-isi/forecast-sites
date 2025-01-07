@@ -46,7 +46,7 @@ dependencies = [
 
 [project.optional-dependencies]
 lint = [
-    'ruff==0.8.4',
+    'ruff==0.8.6',
 ]
 
 format = [
@@ -121,22 +121,44 @@ directory = '.coverage'
 
 [tool.ruff]
 target-version = "py312"
+line-length = 120
+
+
+[tool.ruff.lint]
 select = ["ALL"]
-ignore = [
-    "D100",  # missing-module-docstring
-    "D101",  # missing-class-docstring
-    "D102",  # missing-function-docstring
-    "D103",  # Missing docstring in public function
-    "R502",  # no-else-return
-    "ANN00", # Missing type annotation for function argument
-    "ANN201", # Missing return type annotation for public function
-    "S101",  # Use of `assert` detected
-]
+fixable = ["ALL"]
+
 
 exclude = [
     ".git",
     "__pycache__",
 ]
 
-fixable = ["ALL"]
-line-length = 120
+ignore = [
+    # doc on rule codes:
+    # https://docs.astral.sh/ruff/rules/
+    "D100",  # undocumented-public-module
+    "D101",  # undocumented-public-class
+    "D102",  # undocumented-public-method
+    "D103",  # undocumented-public-function
+    "ANN001", # missing-type-function-argument
+    "ANN201", # missing-return-type-undocumented-public-function
+    "INP001", # implicit-namespace-package
+    "Q000", # bad-quotes-inline-string
+]
+
+[tool.ruff.lint.per-file-ignores]
+# doc on rule codes:
+# https://docs.astral.sh/ruff/rules/
+"test/*" = [
+    "S101",  # assert
+    "SLF001", # private-member-access
+    "UP026", # deprecated-mock-import (we use own "mock" package)
+    "PLR2004", # magic-value-comparison
+    "PD901", # pandas-df-variable-name
+]
+
+[tool.ruff.format]
+# Also see
+# https://docs.astral.sh/ruff/configuration/
+quote-style = "single"
