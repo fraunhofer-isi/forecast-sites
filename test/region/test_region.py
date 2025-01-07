@@ -39,7 +39,10 @@ def test_process_year(sut):
     sut.sites = [site_mock]
 
     sut.process_year(
-        year=2020, simulation_mode='mocked_simulation_mode', pipeline_cost_scaling=1, distance_to_closest_H2_pipeline=1
+        year=2020,
+        simulation_mode='mocked_simulation_mode',
+        pipeline_cost_scaling=1,
+        distance_to_closest_H2_pipeline=1,
     )
 
     assert sut.co2_cost_in_euro_per_ton_c02.called
@@ -55,7 +58,7 @@ def test_site_df(sut):
             'longitude': [50],
             'co2_equivalent_2015_in_tons': [100],
             'geometry': [None],
-        }
+        },
     )
     result = sut.site_df()
     assert list(result.columns) == ['id_region', 'id_comp', 'latitude', 'longitude', 'co2_equ', 'geometry']

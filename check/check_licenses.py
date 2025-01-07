@@ -14,7 +14,7 @@ def main():
 
     ignore_packages = [
         'forecasst-sites',  # version 2024 of licensecheck does not seem to ignore the main package
-        'reuse',  # combined license is not recognized: "Apache-2.0 AND CC0-1.0 AND CC-BY-SA-4.0 AND GPL-3.0-or-later"        
+        'reuse',  # combined license is not recognized: "Apache-2.0 AND CC0-1.0 AND CC-BY-SA-4.0 AND GPL-3.0-or-later"
     ]
 
     fail_packages = []
@@ -39,7 +39,7 @@ def main():
         requirements = get_deps.getReqs(using)
 
     project_license, dependencies = _license_and_dependencies(
-        using, ignore_packages, fail_packages, ignore_licenses, fail_licenses, requirements
+        using, ignore_packages, fail_packages, ignore_licenses, fail_licenses, requirements,
     )
 
     ansi_format = formatter.formatMap['ansi']

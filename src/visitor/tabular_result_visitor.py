@@ -130,11 +130,13 @@ class TabularResultVisitor(Visitor):
         )
 
         virtual_process_emission_costs_per_process = product.virtual_process_emission_cost_per_process_for_comparison(
-            self._production_in_tons, self._region.co2_cost_in_euro_per_ton_c02(year)
+            self._production_in_tons,
+            self._region.co2_cost_in_euro_per_ton_c02(year),
         )
 
         virtual_energy_emission_costs_per_process = product.virtual_energy_emission_cost_per_process_for_comparison(
-            year, self._region.co2_cost_in_euro_per_ton_c02(year)
+            year,
+            self._region.co2_cost_in_euro_per_ton_c02(year),
         )
 
         virtual_annuity_per_process = product.virtual_annuity_per_process(year)
@@ -201,7 +203,7 @@ class TabularResultVisitor(Visitor):
                 energy_carrier = demand.energy_carrier
                 id_energy_carrier = energy_carrier.id
                 energy_emission_cost_per_ton_per_carrier = demand.energy_carrier_emission_in_ton_co2_per_ton(
-                    year
+                    year,
                 ) * self._region.co2_cost_in_euro_per_ton_c02(year)
                 self._add_entry_for_process_and_energy_carrier(
                     self._virtual_energy_emission_costs_per_energy_carrier_df,
@@ -216,7 +218,7 @@ class TabularResultVisitor(Visitor):
                 energy_carrier = demand.energy_carrier
                 id_energy_carrier = energy_carrier.id
                 steam_emission_cost_per_ton_per_carrier = demand.steam_emission_in_ton_co2_per_ton(
-                    year
+                    year,
                 ) * self._region.co2_cost_in_euro_per_ton_c02(year)
                 self._add_entry_for_process_and_energy_carrier(
                     self._virtual_steam_emission_costs_per_energy_carrier_df,
@@ -258,7 +260,10 @@ class TabularResultVisitor(Visitor):
 
         co2_cost_in_euro_per_ton_c02 = self._region.co2_cost_in_euro_per_ton_c02(year)
         production_cost = process.production_cost_in_euro(
-            year, production_in_tons, co2_cost_in_euro_per_ton_c02, pipeline_cost_scaling
+            year,
+            production_in_tons,
+            co2_cost_in_euro_per_ton_c02,
+            pipeline_cost_scaling,
         )
         self._add_entry(self._production_cost_df, year, production_cost)
 
@@ -282,7 +287,10 @@ class TabularResultVisitor(Visitor):
 
             final_energy_demand = production_in_tons * demand.demand_in_gj_per_ton
             self._add_energy_carrier_entry(
-                self._final_energy_demand_df, id_energy_carrier, year, final_energy_demand / 3600000
+                self._final_energy_demand_df,
+                id_energy_carrier,
+                year,
+                final_energy_demand / 3600000,
             )
 
             energy_cost = demand.energy_carrier_cost_in_euro_per_ton(year) * production_in_tons
@@ -301,12 +309,18 @@ class TabularResultVisitor(Visitor):
                 demand.energy_carrier_emission_in_ton_co2_per_ton(year) * co2_cost_in_euro_per_ton_c02
             )
             self._add_energy_carrier_entry(
-                self._energy_emission_cost_per_ton_df, id_energy_carrier, year, energy_emission_cost_per_ton
+                self._energy_emission_cost_per_ton_df,
+                id_energy_carrier,
+                year,
+                energy_emission_cost_per_ton,
             )
 
             energy_and_emission_cost = energy_cost + energy_emission_cost
             self._add_energy_carrier_entry(
-                self._energy_and_energy_emission_cost_df, id_energy_carrier, year, energy_and_emission_cost
+                self._energy_and_energy_emission_cost_df,
+                id_energy_carrier,
+                year,
+                energy_and_emission_cost,
             )
 
         for demand in process.steam_demands:
@@ -315,7 +329,10 @@ class TabularResultVisitor(Visitor):
 
             final_steam_demand = production_in_tons * demand.steam_demand_in_gj_per_ton
             self._add_energy_carrier_entry(
-                self._final_steam_demand_df, id_energy_carrier, year, final_steam_demand / 3600000
+                self._final_steam_demand_df,
+                id_energy_carrier,
+                year,
+                final_steam_demand / 3600000,
             )
 
             steam_cost = demand.steam_cost_in_euro_per_ton(year) * production_in_tons
@@ -332,12 +349,18 @@ class TabularResultVisitor(Visitor):
 
             steam_emission_cost_per_ton = demand.steam_emission_in_ton_co2_per_ton(year) * co2_cost_in_euro_per_ton_c02
             self._add_energy_carrier_entry(
-                self._steam_emission_cost_per_ton_df, id_energy_carrier, year, steam_emission_cost_per_ton
+                self._steam_emission_cost_per_ton_df,
+                id_energy_carrier,
+                year,
+                steam_emission_cost_per_ton,
             )
 
             steam_and_steam_emission_cost = steam_cost + steam_emission_cost
             self._add_energy_carrier_entry(
-                self._steam_and_steam_emission_cost_df, id_energy_carrier, year, steam_and_steam_emission_cost
+                self._steam_and_steam_emission_cost_df,
+                id_energy_carrier,
+                year,
+                steam_and_steam_emission_cost,
             )
 
         for demand in process.feedstock_demands:
@@ -346,7 +369,10 @@ class TabularResultVisitor(Visitor):
 
             final_feedstock_demand = production_in_tons * demand.feedstock_demand_in_gj_per_ton
             self._add_energy_carrier_entry(
-                self._final_feedstock_demand_df, id_energy_carrier, year, final_feedstock_demand / 3600000
+                self._final_feedstock_demand_df,
+                id_energy_carrier,
+                year,
+                final_feedstock_demand / 3600000,
             )
 
             feedstock_cost = demand.feedstock_cost_in_euro_per_ton(year) * production_in_tons
@@ -354,7 +380,10 @@ class TabularResultVisitor(Visitor):
 
             feedstock_cost_per_ton = demand.feedstock_cost_in_euro_per_ton(year)
             self._add_energy_carrier_entry(
-                self._feedstock_cost_per_ton_df, id_energy_carrier, year, feedstock_cost_per_ton
+                self._feedstock_cost_per_ton_df,
+                id_energy_carrier,
+                year,
+                feedstock_cost_per_ton,
             )
 
     def finalize(self):

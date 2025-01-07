@@ -25,7 +25,11 @@ class SiteAgent(GeoAgent):
             distance_to_closest_H2_pipeline = 0
         pipeline_cost_scaling = self.pipeline_cost_scaling(distance_to_closest_H2_pipeline)
         self.site.process_year(
-            year, simulation_mode, co2_cost_in_euro_per_ton_co2, pipeline_cost_scaling, distance_to_closest_H2_pipeline
+            year,
+            simulation_mode,
+            co2_cost_in_euro_per_ton_co2,
+            pipeline_cost_scaling,
+            distance_to_closest_H2_pipeline,
         )
 
     def pipeline_cost_scaling(self, distance_to_closest_H2_pipeline):
@@ -64,8 +68,7 @@ class SiteAgent(GeoAgent):
         return s
 
     def __geo_interface__(self):
-        """
-        Override the default __geo_interface__ method of GeoAgent to resolve some serialization issues.
+        """Override the default __geo_interface__ method of GeoAgent to resolve some serialization issues.
 
         Return a GeoJSON Feature.
 

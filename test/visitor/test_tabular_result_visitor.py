@@ -72,14 +72,13 @@ def test__save(sut):
     df.to_sql = MagicMock()
     df.to_excel = MagicMock()
 
-    with patch('sqlite3.connect'):
-        with patch('utils.file_utils.delete_file_if_exists') as patched_delete_file:
-            sut._save(df, 'mocked_name', 'mocked_output_folder')
+    with patch('sqlite3.connect'), patch('utils.file_utils.delete_file_if_exists') as patched_delete_file:
+        sut._save(df, 'mocked_name', 'mocked_output_folder')
 
-            assert patched_delete_file.called
-            assert TabularResultVisitor._create_empty_table_for_df.called
-            assert df.to_sql.called
-            assert df.to_excel.called
+        assert patched_delete_file.called
+        assert TabularResultVisitor._create_empty_table_for_df.called
+        assert df.to_sql.called
+        assert df.to_excel.called
 
     TabularResultVisitor._create_empty_table_for_df = create_empty_table
 

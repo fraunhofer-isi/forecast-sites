@@ -31,9 +31,7 @@ class MesaServer:
 
     @staticmethod
     def agent_portrayal(site_agent):
-        """
-        Portrayal Method for canvas
-        """
+        """Portrayal Method for canvas"""
         site = site_agent.site
         process_ids = site.process_ids
         portrayal = {"radius": "3"}

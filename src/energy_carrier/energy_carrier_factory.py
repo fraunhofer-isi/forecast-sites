@@ -31,11 +31,15 @@ class EnergyCarrierFactory:
         row_emission = self._energy_carrier_emission_mapping.loc[self._id_scenario, self._id_region, id_energy_carrier]
 
         row_availability = self._region_energy_carrier_availability_mapping.loc[
-            self._id_scenario, self._id_region, id_energy_carrier
+            self._id_scenario,
+            self._id_region,
+            id_energy_carrier,
         ]
 
         row_subsidies = self._region_energy_carrier_subsidies_mapping.loc[
-            self._id_scenario, self._id_region, id_energy_carrier
+            self._id_scenario,
+            self._id_region,
+            id_energy_carrier,
         ]
 
         row_taxes = self._region_energy_carrier_taxes_mapping.loc[self._id_scenario, self._id_region, id_energy_carrier]

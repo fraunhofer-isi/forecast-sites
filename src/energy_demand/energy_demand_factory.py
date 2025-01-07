@@ -2,7 +2,6 @@
 #
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
-import pandas as pd
 
 from energy_demand.energy_demand import EnergyDemand
 
@@ -17,7 +16,11 @@ class EnergyDemandFactory:
         self.electricity = self._energy_carriers[id_electricity]
 
     def create_energy_demands(
-        self, id_product, id_process, electricity_demand_in_gj_per_ton, fuel_demand_in_gj_per_ton
+        self,
+        id_product,
+        id_process,
+        electricity_demand_in_gj_per_ton,
+        fuel_demand_in_gj_per_ton,
     ):
         energy_demands = [EnergyDemand(self.electricity, electricity_demand_in_gj_per_ton)]
 

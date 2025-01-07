@@ -24,7 +24,7 @@ def sut():
             'longitude': [60],
             'co2_equivalent_2015_in_tons': [1000],
             'geometry': [Point(6, 49)],
-        }
+        },
     )
     site_data_df.set_index('id')
     site_data = geopandas.GeoDataFrame(site_data_df, geometry='geometry')

@@ -51,15 +51,22 @@ class ProcessFactoryJRC:
         steam_demand_in_gj_per_ton = process_entry['steam_demand_in_gj_per_ton']
 
         energy_demands = self._energy_demand_factory.create_energy_demands(
-            id_product, id_process, electricity_demand_in_gj_per_ton, fuel_demand_in_gj_per_ton
+            id_product,
+            id_process,
+            electricity_demand_in_gj_per_ton,
+            fuel_demand_in_gj_per_ton,
         )
 
         feedstock_demands = self._feedstock_demand_factory.create_feedstock_demands(
-            id_product, id_process, feedstock_demand_in_gj_per_ton
+            id_product,
+            id_process,
+            feedstock_demand_in_gj_per_ton,
         )
 
         steam_demands = self._steam_demand_factory.create_steam_demands(
-            id_product, id_process, steam_demand_in_gj_per_ton
+            id_product,
+            id_process,
+            steam_demand_in_gj_per_ton,
         )
 
         process = Process(

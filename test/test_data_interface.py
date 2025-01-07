@@ -4,7 +4,7 @@
 
 import pandas as pd
 import pytest
-from mock import MagicMock, patch
+from mock import patch
 
 from data_interface import DataInterface
 
@@ -67,7 +67,9 @@ class TestReadProductionUnitMappingAndDeleteUnusedSites:
         with patch('utils.collection_utils.join_with_comma'):
             with patch('pandas.read_sql_query', return_value=df_mock):
                 result = sut._read_production_unit_mapping_and_delete_unused_sites(
-                    site_ids=[1], connection='mocked_connection', id_product_filter=[]
+                    site_ids=[1],
+                    connection='mocked_connection',
+                    id_product_filter=[],
                 )
                 assert result[1].equals(df_mock)
 
@@ -75,7 +77,9 @@ class TestReadProductionUnitMappingAndDeleteUnusedSites:
         with patch('utils.collection_utils.join_with_comma'):
             with patch('pandas.read_sql_query', return_value=pd.DataFrame()):
                 result = sut._read_production_unit_mapping_and_delete_unused_sites(
-                    site_ids=[1], connection='mocked_connection', id_product_filter=[11]
+                    site_ids=[1],
+                    connection='mocked_connection',
+                    id_product_filter=[11],
                 )
                 assert len(result) == 0
 

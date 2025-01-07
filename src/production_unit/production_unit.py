@@ -4,7 +4,6 @@
 
 from entity import Entity
 from utils import collection_utils
-from utils.collection_utils import object_sum
 
 
 # pylint: disable=too-many-instance-attributes
@@ -41,7 +40,9 @@ class ProductionUnit(Entity):
             )
         else:
             probability_of_change = self._probability_of_change(
-                year, co2_cost_in_euro_per_ton_co2, pipeline_cost_scaling
+                year,
+                co2_cost_in_euro_per_ton_co2,
+                pipeline_cost_scaling,
             )
             if probability_of_change < probability_limit:
                 self._check_fuel_switch(year, co2_cost_in_euro_per_ton_co2, distance_to_closest_h2_pipeline)
@@ -71,24 +72,24 @@ class ProductionUnit(Entity):
     def _probability_of_change(self, year, co2_cost_in_euro_per_ton_co2, pipeline_cost_scaling):
         if self.has_children:
             probability = self._probability_of_change_of_children(
-                year, co2_cost_in_euro_per_ton_co2, pipeline_cost_scaling, self._children
+                year,
+                co2_cost_in_euro_per_ton_co2,
+                pipeline_cost_scaling,
+                self._children,
             )
             return probability
-        else:
-            wait = self._check_production_cost_minima(year, co2_cost_in_euro_per_ton_co2, pipeline_cost_scaling)
-            if self.year_of_last_reinvestment is not None:
-                end_of_life = self.process.year_of_new_investment(self.year_of_last_reinvestment)
-                if year == end_of_life + 0:
-                    return 1
-                if end_of_life - 0 <= year < end_of_life + 0:
-                    if wait:
-                        return 0
-                    else:
-                        return 1
-                else:
-                    return 0
-            else:
+
+        wait = self._check_production_cost_minima(year, co2_cost_in_euro_per_ton_co2, pipeline_cost_scaling)
+        if self.year_of_last_reinvestment is not None:
+            end_of_life = self.process.year_of_new_investment(self.year_of_last_reinvestment)
+            if year == end_of_life + 0:
                 return 1
+            if end_of_life - 0 <= year < end_of_life + 0:
+                if wait:
+                    return 0
+                return 1
+            return 0
+        return 1
 
     @staticmethod
     def check_h2_use(process):
@@ -111,7 +112,7 @@ class ProductionUnit(Entity):
         return len(self._children) > 0
 
     def _check_fuel_switch(self, year, co2_cost_in_euro_per_ton_co2, distance_to_closest_H2_pipeline):
-        if self.process.id == 39:
+        if self.process.id == 39 or self.process.id == 38:
             available_processes = []
             for process in self._product.available_processes:
                 available_processes.append(process)
@@ -123,22 +124,10 @@ class ProductionUnit(Entity):
 
             self.previous_process = self.process
             self.process = self._process_with_min_energy_cost(
-                year, self.process, available_processes, co2_cost_in_euro_per_ton_co2
-            )
-
-        elif self.process.id == 38:
-            available_processes = []
-            for process in self._product.available_processes:
-                available_processes.append(process)
-                if self.check_energy_availability(year, process):
-                    if self.check_h2_distance(process, distance_to_closest_H2_pipeline):
-                        available_processes.remove(process)
-                else:
-                    available_processes.remove(process)
-
-            self.previous_process = self.process
-            self.process = self._process_with_min_energy_cost(
-                year, self.process, available_processes, co2_cost_in_euro_per_ton_co2
+                year,
+                self.process,
+                available_processes,
+                co2_cost_in_euro_per_ton_co2,
             )
 
     def _check_production_cost_minima(self, year, co2_cost_in_euro_per_ton_co2, pipeline_cost_scaling):
@@ -149,30 +138,37 @@ class ProductionUnit(Entity):
             if not self.check_energy_availability(year, process):
                 available_processes.remove(process)
         if len(available_processes) == 0:
-            return
-        else:
-            process_production_cost_with_pipelines = dict.fromkeys([process.id for process in available_processes])
-            process_production_cost_without_pipelines = dict.fromkeys([process.id for process in available_processes])
-            for process in available_processes:
-                production_cost_with_pipelines = process.production_cost_in_euro(
-                    year, self.production_in_tons, co2_cost_in_euro_per_ton_co2, pipeline_cost_scaling
-                )
-                process_production_cost_with_pipelines[process.id] = production_cost_with_pipelines
-                production_cost_without_pipelines = process.production_cost_in_euro(
-                    year, self.production_in_tons, co2_cost_in_euro_per_ton_co2, 1
-                )
-                process_production_cost_without_pipelines[process.id] = production_cost_without_pipelines
+            return None
+        process_production_cost_with_pipelines = dict.fromkeys([process.id for process in available_processes])
+        process_production_cost_without_pipelines = dict.fromkeys([process.id for process in available_processes])
+        for process in available_processes:
+            production_cost_with_pipelines = process.production_cost_in_euro(
+                year,
+                self.production_in_tons,
+                co2_cost_in_euro_per_ton_co2,
+                pipeline_cost_scaling,
+            )
+            process_production_cost_with_pipelines[process.id] = production_cost_with_pipelines
+            production_cost_without_pipelines = process.production_cost_in_euro(
+                year,
+                self.production_in_tons,
+                co2_cost_in_euro_per_ton_co2,
+                1,
+            )
+            process_production_cost_without_pipelines[process.id] = production_cost_without_pipelines
 
-            p_min_cost_with_pipelines = min(
-                process_production_cost_with_pipelines, key=process_production_cost_with_pipelines.get
-            )
-            p_min_cost_without_pipelines = min(
-                process_production_cost_without_pipelines, key=process_production_cost_without_pipelines.get
-            )
-            wait = False
-            if p_min_cost_with_pipelines != p_min_cost_without_pipelines:
-                wait = True
-            return wait
+        p_min_cost_with_pipelines = min(
+            process_production_cost_with_pipelines,
+            key=process_production_cost_with_pipelines.get,
+        )
+        p_min_cost_without_pipelines = min(
+            process_production_cost_without_pipelines,
+            key=process_production_cost_without_pipelines.get,
+        )
+        wait = False
+        if p_min_cost_with_pipelines != p_min_cost_without_pipelines:
+            wait = True
+        return wait
 
     @staticmethod
     def _process_with_min_production_cost(
@@ -188,7 +184,10 @@ class ProductionUnit(Entity):
         found_process = collection_utils.min_object(
             available_processes,
             lambda process: process.production_cost_in_euro(
-                year, production_in_tons, co2_cost_in_euro_per_ton_co2, pipeline_cost_scaling
+                year,
+                production_in_tons,
+                co2_cost_in_euro_per_ton_co2,
+                pipeline_cost_scaling,
             ),
             default_process,
         )
@@ -208,8 +207,7 @@ class ProductionUnit(Entity):
     def number_of_process_usages(self, process):
         if self.process is process:
             return 1
-        else:
-            return 0
+        return 0
 
     def new_investment_in_euro(self, year):
         if year == self.year_of_last_reinvestment:
@@ -244,12 +242,9 @@ class ProductionUnit(Entity):
             if distance_to_closest_H2_pipeline is not None:
                 if distance_to_closest_H2_pipeline > 50:
                     return True
-                else:
-                    return False
-            else:
-                return True
-        else:
-            return False
+                return False
+            return True
+        return False
 
     def virtual_production_cost_per_process_for_comparison(self, year):
         for process in self._product.available_processes:
@@ -265,11 +260,18 @@ class ProductionUnit(Entity):
 
     @staticmethod
     def _optimize_process_with_children(
-        year, co2_cost_in_euro_per_ton_co2, pipeline_cost_scaling, distance_to_closest_H2_pipeline, children
+        year,
+        co2_cost_in_euro_per_ton_co2,
+        pipeline_cost_scaling,
+        distance_to_closest_H2_pipeline,
+        children,
     ):
         for child in children:
             child.optimize_process(
-                year, co2_cost_in_euro_per_ton_co2, pipeline_cost_scaling, distance_to_closest_H2_pipeline
+                year,
+                co2_cost_in_euro_per_ton_co2,
+                pipeline_cost_scaling,
+                distance_to_closest_H2_pipeline,
             )
 
     @staticmethod

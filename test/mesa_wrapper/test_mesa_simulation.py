@@ -26,7 +26,10 @@ def sut():
     with patch.object(TimeSchedule, '__init__', time_schedule_init_mock):
         with patch.object(DataCollector, '__init__', data_collector_init_mock):
             return MesaSimulation(
-                simulation_mode='mocked_simulation_mode', time_span=[2020], regions=MagicMock(), visitors=[]
+                simulation_mode='mocked_simulation_mode',
+                time_span=[2020],
+                regions=MagicMock(),
+                visitors=[],
             )
 
 

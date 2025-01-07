@@ -34,7 +34,7 @@ def sut():
             'investment_flexibility_2050': 0,
             'electricity_demand_in_gj_per_ton': 2000,
             'fuel_demand_in_gj_per_ton': 3000,
-        }
+        },
     )
     process_mapping.set_index(['id_product', 'id_process'], inplace=True)
 

@@ -11,7 +11,11 @@ from mesa_wrapper.site_agent import SiteAgent
 @pytest.fixture
 def sut():
     return SiteAgent(
-        unique_id='mocked_id', model=MagicMock(), shape=MagicMock(), region_id=MagicMock(), site=MagicMock()
+        unique_id='mocked_id',
+        model=MagicMock(),
+        shape=MagicMock(),
+        region_id=MagicMock(),
+        site=MagicMock(),
     )
 
 
@@ -35,7 +39,7 @@ def test__geo_interface__(sut):
 def test_pipeline_cost_scaling(sut):
     distance_to_closest_H2_pipeline = 2
     result = sut.pipeline_cost_scaling(distance_to_closest_H2_pipeline)
-    assert result == 200 # noqa:
+    assert result == 200  # noqa:
 
 
 def test_get_distance_to_closest_H2_pipeline(sut):

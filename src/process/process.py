@@ -93,7 +93,8 @@ class Process(Entity):
 
     def energy_emissions_in_ton_co2_per_ton(self, year):
         energy_emissions = object_sum(
-            self.energy_demands, lambda demand: demand.energy_carrier_emission_in_ton_co2_per_ton(year)
+            self.energy_demands,
+            lambda demand: demand.energy_carrier_emission_in_ton_co2_per_ton(year),
         )
         steam_emissions = object_sum(self.steam_demands, lambda demand: demand.steam_emission_in_ton_co2_per_ton(year))
         return energy_emissions + steam_emissions
@@ -169,11 +170,13 @@ class Process(Entity):
 
     def _energy_carrier_subsidies_in_euro_per_ton(self, year):
         energy_subsidies = object_sum(
-            self.energy_demands, lambda demand: demand.energy_carrier_subsidies_in_euro_per_ton(year)
+            self.energy_demands,
+            lambda demand: demand.energy_carrier_subsidies_in_euro_per_ton(year),
         )
         steam_subsidies = object_sum(self.steam_demands, lambda demand: demand.steam_subsidies_in_euro_per_ton(year))
         feedstock_subsidies = object_sum(
-            self.feedstock_demands, lambda demand: demand.feedstock_subsidies_in_euro_per_ton(year)
+            self.feedstock_demands,
+            lambda demand: demand.feedstock_subsidies_in_euro_per_ton(year),
         )
         total_energy_carrier_subsides = energy_subsidies + steam_subsidies + feedstock_subsidies
         return total_energy_carrier_subsides
@@ -182,7 +185,8 @@ class Process(Entity):
         energy_taxes = object_sum(self.energy_demands, lambda demand: demand.energy_carrier_taxes_in_euro_per_ton(year))
         steam_taxes = object_sum(self.steam_demands, lambda demand: demand.steam_taxes_in_euro_per_ton(year))
         feedstock_taxes = object_sum(
-            self.feedstock_demands, lambda demand: demand.feedstock_taxes_in_euro_per_ton(year)
+            self.feedstock_demands,
+            lambda demand: demand.feedstock_taxes_in_euro_per_ton(year),
         )
         total_energy_carrier_taxes = energy_taxes + steam_taxes + feedstock_taxes
         return total_energy_carrier_taxes

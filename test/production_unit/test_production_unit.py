@@ -6,10 +6,9 @@ import pytest
 from mock import MagicMock, patch
 
 from production_unit.production_unit import ProductionUnit
-from utils import collection_utils
 
 
-@pytest.fixture()
+@pytest.fixture
 def sut():
     id_production_unit = 1
     product = MagicMock()
@@ -21,7 +20,11 @@ def sut():
     year_of_last_reinvestment = 2020
 
     production_unit = ProductionUnit(
-        id_production_unit, product, process, production_in_tons, year_of_last_reinvestment
+        id_production_unit,
+        product,
+        process,
+        production_in_tons,
+        year_of_last_reinvestment,
     )
     return production_unit
 
@@ -80,7 +83,11 @@ def test_process_with_min_production_cost(patched_min_object, sut):
     co2_cost_in_euro_per_ton_co2 = 2
     pipeline_cost_scaling = 1
     result = sut._process_with_min_production_cost(
-        year, default_process, production_in_tons, co2_cost_in_euro_per_ton_co2, pipeline_cost_scaling
+        year,
+        default_process,
+        production_in_tons,
+        co2_cost_in_euro_per_ton_co2,
+        pipeline_cost_scaling,
     )
     assert result == 'mocked_min_object'
 

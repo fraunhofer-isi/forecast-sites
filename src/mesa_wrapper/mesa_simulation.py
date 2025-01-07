@@ -41,7 +41,8 @@ class MesaSimulation(Simulation, Model):
                 for site in region.sites:
                     site_ids.append(site.id)
             psr_multiindex = pandas.MultiIndex.from_product(
-                [site_ids, self.pipelines.pipeline_indices], names=['site', 'pipeline']
+                [site_ids, self.pipelines.pipeline_indices],
+                names=['site', 'pipeline'],
             )
             self.pipeline_site_relations = pandas.DataFrame(index=psr_multiindex, columns=['distance', 'mode'])
             self.calculate_pipeline_site_distances()

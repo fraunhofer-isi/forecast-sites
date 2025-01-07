@@ -11,8 +11,7 @@ class Entity(ABC):
 
     @abstractmethod
     def accept(self, visitor: Visitor, year):
-        """
-        This method belongs to the visitor pattern, also see
+        """This method belongs to the visitor pattern, also see
         visitor.visitor.py
         """
         raise NotImplementedError("You should implement this.")

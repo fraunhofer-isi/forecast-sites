@@ -6,7 +6,6 @@ from math import isclose
 
 from utils.time_utils import (
     create_time_span,
-    exponential_decrease,
     interpolate,
     interpolate_cost,
     to_year_strings,

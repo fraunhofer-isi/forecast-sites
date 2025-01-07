@@ -56,9 +56,9 @@ class TestExportSitesToShapeFile:
             'longitude': [50],
             'co2_equivalent_2015_in_tons': [1000],
             'geometry': [None],
-        }
+        },
     )
-    site_df.set_index(['id'], inplace=True)
+    site_df = site_df.set_index(['id'])
 
     def test_empty_data_frame(self, sut):
         sut._check_export_column_names = MagicMock()
@@ -68,14 +68,16 @@ class TestExportSitesToShapeFile:
         region_mock = MagicMock()
         region_mock.site_df = lambda: site_df
 
-        with patch('utils.collection_utils.join_with_comma') as patched_join:
-            with patch('utils.file_utils.delete_file_if_exists') as patched_delete:
-                sut._export_sites_to_shape_file(region_mock, year=2020)
+        with (
+            patch('utils.collection_utils.join_with_comma') as patched_join,
+            patch('utils.file_utils.delete_file_if_exists') as patched_delete,
+        ):
+            sut._export_sites_to_shape_file(region_mock, year=2020)
 
-                assert patched_join.called
-                assert sut._check_export_column_names.called
-                assert sut._prepare_shape_file_path.called
-                assert patched_delete.called
+            assert patched_join.called
+            assert sut._check_export_column_names.called
+            assert sut._prepare_shape_file_path.called
+            assert patched_delete.called
 
     def test_non_empty_data_frame(self, sut):
         sut._check_export_column_names = MagicMock()
@@ -97,7 +99,7 @@ class TestExportSitesToShapeFile:
 
 
 def test__prepare_shape_file_path(sut):
-    with patch('utils.file_utils.create_folder_if_not_exists') as patched_create_folder:
+    with patch('utils.file_utils.create_folder_if_not_exists'):
         result = sut._prepare_shape_file_path(year=2020)
         assert result == '../output/shape_file_2020/technology_diffusion.shp'
 

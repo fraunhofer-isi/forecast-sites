@@ -34,6 +34,10 @@ class ProductionUnitFactory:
         process = self._process_factory.create_process(id_product, id_process)
 
         production_unit = ProductionUnit(
-            id_production_unit, product, process, production_in_tons, year_of_last_reinvestment
+            id_production_unit,
+            product,
+            process,
+            production_in_tons,
+            year_of_last_reinvestment,
         )
         return production_unit

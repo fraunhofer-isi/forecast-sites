@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 import pytest
-from mock import MagicMock, patch
+from mock import MagicMock
 
 from mesa_wrapper.time_schedule import TimeSchedule
 

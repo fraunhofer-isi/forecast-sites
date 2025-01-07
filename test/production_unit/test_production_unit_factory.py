@@ -22,7 +22,7 @@ def sut():
             'id_process': [100],
             'production_in_tons': [1000],
             'year_of_last_reinvestment': [2020],
-        }
+        },
     )
     data_interface.production_unit_mapping = {10: production_unit_df}
 
@@ -31,7 +31,12 @@ def sut():
 
 
 def production_unit_init_mock(
-    self, id_production_unit, product, process, production_in_tons, year_of_last_reinvestment
+    self,
+    id_production_unit,
+    product,
+    process,
+    production_in_tons,
+    year_of_last_reinvestment,
 ):
     self.id = id_production_unit
 

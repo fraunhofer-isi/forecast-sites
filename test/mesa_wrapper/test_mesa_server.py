@@ -20,7 +20,10 @@ def modular_server_init_mock(self, model_cls, visualization_elements, name="Mesa
 def sut():
     with patch.object(ModularServer, '__init__', modular_server_init_mock):
         return MesaServer(
-            simulation_mode='mocked_simulation_mode', time_span=[2020], regions='mocked_region', visitors=[]
+            simulation_mode='mocked_simulation_mode',
+            time_span=[2020],
+            regions='mocked_region',
+            visitors=[],
         )
 
 

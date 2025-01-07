@@ -42,7 +42,10 @@ class EnergyCarrier:
 
     def cost_in_euro_per_gj(self, year):
         return exponential_decrease(
-            year, self._cost_2015_in_euro_per_gj, self._cost_2030_in_euro_per_gj, self._cost_2050_in_euro_per_gj
+            year,
+            self._cost_2015_in_euro_per_gj,
+            self._cost_2030_in_euro_per_gj,
+            self._cost_2050_in_euro_per_gj,
         )
 
     def emission_in_ton_per_gj(self, year):

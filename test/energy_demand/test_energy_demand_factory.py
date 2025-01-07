@@ -21,7 +21,7 @@ def sut():
             'id_process': [10],
             'id_energy_carrier': 100,
             'fuel_share': 0.5,
-        }
+        },
     )
     energy_carrier_mapping.set_index(['id_product', 'id_process', 'id_energy_carrier'], inplace=True)
     data_interface.process_energy_carrier_mapping = energy_carrier_mapping
@@ -45,7 +45,10 @@ class TestCreateEnergyDemands:
         id_process = 10
         fuel_demand_in_gj_per_ton = 0
         result = sut.create_energy_demands(
-            self.id_product, id_process, self.electricity_demand_in_gj_per_ton, fuel_demand_in_gj_per_ton
+            self.id_product,
+            id_process,
+            self.electricity_demand_in_gj_per_ton,
+            fuel_demand_in_gj_per_ton,
         )
 
         assert len(result) == 1
@@ -58,7 +61,10 @@ class TestCreateEnergyDemands:
         id_process = 10
         fuel_demand_in_gj_per_ton = 10
         result = sut.create_energy_demands(
-            self.id_product, id_process, self.electricity_demand_in_gj_per_ton, fuel_demand_in_gj_per_ton
+            self.id_product,
+            id_process,
+            self.electricity_demand_in_gj_per_ton,
+            fuel_demand_in_gj_per_ton,
         )
 
         assert result[0].energy_carrier == 'dummy_electricity_energy_carrier'
@@ -73,7 +79,10 @@ class TestCreateEnergyDemands:
 
         with pytest.raises(Exception):
             sut.create_energy_demands(
-                self.id_product, id_process, self.electricity_demand_in_gj_per_ton, fuel_demand_in_gj_per_ton
+                self.id_product,
+                id_process,
+                self.electricity_demand_in_gj_per_ton,
+                fuel_demand_in_gj_per_ton,
             )
 
 
