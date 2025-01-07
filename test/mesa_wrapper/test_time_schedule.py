@@ -14,7 +14,7 @@ def sut():
 
 
 def test_init_with_empty_timespan():
-    with pytest.raises(ValueError):
+    with pytest.raises(ValueError, match='Time span must not be empty!'):
         TimeSchedule(model=MagicMock(), time_span=[])
 
 

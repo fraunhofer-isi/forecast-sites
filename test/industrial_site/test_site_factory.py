@@ -37,7 +37,12 @@ def sut():
     return site_factory
 
 
-def site_init_mock(self, id_site, geometry, production_units):
+def site_init_mock(
+    self,
+    id_site,
+    _geometry,
+    _production_units,
+):
     self.id = id_site
 
 

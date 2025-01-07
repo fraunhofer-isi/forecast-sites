@@ -11,11 +11,11 @@ from industrial_site.site_factory import SiteFactory
 from region.region import Region
 
 
-def energy_carrier_factory_init_mock(self, data_interface):
+def energy_carrier_factory_init_mock(self, _data_interface):
     self.create_energy_carrier_map = MagicMock()
 
 
-def site_factory_init_mock(self, data_interface, energy_carriers):
+def site_factory_init_mock(self, _data_interface, _energy_carriers):
     self.create_sites = MagicMock()
 
 

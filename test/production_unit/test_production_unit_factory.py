@@ -33,10 +33,10 @@ def sut():
 def production_unit_init_mock(
     self,
     id_production_unit,
-    product,
-    process,
-    production_in_tons,
-    year_of_last_reinvestment,
+    _product,
+    _process,
+    _production_in_tons,
+    _year_of_last_reinvestment,
 ):
     self.id = id_production_unit
 

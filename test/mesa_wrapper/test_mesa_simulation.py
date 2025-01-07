@@ -11,26 +11,37 @@ from mesa_wrapper.mesa_simulation import MesaSimulation
 from mesa_wrapper.time_schedule import TimeSchedule
 
 
-def time_schedule_init_mock(self, model, time_span):
+def time_schedule_init_mock(
+    self,
+    _model,
+    _time_span,
+):
     self.step = MagicMock()
     self.time = 2020
     self.previous_time = None
 
 
-def data_collector_init_mock(self, model_reporters=None, agent_reporters=None, tables=None):
+def data_collector_init_mock(
+    self,
+    _model_reporters=None,
+    _agent_reporters=None,
+    _tables=None,
+):
     self.collect = MagicMock()
 
 
 @pytest.fixture
 def sut():
-    with patch.object(TimeSchedule, '__init__', time_schedule_init_mock):
-        with patch.object(DataCollector, '__init__', data_collector_init_mock):
-            return MesaSimulation(
-                simulation_mode='mocked_simulation_mode',
-                time_span=[2020],
-                regions=MagicMock(),
-                visitors=[],
-            )
+    with (
+        patch.object(TimeSchedule, '__init__', time_schedule_init_mock),
+        patch.object(DataCollector, '__init__', data_collector_init_mock),
+    ):
+        return MesaSimulation(
+            simulation_mode='mocked_simulation_mode',
+            time_span=[2020],
+            regions=MagicMock(),
+            visitors=[],
+        )
 
 
 class TestStep:
@@ -63,7 +74,12 @@ def test_year(sut):
     assert sut.year == 2020
 
 
-def agent_creator_init_mock(self, agent_class, agent_kwargs, crs="epsg:3857"):
+def agent_creator_init_mock(
+    self,
+    _agent_class,
+    _agent_kwargs,
+    _crs="epsg:3857",
+):
     self.create_agent = MagicMock()
 
 

@@ -37,12 +37,12 @@ def test__geo_interface__(sut):
 
 # check tests from here onwards
 def test_pipeline_cost_scaling(sut):
-    distance_to_closest_H2_pipeline = 2
-    result = sut.pipeline_cost_scaling(distance_to_closest_H2_pipeline)
+    distance_to_closest_h2_pipeline = 2
+    result = sut.pipeline_cost_scaling(distance_to_closest_h2_pipeline)
     assert result == 200  # noqa:
 
 
-def test_get_distance_to_closest_H2_pipeline(sut):
+def test_get_distance_to_closest_h2_pipeline(sut):
     sut.model.pipeline_site_relations = MagicMock()
     result = sut.model.pipeline_site_relations.indes.get_level_values()
     assert result.called

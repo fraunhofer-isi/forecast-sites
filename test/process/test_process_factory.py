@@ -36,7 +36,7 @@ def sut():
             'fuel_demand_in_gj_per_ton': 3000,
         },
     )
-    process_mapping.set_index(['id_product', 'id_process'], inplace=True)
+    process_mapping = process_mapping.set_index(['id_product', 'id_process'])
 
     data_interface.product_process_mapping = process_mapping
 
@@ -49,21 +49,21 @@ def sut():
 def process_init_mock(
     self,
     id_process,
-    capex_2015_in_euro_per_ton,
-    capex_2050_in_euro_per_ton,
-    opex_2015_in_euro_per_ton,
-    opex_2050_in_euro_per_ton,
-    lifetime_in_years,
-    interest_rate,
-    depreciation_period,
-    emission_factor_in_ton_co2_per_ton,
-    efficiency_improvement_2015,
-    efficiency_improvement_2050,
-    investment_funding_2015,
-    investment_funding_2050,
-    investment_flexibility_2015,
-    investment_flexibility_2050,
-    energy_demands,
+    _capex_2015_in_euro_per_ton,
+    _capex_2050_in_euro_per_ton,
+    _opex_2015_in_euro_per_ton,
+    _opex_2050_in_euro_per_ton,
+    _lifetime_in_years,
+    _interest_rate,
+    _depreciation_period,
+    _emission_factor_in_ton_co2_per_ton,
+    _efficiency_improvement_2015,
+    _efficiency_improvement_2050,
+    _investment_funding_2015,
+    _investment_funding_2050,
+    _investment_flexibility_2015,
+    _investment_flexibility_2050,
+    _energy_demands,
 ):
     self.id = id_process
 

@@ -194,7 +194,12 @@ class ProductionUnit(Entity):
         return found_process
 
     @staticmethod
-    def _process_with_min_energy_cost(year, default_process, available_processes, co2_cost_in_euro_per_ton_co2):
+    def _process_with_min_energy_cost(
+        year,
+        default_process,
+        available_processes,
+        co2_cost_in_euro_per_ton_co2,
+    ):
         if len(available_processes) == 0:
             return default_process
         found_process = collection_utils.min_object(

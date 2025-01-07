@@ -137,14 +137,22 @@ exclude = [
 ignore = [
     # doc on rule codes:
     # https://docs.astral.sh/ruff/rules/
-    "D100",  # undocumented-public-module
-    "D101",  # undocumented-public-class
-    "D102",  # undocumented-public-method
-    "D103",  # undocumented-public-function
+    "D100",   # undocumented-public-module
+    "D101",   # undocumented-public-class
+    "D102",   # undocumented-public-method
+    "D103",   # undocumented-public-function
     "ANN001", # missing-type-function-argument
+    "ANN002", # missing-type-args
+    "ANN003", # missing-type-kwargs
     "ANN201", # missing-return-type-undocumented-public-function
+    "ANN202", # missing-return-type-private-function
+    "ANN204", # missing-return-type-special-method
+    "RET504", # unnecessary-assign
+
     "INP001", # implicit-namespace-package
-    "Q000", # bad-quotes-inline-string
+    "Q000",   # bad-quotes-inline-string
+    "TD002",  # missing-todo-author
+    "TD004",  # missing-todo-colon
 ]
 
 [tool.ruff.lint.per-file-ignores]

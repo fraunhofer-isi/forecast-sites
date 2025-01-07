@@ -4,7 +4,7 @@
 
 # assertion module you can import tests from
 import numpy as np
-from pytest import approx
+import pytest
 
 
 def truthy(value):
@@ -16,7 +16,7 @@ def falsy(value):
 
 
 def assert_sum_of_all_values_in_dataframe(result, value):
-    assert approx(value, 0.001) == result.values.sum()
+    assert pytest.approx(value, 0.001) == result.values.sum()
 
 
 def allow_strings_but_no_nan_or_inf_values(matrix):

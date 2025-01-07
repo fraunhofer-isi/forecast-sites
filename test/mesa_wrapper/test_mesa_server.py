@@ -12,7 +12,13 @@ from mesa_wrapper.mesa_server import MesaServer
 from mesa_wrapper.mesa_simulation import MesaSimulation
 
 
-def modular_server_init_mock(self, model_cls, visualization_elements, name="Mesa Model", model_params={}):
+def modular_server_init_mock(
+    self,
+    model_cls,
+    _visualization_elements,
+    _name,
+    _model_params,
+):
     self.model_cls = model_cls
 
 
@@ -37,7 +43,7 @@ def test_run(sut):
 class TestAgentPortrayal:
 
     site_mock = MagicMock()
-    site_mock.process_ids = []
+    site_mock.process_ids = []  # noqa: RUF012
 
     site_agent = MagicMock()
     site_agent.site = site_mock
@@ -88,11 +94,24 @@ def test__create_visualization_server(sut):
     assert result.model_cls == MesaSimulation
 
 
-def map_module_init_mock(self, portrayal_method, view=[0, 0], zoom=10, map_height=500, map_width=500):
+def map_module_init_mock(
+    self,
+    _portrayal_method,
+    _view,
+    _zoom,
+    _map_height,
+    _map_width,
+):
     pass
 
 
-def chart_module_init_mock(self, series, canvas_height=200, canvas_width=500, data_collector_name="datacollector"):
+def chart_module_init_mock(
+    self,
+    _series,
+    _canvas_height,
+    _canvas_width,
+    _data_collector_name,
+):
     pass
 
 

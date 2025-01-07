@@ -12,8 +12,8 @@ from mock import PropertyMock as OriginalPropertyMock
 from mock import call as original_call
 from mock import mock_open as original_mock_open
 from mock import patch as original_patch
-from pytest import fixture as original_fixture
-from pytest import raises as original_raises
+from pytest import fixture as original_fixture  # noqa: PT013
+from pytest import raises as original_raises  # noqa: PT013
 
 
 class Mock(MagicMock):
@@ -22,7 +22,11 @@ class Mock(MagicMock):
     def __new__(cls, *args, **kwargs):
         if len(args) > 0:
             first_argument = args[0]
-            mock = MagicMock(return_value=first_argument, *args[1:], **kwargs)
+            mock = MagicMock(
+                *args[1:],
+                **kwargs,
+                return_value=first_argument,
+            )
         else:
             mock = MagicMock(**kwargs)
         return mock
@@ -61,7 +65,8 @@ def mock_open(*args, **kwargs):
 
 def patch(item_to_patch, *args, **kwargs):
     if isinstance(item_to_patch, str):
-        raise KeyError('Please import and use functions directly instead of passing string paths!')
+        message = 'Please import and use functions directly instead of passing string paths!'
+        raise KeyError(message)
 
     module_path = item_to_patch.__module__
     if hasattr(item_to_patch, '__qualname__'):
@@ -77,10 +82,9 @@ def patch(item_to_patch, *args, **kwargs):
 
     if len(args) == 1 and len(kwargs) == 0:
         result = args[0]
-        if not isinstance(result, OriginalMock):
-            if not callable(result):
-                mock = Mock(result)
-                return original_patch(item_path, mock)
+        if not isinstance(result, OriginalMock) and (not callable(result)):
+            mock = Mock(result)
+            return original_patch(item_path, mock)
 
     return original_patch(item_path, *args, **kwargs)
 
@@ -91,7 +95,8 @@ def patch_by_string(item_path, return_value):
 
 def patch_property(property_to_patch, return_value):
     if isinstance(property_to_patch, str):
-        raise KeyError('Please import and use properties directly instead of passing string paths!')
+        message = 'Please import and use properties directly instead of passing string paths!'
+        raise KeyError(message)
 
     function_to_patch = property_to_patch.fget
     module_path = function_to_patch.__module__
@@ -111,12 +116,13 @@ def _try_to_get_object_name(object_to_patch, module_path):
             else:
                 # object is not unique within its parent but used twice
                 message = (
-                    'Could not identify item to patch because object is not unique.'
-                    + ' Please use a unique string path.'
+                    'Could not identify item to patch because object is not unique. Please use a unique string path.'
                 )
+
                 raise KeyError(message)
     if name is None:
-        raise KeyError('Could not identify object to patch.')
+        message = 'Could not identify object to patch.'
+        raise KeyError(message)
     return name
 
 

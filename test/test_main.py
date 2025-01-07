@@ -12,31 +12,53 @@ from simulation.simulation import Simulation
 from utils import time_utils
 
 
-def data_interface_init_mock(self, scenario_id, region_id, time_span):
+def data_interface_init_mock(
+    self,
+    _scenario_id,
+    _region_id,
+    _time_span,
+):
     pass
 
 
-def region_init_mock(self, region_id, data_interface):
+def region_init_mock(
+    self,
+    _region_id,
+    _data_interface,
+):
     self.id = None
     self._sites = [MagicMock(), MagicMock]
     self.accept = MagicMock()
 
 
-def simulation_init_mock(self, simulation_mode, time_span, co2_cost, region):
+def simulation_init_mock(
+    self,
+    _simulation_mode,
+    _time_span,
+    _co2_cost,
+    _region,
+):
     self.run = MagicMock()
 
 
-def mesa_server_init_mock(self, simulation_mode, time_span, co2_cost, region):
+def mesa_server_init_mock(
+    self,
+    _simulation_mode,
+    _time_span,
+    _co2_cost,
+    _region,
+):
     self.run = MagicMock()
 
 
 @patch.object(time_utils, 'create_time_span', return_value=['Y2015'])
 @patch('main.simulate', return_value=None)
-def test_main(self, patched_simulate):
+def test_main(*_args):
     try:
         main.main()
-    except Exception as exc:
-        assert False, f"main raised an exception {exc}"
+    except Exception as exception:
+        message = f"main raised an exception {exception}"
+        raise AssertionError(message) from exception
 
 
 class TestSimulate:
@@ -53,8 +75,9 @@ class TestSimulate:
 
         try:
             main.simulate(id_scenario, id_region, time_span, scenario_options)
-        except Exception as exc:
-            assert False, f"simulation raised an exception {exc}"
+        except Exception as exception:
+            message = f"simulation raised an exception {exception}"
+            raise AssertionError(message) from exception
 
     @patch.object(DataInterface, '__init__', data_interface_init_mock)
     @patch.object(Region, '__init__', region_init_mock)
@@ -68,5 +91,6 @@ class TestSimulate:
 
         try:
             main.simulate(id_scenario, id_region, time_span, scenario_options)
-        except Exception as exc:
-            assert False, f"simulation raised an exception {exc}"
+        except Exception as exception:
+            message = f"simulation raised an exception {exception}"
+            raise AssertionError(message) from exception

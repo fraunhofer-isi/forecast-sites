@@ -33,7 +33,6 @@ class TestProbabilityOfChange:
 
     def test_without_year_of_last_reinvestment(self, sut):
         sut.year_of_last_reinvestment = None
-        # sut.has_children = None
         result = sut._probability_of_change(2020, 1, 1)
         assert result == 1
 
@@ -60,8 +59,8 @@ def test_check_fuel_switch(sut):
     year = 2015
     sut.process.id = 39
     co2_cost_in_euro_per_ton_co2 = 2
-    distance_to_closest_H2_pipeline = 1
-    sut._check_fuel_switch(year, co2_cost_in_euro_per_ton_co2, distance_to_closest_H2_pipeline)
+    distance_to_closest_h2_pipeline = 1
+    sut._check_fuel_switch(year, co2_cost_in_euro_per_ton_co2, distance_to_closest_h2_pipeline)
     assert sut.check_energy_availability.called
 
 
@@ -89,16 +88,39 @@ def test_process_with_min_production_cost(patched_min_object, sut):
         co2_cost_in_euro_per_ton_co2,
         pipeline_cost_scaling,
     )
+    patched_min_object.assert_called()
     assert result == 'mocked_min_object'
 
 
-@patch('utils.collection_utils.min_object', return_value='mocked_min_object')
-def test_process_with_min_energy_cost(patched_min_object, sut):
-    year = 2020
-    default_process = MagicMock()
-    co2_cost_in_euro_per_ton_co2 = 2
-    result = sut._process_with_min_energy_cost(year, default_process, co2_cost_in_euro_per_ton_co2)
-    assert result == 'mocked_min_object'
+class TestProcessWithMinEnergyCost:
+
+    @patch('utils.collection_utils.min_object', return_value='mocked_min_object')
+    def test_with_available_processes(self, patched_min_object, sut):
+        year = 2020
+        default_process = MagicMock()
+        available_processes = ['mocked_process']
+        co2_cost_in_euro_per_ton_co2 = 2
+        result = sut._process_with_min_energy_cost(
+            year,
+            default_process,
+            available_processes,
+            co2_cost_in_euro_per_ton_co2,
+        )
+        patched_min_object.assert_called()
+        assert result == 'mocked_min_object'
+
+    def test_without_available_processes(self, sut):
+        year = 2020
+        default_process = MagicMock()
+        available_processes = []
+        co2_cost_in_euro_per_ton_co2 = 2
+        result = sut._process_with_min_energy_cost(
+            year,
+            default_process,
+            available_processes,
+            co2_cost_in_euro_per_ton_co2,
+        )
+        assert result == default_process
 
 
 class TestNumberOfProcessUsages:
@@ -179,8 +201,8 @@ def test_check_h2_use(sut):
 
 
 def test_check_h2_distance(sut):
-    distance_to_closest_H2_pipeline = 20
-    result = sut.check_h2_distance(distance_to_closest_H2_pipeline)
+    distance_to_closest_h2_pipeline = 20
+    result = sut.check_h2_distance(distance_to_closest_h2_pipeline)
     assert result is True
 
 
