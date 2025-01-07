@@ -14,3 +14,4 @@ coverage
 /web/eslint.json
 output
 .coverage
+.ruff_cache

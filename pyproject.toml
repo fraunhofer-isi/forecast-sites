@@ -46,7 +46,7 @@ dependencies = [
 
 [project.optional-dependencies]
 lint = [
-    'dill==0.3.9',
+    'ruff==0.8.4',
 ]
 
 format = [
@@ -118,3 +118,25 @@ include_namespace_packages = true
 
 [tool.coverage.html]
 directory = '.coverage'
+
+[tool.ruff]
+target-version = "py312"
+select = ["ALL"]
+ignore = [
+    "D100",  # missing-module-docstring
+    "D101",  # missing-class-docstring
+    "D102",  # missing-function-docstring
+    "D103",  # Missing docstring in public function
+    "R502",  # no-else-return
+    "ANN00", # Missing type annotation for function argument
+    "ANN201", # Missing return type annotation for public function
+    "S101",  # Use of `assert` detected
+]
+
+exclude = [
+    ".git",
+    "__pycache__",
+]
+
+fixable = ["ALL"]
+line-length = 120
