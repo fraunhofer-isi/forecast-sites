@@ -61,20 +61,20 @@ class EnergyCarrierFactory:
         taxes_2015_in_euro_per_gj = row_taxes['taxes_2015_in_euro_per_gj']
         taxes_2050_in_euro_per_gj = row_taxes['taxes_2050_in_euro_per_gj']
 
-        energy_carrier = EnergyCarrier(
-            id_energy_carrier,
-            name,
-            cost_2015_in_euro_per_gj,
-            cost_2030_in_euro_per_gj,
-            cost_2050_in_euro_per_gj,
-            emission_2015_in_ton_per_gj,
-            emission_2050_in_ton_per_gj,
-            availability_2015_in_gj,
-            availability_2050_in_gj,
-            subsidies_2015_in_euro_per_gj,
-            subsidies_2030_in_euro_per_gj,
-            subsidies_2050_in_euro_per_gj,
-            taxes_2015_in_euro_per_gj,
-            taxes_2050_in_euro_per_gj,
-        )
+        data = {
+            'cost_2015_in_euro_per_gj': cost_2015_in_euro_per_gj,
+            'cost_2030_in_euro_per_gj': cost_2030_in_euro_per_gj,
+            'cost_2050_in_euro_per_gj': cost_2050_in_euro_per_gj,
+            'emission_2015_in_ton_per_gj': emission_2015_in_ton_per_gj,
+            'emission_2050_in_ton_per_gj': emission_2050_in_ton_per_gj,
+            'availability_2015_in_gj': availability_2015_in_gj,
+            'availability_2050_in_gj': availability_2050_in_gj,
+            'subsidies_2015_in_euro_per_gj': subsidies_2015_in_euro_per_gj,
+            'subsidies_2030_in_euro_per_gj': subsidies_2030_in_euro_per_gj,
+            'subsidies_2050_in_euro_per_gj': subsidies_2050_in_euro_per_gj,
+            'taxes_2015_in_euro_per_gj': taxes_2015_in_euro_per_gj,
+            'taxes_2050_in_euro_per_gj': taxes_2050_in_euro_per_gj,
+        }
+
+        energy_carrier = EnergyCarrier(id_energy_carrier, name, data)
         return energy_carrier

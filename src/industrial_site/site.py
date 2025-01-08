@@ -21,32 +21,23 @@ class Site(Entity):
         simulation_mode,
         co2_cost_in_euro_per_ton_co2,
         pipeline_cost_scaling,
-        distance_to_closest_H2_pipeline,
+        distance_to_closest_h2_pipeline,
     ):
-        if distance_to_closest_H2_pipeline is not None:
-            if distance_to_closest_H2_pipeline < 50:
-                pipeline_cost_scaling = 1
+        distance_threshold = 50
+        pipelines_are_close = distance_to_closest_h2_pipeline < distance_threshold
+
+        if distance_to_closest_h2_pipeline is not None and pipelines_are_close:
+            pipeline_cost_scaling = 1
+
         for production_unit in self.production_units:
-            if simulation_mode == SimulationMode.MONTE_CARLO:
-                probability_limit = randint(0, 1)
-                production_unit.optimize_process(
-                    year,
-                    co2_cost_in_euro_per_ton_co2,
-                    pipeline_cost_scaling,
-                    distance_to_closest_H2_pipeline,
-                    probability_limit,
-                )
-            elif simulation_mode == SimulationMode.DETERMINISTIC:
-                probability_limit = 1
-                production_unit.optimize_process(
-                    year,
-                    co2_cost_in_euro_per_ton_co2,
-                    pipeline_cost_scaling,
-                    distance_to_closest_H2_pipeline,
-                    probability_limit,
-                )
-            else:
-                raise ValueError("Unknown simulation mode")
+            self._process_production_unit(
+                production_unit,
+                year,
+                simulation_mode,
+                co2_cost_in_euro_per_ton_co2,
+                pipeline_cost_scaling,
+                distance_to_closest_h2_pipeline,
+            )
 
     def accept(self, visitor, year):
         visitor.visit_site(self, year)
@@ -59,6 +50,37 @@ class Site(Entity):
             number_of_usages += production_units.number_of_process_usages(process)
         return number_of_usages
 
+    @staticmethod
+    def _process_production_unit(
+        production_unit,
+        year,
+        simulation_mode,
+        co2_cost_in_euro_per_ton_co2,
+        pipeline_cost_scaling,
+        distance_to_closest_h2_pipeline,
+    ):
+        if simulation_mode == SimulationMode.MONTE_CARLO:
+            probability_limit = randint(0, 1)  # noqa: S311
+            production_unit.optimize_process(
+                year,
+                co2_cost_in_euro_per_ton_co2,
+                pipeline_cost_scaling,
+                distance_to_closest_h2_pipeline,
+                probability_limit,
+            )
+        elif simulation_mode == SimulationMode.DETERMINISTIC:
+            probability_limit = 1
+            production_unit.optimize_process(
+                year,
+                co2_cost_in_euro_per_ton_co2,
+                pipeline_cost_scaling,
+                distance_to_closest_h2_pipeline,
+                probability_limit,
+            )
+        else:
+            message = "Unknown simulation mode"
+            raise ValueError(message)
+
     @property
     def process_ids(self):
-        return list(map(lambda production_unit: production_unit.process.id, self.production_units))
+        return [production_unit.process.id for production_unit in self.production_units]

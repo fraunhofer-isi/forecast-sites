@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
 import json
+from pathlib import Path
 
 from mesa_viz_tornado.ModularVisualization import VisualizationElement
 
@@ -13,24 +14,29 @@ class MapModule(VisualizationElement):
     package_includes = []
 
     local_includes = [
-        "web/node_modules/leaflet/dist/leaflet.js",
-        "web/node_modules/leaflet/dist/leaflet.css",
-        "web/src/leafletMap.js",
-        "web/node_modules/jquery/dist/jquery.min.js",
+        'web/node_modules/jquery/dist/jquery.min.js',
+        'web/node_modules/leaflet/dist/leaflet.js',
+        'web/node_modules/leaflet/dist/leaflet.css',
+        'web/src/leafletMap.js',
     ]
 
     def __init__(
         self,
         portrayal_method,
-        view=[0, 0],
+        view=None,
         zoom=10,
         map_height=500,
         map_width=500,
     ):
+        super().__init__()
         self.portrayal_method = portrayal_method
         self.map_height = map_height
         self.map_width = map_width
+
+        if view is None:
+            view = [0, 0]
         self.view = view
+
         new_element = "new MapModule({}, {}, {}, {})"
         new_element = new_element.format(view, zoom, map_width, map_height)
         self.js_code = "elements.push(" + new_element + ");"
@@ -39,12 +45,15 @@ class MapModule(VisualizationElement):
         feature_collection = self._extract_serializable_json(model)
 
         j = json.dumps(feature_collection)
-        with open('data.json', 'w') as f:
+        with Path('data.json').open('w') as f:
             f.write(j)
         return feature_collection
 
     def _extract_serializable_json(self, model):
-        feature_collection = dict(type="FeatureCollection", features=[])
+        feature_collection = {
+            'type': "FeatureCollection",
+            'features': [],
+        }
 
         feature_collection = self._include_pipelines(feature_collection, model)
         feature_collection = self._include_agents(feature_collection, model)

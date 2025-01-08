@@ -27,7 +27,7 @@ class FeedstockDemandFactory:
                 feedstock_share_entries = self._process_feedstock_mapping.query(query)
             except KeyError as error:
                 message = 'No fuel shares for id_product | id_process: ' + str(id_product) + ' | ' + str(id_process)
-                raise Exception(message) from error
+                raise ValueError(message) from error
 
             for _, row in feedstock_share_entries.iterrows():
                 feedstock_demand = self._create_feedstock_demand(row, feedstock_demand_in_gj_per_ton)
