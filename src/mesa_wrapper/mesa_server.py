@@ -37,29 +37,43 @@ class MesaServer:
         portrayal = {"radius": "3"}
 
         # Primary Steel
-        if 11 in process_ids:
+        blast_furnace = 11
+        if blast_furnace in process_ids:
             portrayal["color"] = "Tomato"
-        if 39 in process_ids:
+
+        direct_reduction_ng = 39
+        if direct_reduction_ng in process_ids:
             portrayal["color"] = "Blue"
-        if 38 in process_ids:
-            portrayal["color"] = "Green"
+
+        direct_reduction_h2 = 38
+        if direct_reduction_h2 in process_ids:
+            portrayal['color'] = 'Green'
 
         # Ammonia
-        if 9 in process_ids:
+        ammonia_smr = 9
+        if ammonia_smr in process_ids:
             portrayal["color"] = "Grey"
-        if 8 in process_ids:
+
+        ammonia_h2 = 8
+        if ammonia_h2 in process_ids:
             portrayal["color"] = "Turquoise"
 
         # Olefins
-        if 100 in process_ids:
+        steam_cracking = 100
+        if steam_cracking in process_ids:
             portrayal["color"] = "Sienna"
-        if 44 in process_ids:
+
+        ethylene_h2 = 44
+        if ethylene_h2 in process_ids:
             portrayal["color"] = "Purple"
 
         # Methanol
-        if 60 in process_ids:
+        methanol_smr = 60
+        if methanol_smr in process_ids:
             portrayal["color"] = "Goldenrod"
-        if 59 in process_ids:
+
+        methanol_h2 = 59
+        if methanol_h2 in process_ids:
             portrayal["color"] = "Olive"
 
         return portrayal

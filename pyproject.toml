@@ -135,14 +135,7 @@ exclude = [
 ignore = [
     # doc on rule codes:
     # https://docs.astral.sh/ruff/rules/
-    "D100",   # undocumented-public-module
-    "D101",   # undocumented-public-class
-    "D102",   # undocumented-public-method
-    "D103",   # undocumented-public-function
-    "D104",   # undocumented-public-package
-    "D105",   # undocumented-magic-method
-    "D106",   # undocumented-public-nested-class
-    "D107",   # undocumented-public-init
+
     "ANN001", # missing-type-function-argument
     "ANN002", # missing-type-args
     "ANN003", # missing-type-kwargs
@@ -151,16 +144,31 @@ ignore = [
     "ANN204", # missing-return-type-special-method
     "ANN205", # missing-return-type-static-method
     "ANN206", # missing-return-type-class-method
-    "RET504", # unnecessary-assign
+
+    "COM812", # missing-trailing-comma
+
+    "D100",   # undocumented-public-module
+    "D101",   # undocumented-public-class
+    "D102",   # undocumented-public-method
+    "D103",   # undocumented-public-function
+    "D104",   # undocumented-public-package
+    "D105",   # undocumented-magic-method
+    "D106",   # undocumented-public-nested-class
+    "D107",   # undocumented-public-init
+
     "D400",   # missing-trailing-period
     "D415",   # missing-terminal-punctuation
 
     "INP001", # implicit-namespace-package
+
     "Q000",   # bad-quotes-inline-string
-    "TD002",  # missing-todo-author
-    "TD004",  # missing-todo-colon
+
+    "RET504", # unnecessary-assign
 
     "RUF012", #	mutable-class-default
+
+    "TD002",  # missing-todo-author
+    "TD004",  # missing-todo-colon
 ]
 
 [tool.ruff.lint.pylint]
@@ -170,11 +178,15 @@ max-args = 10  # Set the allowed number of function arguments
 # doc on rule codes:
 # https://docs.astral.sh/ruff/rules/
 "test/*" = [
-    "S101",  # assert
-    "SLF001", # private-member-access
-    "UP026", # deprecated-mock-import (we use own "mock" package)
     "PLR2004", # magic-value-comparison
+
     "PD901", # pandas-df-variable-name
+
+    "S101",  # assert
+
+    "SLF001", # private-member-access
+
+    "UP026", # deprecated-mock-import (we use own "mock" package)
 ]
 
 [tool.ruff.format]
