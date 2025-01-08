@@ -32,7 +32,7 @@ class EnergyDemandFactory:
                 message = (
                     'No feedstock shares for id_product | id_process: ' + str(id_product) + ' | ' + str(id_process)
                 )
-                raise Exception(message) from error
+                raise ValueError(message) from error
 
             for _, row in fuel_share_entries.iterrows():
                 energy_demand = self._create_energy_demand(row, fuel_demand_in_gj_per_ton)

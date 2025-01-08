@@ -23,14 +23,18 @@ def sut():
             'fuel_share': 0.5,
         },
     )
-    energy_carrier_mapping.set_index(['id_product', 'id_process', 'id_energy_carrier'], inplace=True)
+    energy_carrier_mapping = energy_carrier_mapping.set_index(['id_product', 'id_process', 'id_energy_carrier'])
     data_interface.process_energy_carrier_mapping = energy_carrier_mapping
 
     energy_carriers = {1: 'dummy_electricity_energy_carrier', 100: 'dummy_energy_carrier'}
     return EnergyDemandFactory(data_interface, energy_carriers)
 
 
-def energy_demand_init_mock(self, energy_carrier, demand_in_gj_per_ton):
+def energy_demand_init_mock(
+    self,
+    energy_carrier,
+    _demand_in_gj_per_ton,
+):
     self.energy_carrier = energy_carrier
 
 
@@ -77,7 +81,7 @@ class TestCreateEnergyDemands:
         id_process = 1000
         fuel_demand_in_gj_per_ton = 10
 
-        with pytest.raises(Exception):
+        with pytest.raises(ValueError, match="'No feedstock shares"):
             sut.create_energy_demands(
                 self.id_product,
                 id_process,

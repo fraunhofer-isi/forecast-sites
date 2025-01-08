@@ -33,10 +33,20 @@
      "dependencyDashboardApproval": false,
      "minimumReleaseAge": null
     },
-     {
+    {
       "description": "Pin numpy to version 2.0.2, required by numba/mesa-geo",
       "matchPackageNames": ["numpy"],
       "allowedVersions": "2.0.2"  // Replace with the desired version
+    },
+    {
+      "description": "Pin mesa to version 3.0.3, due to breaking changes",
+      "matchPackageNames": ["mesa"],
+      "allowedVersions": "3.1.1"  // Replace with the desired version
+    },
+    {
+      "description": "Pin mesa-geo to version 0.9.0a1, due to breaking changes",
+      "matchPackageNames": ["mesa-geo"],
+      "allowedVersions": "0.9.0a1"  // Replace with the desired version
     }
   ]
 }

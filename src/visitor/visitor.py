@@ -8,11 +8,7 @@ NOT_IMPLEMENTED = "You should implement this."
 
 
 class Visitor(ABC):
-    """This abstract base class helps to implement the visitor pattern.
-    Usage: region.accept(visitor)
-    Also see
-    https://gitlab.cc-asp.fraunhofer.de/fhgdemo/python/getting_started_jupyter/-/blob/master/m_design_patterns/b_behavioural/visitor.ipynb
-    """
+    """Also see https://gitlab.cc-asp.fraunhofer.de/fhgdemo/python/getting_started_jupyter/-/blob/master/m_design_patterns/b_behavioural/visitor.ipynb"""
 
     @abstractmethod
     def visit_region(self, region, year):

@@ -36,7 +36,7 @@ def sut():
             'taxes_2050_in_euro_per_gj': 2050,
         },
     )
-    energy_carrier_mapping.set_index(['id_scenario', 'id_region', 'id_energy_carrier'], inplace=True)
+    energy_carrier_mapping = energy_carrier_mapping.set_index(['id_scenario', 'id_region', 'id_energy_carrier'])
     data_interface.energy_carrier_cost_mapping = energy_carrier_mapping
 
     energy_carrier_factory = EnergyCarrierFactory(data_interface)
