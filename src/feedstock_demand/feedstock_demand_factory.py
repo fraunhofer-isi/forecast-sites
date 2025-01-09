@@ -2,7 +2,6 @@
 #
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
-
 from feedstock_demand.feedstock_demand import FeedstockDemand
 
 

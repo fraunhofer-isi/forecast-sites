@@ -2,7 +2,6 @@
 #
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
-
 import pytest
 
 from energy_carrier.energy_carrier import EnergyCarrier
