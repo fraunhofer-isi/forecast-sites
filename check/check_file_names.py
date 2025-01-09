@@ -61,7 +61,7 @@ def check_folders_and_files_to_be_in_snake_case(
 
 
 def _is_excluded_folder(path, folders_to_exclude):
-    for folder_to_exclude in folders_to_exclude:
+    for folder_to_exclude in folders_to_exclude:  # noqa: SIM110
         if folder_to_exclude in path:
             return True
     return False
@@ -70,7 +70,7 @@ def _is_excluded_folder(path, folders_to_exclude):
 def _check_snake_case(path, name):
     if not _is_snake_case(name):
         message = "Directory or file name is not in snake_case:\n" + path + "/" + name
-        raise Exception(message)
+        raise NameError(message)
 
 
 def _is_snake_case(name):

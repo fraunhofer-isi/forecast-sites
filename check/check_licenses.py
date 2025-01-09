@@ -1,7 +1,7 @@
 # © 2024 Fraunhofer-Gesellschaft e.V., München
 #
 # SPDX-License-Identifier: AGPL-3.0-or-later
-
+import logging
 from sys import exit as sysexit
 
 from license_scanner import get_all_licenses
@@ -13,7 +13,7 @@ def main():
     using = 'PEP631'
 
     ignore_packages = [
-        'forecasst-sites',  # version 2024 of licensecheck does not seem to ignore the main package
+        'forecast-sites',  # version 2024 of licensecheck does not seem to ignore the main package
         'reuse',  # combined license is not recognized: "Apache-2.0 AND CC0-1.0 AND CC-BY-SA-4.0 AND GPL-3.0-or-later"
     ]
 
@@ -46,7 +46,7 @@ def main():
     # noinspection PyTypeChecker
     sorted_dependencies = sorted(dependencies)
     output = ansi_format(project_license, sorted_dependencies)
-    print(output)
+    logging.info(output)
 
     is_incompatible = any(not dependency.licenseCompat for dependency in dependencies)
     exit_code = 1 if is_incompatible else 0

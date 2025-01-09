@@ -37,7 +37,7 @@ class MesaSimulation(Simulation, Model):
         Model.__init__(self)
 
         # do not rename following model properties; they are required by mesa server
-        self.random = random.Random()  # noqa: S311
+        self.random = random.Random()
         self.schedule = TimeSchedule(self, time_span)
         self.grid = GeoSpace(MesaSimulation.COORDINATE_REFERENCE_SYSTEM)
         self.datacollector = self._create_data_collector()

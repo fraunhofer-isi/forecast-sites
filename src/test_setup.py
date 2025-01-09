@@ -1,11 +1,11 @@
 # © 2024 - 2025 Fraunhofer-Gesellschaft e.V., München
 #
 # SPDX-License-Identifier: AGPL-3.0-or-later
-
-import os
+import logging
 import sys
+from pathlib import Path
 
-src_path = os.path.dirname(os.path.abspath(__file__))
-print('including src directory in python path for testing: ' + src_path)
+src_path = Path(__file__).resolve().parent
+logging.debug('Including src directory in python path for testing: %s', src_path)
 
-sys.path.append(src_path)
+sys.path.append(str(src_path))

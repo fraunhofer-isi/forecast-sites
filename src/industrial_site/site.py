@@ -61,7 +61,7 @@ class Site(Entity):
         distance_to_closest_h2_pipeline,
     ):
         if simulation_mode == SimulationMode.MONTE_CARLO:
-            probability_limit = randint(0, 1)  # noqa: S311
+            probability_limit = randint(0, 1)
             production_unit.optimize_process(
                 year,
                 co2_cost_in_euro_per_ton_co2,

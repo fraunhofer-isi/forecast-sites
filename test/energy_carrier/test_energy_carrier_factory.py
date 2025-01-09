@@ -47,33 +47,11 @@ def energy_carrier_init_mock(
     self,
     id_energy_carrier,
     name,
-    cost_2015_in_euro_per_gj,
-    cost_2030_in_euro_per_gj,
-    cost_2050_in_euro_per_gj,
-    emission_2015_in_ton_per_gj,
-    emission_2050_in_ton_per_gj,
-    availability_2015_in_gj,
-    availability_2050_in_gj,
-    subsidies_2015_in_euro_per_gj,
-    subsidies_2030_in_euro_per_gj,
-    subsidies_2050_in_euro_per_gj,
-    taxes_2015_in_euro_per_gj,
-    taxes_2050_in_euro_per_gj,
+    data,
 ):
     self.name = name
     self.id_energy_carrier = id_energy_carrier
-    self.cost_2015_in_euro_per_gj = cost_2015_in_euro_per_gj
-    self.cost_2030_in_euro_per_gj = cost_2030_in_euro_per_gj
-    self.cost_2050_in_euro_per_gj = cost_2050_in_euro_per_gj
-    self.emission_2015_in_ton_per_gj = emission_2015_in_ton_per_gj
-    self.emission_2050_in_ton_per_gj = emission_2050_in_ton_per_gj
-    self.availability_2015_in_gj = availability_2015_in_gj
-    self.availability_2050_in_gj = availability_2050_in_gj
-    self.subsidies_2015_in_euro_per_gj = subsidies_2015_in_euro_per_gj
-    self.subsidies_2030_in_euro_per_gj = subsidies_2030_in_euro_per_gj
-    self.subsidies_2050_in_euro_per_gj = subsidies_2050_in_euro_per_gj
-    self.taxes_2015_in_euro_per_gj = taxes_2015_in_euro_per_gj
-    self.taxes_2050_in_euro_per_gj = taxes_2050_in_euro_per_gj
+    self.data = data
 
 
 def test_create_energy_carrier_map(sut):
