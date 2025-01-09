@@ -1,7 +1,7 @@
 # © 2024 - 2025 Fraunhofer-Gesellschaft e.V., München
 #
 # SPDX-License-Identifier: AGPL-3.0-or-later
-
+import logging
 import sqlite3
 
 import pandas as pd
@@ -25,67 +25,55 @@ class TabularResultVisitor(Visitor):
         ]
         ## Aggregated result tables
         # Demand tables
-        self._final_energy_demand_df = self._initialize_final_energy_demand_df()
-        self._final_steam_demand_df = self._initialize_final_steam_demand_df()
-        self._final_feedstock_demand_df = self._initialize_final_feedstock_demand_df()
+        self._final_energy_demand_df = self._empty_energy_carrier_table()
+        self._final_steam_demand_df = self._empty_energy_carrier_table()
+        self._final_feedstock_demand_df = self._empty_energy_carrier_table()
         # Cost tables
-        self._production_cost_df = self._initialize_production_cost_df()
-        self._investment_df = self._initialize_investment_df()
-        self._annuity_on_investment_df = self._initialize_annuity_on_investment_df()
-        self._energy_cost_df = self._initialize_energy_cost_df()
-        self._steam_cost_df = self._initialize_steam_cost_df()
-        self._feedstock_cost_df = self._initialize_feedstock_cost_df()
-        self._energy_emission_cost_df = self._initialize_energy_emission_cost_df()
-        self._steam_emission_cost_df = self._initialize_steam_emission_cost_df()
-        self._process_emission_cost_df = self._initialize_process_emission_cost_df()
+        self._production_cost_df = self._empty_base_table()
+        self._investment_df = self._empty_base_table()
+        self._annuity_on_investment_df = self._empty_base_table()
+        self._energy_cost_df = self._empty_energy_carrier_table()
+        self._steam_cost_df = self._empty_energy_carrier_table()
+        self._feedstock_cost_df = self._empty_energy_carrier_table()
+        self._energy_emission_cost_df = self._empty_energy_carrier_table()
+        self._steam_emission_cost_df = self._empty_energy_carrier_table()
+        self._process_emission_cost_df = self._empty_base_table()
         # Emission tables
-        self._process_emission_df = self._initialize_process_emission_df()
-        self._energy_emission_df = self._initialize_energy_emission_df()
-        self._steam_emission_df = self._initialize_steam_emission_df()
+        self._process_emission_df = self._empty_base_table()
+        self._energy_emission_df = self._empty_energy_carrier_table()
+        self._steam_emission_df = self._empty_energy_carrier_table()
         ## Specific result tables
         # Cost tables
-        self._production_cost_per_ton_df = self._initialize_production_cost_per_ton_df()
-        self._annuity_on_investment_per_ton_df = self._initialize_annuity_on_investment_per_ton_df()
-        self._opex_in_euro_per_ton_df = self._initialize_opex_in_euro_per_ton_df()
-        self._opex_df = self._initialize_opex_df()
+        self._production_cost_per_ton_df = self._empty_base_table()
+        self._annuity_on_investment_per_ton_df = self._empty_base_table()
+        self._opex_in_euro_per_ton_df = self._empty_base_table()
+        self._opex_df = self._empty_base_table()
 
-        self._energy_cost_per_ton_df = self._initialize_energy_cost_per_ton_df()
-        self._steam_cost_per_ton_df = self._initialize_steam_cost_per_ton_df()
-        self._feedstock_cost_per_ton_df = self._initialize_feedstock_cost_per_ton_df()
-        self._energy_and_feedstock_cost_per_ton_df = self._initialize_energy_and_feedstock_cost_per_ton_df()
-        self._energy_emission_cost_per_ton_df = self._initialize_energy_emission_cost_per_ton_df()
-        self._steam_emission_cost_per_ton_df = self._initialize_steam_emission_cost_per_ton_df()
-        self._energy_and_energy_emission_cost_df = self._initialize_energy_and_emission_cost_df()
-        self._steam_and_steam_emission_cost_df = self._initialize_steam_and_steam_emission_cost_df()
-        self._process_emission_cost_per_ton_df = self._initialize_process_emission_cost_per_ton_df()
-        self._production_df = self._initialize_production_df()
+        self._energy_cost_per_ton_df = self._empty_energy_carrier_table()
+        self._steam_cost_per_ton_df = self._empty_energy_carrier_table()
+        self._feedstock_cost_per_ton_df = self._empty_energy_carrier_table()
+        self._energy_and_feedstock_cost_per_ton_df = self._empty_base_table()
+        self._energy_emission_cost_per_ton_df = self._empty_energy_carrier_table()
+        self._steam_emission_cost_per_ton_df = self._empty_energy_carrier_table()
+        self._energy_and_energy_emission_cost_df = self._empty_energy_carrier_table()
+        self._steam_and_steam_emission_cost_df = self._empty_energy_carrier_table()
+        self._process_emission_cost_per_ton_df = self._empty_base_table()
+        self._production_df = self._empty_base_table()
 
         # Variables for analyzing and comparing process calculations
         ## Process-specific variables for analyzing and comparing
         self._columns_for_comparison = ['id_scenario', 'id_region', 'id_product', 'id_process']
-        self._virtual_annuity_per_process_df = self._initialize_virtual_annuity_per_process_df()
-        self._virtual_opex_per_process_df = self._initialize_virtual_opex_per_process_df()
-        self._virtual_production_cost_per_ton_per_process_df = (
-            self._initialize_virtual_production_cost_per_ton_per_process_df()
-        )
-        self._virtual_process_emission_costs_per_process_df = (
-            self._initialize_virtual_process_emission_costs_per_process_df()
-        )
-        self._virtual_energy_emission_costs_per_process_df = (
-            self._initialize_virtual_energy_emission_costs_per_process_df()
-        )
+        self._virtual_annuity_per_process_df = self._empty_comparison_table()
+        self._virtual_opex_per_process_df = self._empty_comparison_table()
+        self._virtual_production_cost_per_ton_per_process_df = self._empty_comparison_table()
+        self._virtual_process_emission_costs_per_process_df = self._empty_comparison_table()
+        self._virtual_energy_emission_costs_per_process_df = self._empty_comparison_table()
         ## Energy carrier specific variables for analyzing and comparing
-        self._virtual_energy_emission_costs_per_energy_carrier_df = (
-            self._initialize_virtual_energy_emission_costs_per_energy_carrier_df()
-        )
-        self._virtual_steam_emission_costs_per_energy_carrier_df = (
-            self._initialize_virtual_steam_emission_costs_per_energy_carrier_df()
-        )
-        self._virtual_energy_costs_per_energy_carrier_df = self._initialize_virtual_energy_costs_per_energy_carrier_df()
-        self._virtual_steam_costs_per_energy_carrier_df = self._initialize_virtual_steam_costs_per_energy_carrier_df()
-        self._virtual_feedstock_costs_per_energy_carrier_df = (
-            self._initialize_virtual_feedstock_costs_per_energy_carrier_df()
-        )
+        self._virtual_energy_emission_costs_per_energy_carrier_df = self._empty_energy_carrier_comparison_table()
+        self._virtual_steam_emission_costs_per_energy_carrier_df = self._empty_energy_carrier_comparison_table()
+        self._virtual_energy_costs_per_energy_carrier_df = self._empty_energy_carrier_comparison_table()
+        self._virtual_steam_costs_per_energy_carrier_df = self._empty_energy_carrier_comparison_table()
+        self._virtual_feedstock_costs_per_energy_carrier_df = self._empty_energy_carrier_comparison_table()
 
         self._scenario = None
         self._region = None
@@ -103,16 +91,16 @@ class TabularResultVisitor(Visitor):
         self._energy_carrier_cost_in_euro_per_ton = None
 
     def visit_region(self, region, year):
-        print('visiting region ', region.id, ' in ', str(year))
+        logging.debug('visiting region %s in %s', region.id, year)
         self._region = region
-        self._scenario = region._data_interface.id_scenario
+        self._scenario = region.scenario
 
     def visit_site(self, site, year):
-        print('visiting site ', site.id, ' in ', str(year))
+        logging.debug('visiting site %s in %s', site.id, year)
         self._id_site = site.id
 
     def visit_production_unit(self, production_unit, year):
-        print('visiting production unit ', production_unit.id, ' in ', str(year))
+        logging.debug('visiting production unit %s in %s', production_unit.id, year)
         self._id_production_unit = production_unit.id
         self._production_in_tons = production_unit.production_in_tons
 
@@ -121,7 +109,7 @@ class TabularResultVisitor(Visitor):
         self._new_investment_in_euro = production_unit.new_investment_in_euro(year)
 
     def visit_product(self, product, year):
-        print('visiting product ', product.id, ' in ', str(year))
+        logging.debug('visiting product %s in %s', product.id, year)
         self._id_product = product.id
 
         # Process-specific variables for result comparison
@@ -229,22 +217,22 @@ class TabularResultVisitor(Visitor):
                 )
 
     def visit_process(self, process, year):
-        print('visiting process ', process.id, ' in ', str(year))
+        logging.debug('visiting process %s in %s', process.id, year)
         self._id_process = process.id
 
         production_in_tons = self._production_in_tons
         self._add_entry(self._production_df, year, production_in_tons)
-        print('Production', production_in_tons, ' in ', str(year))
+        logging.debug('Production %s in %s', production_in_tons, year)
 
         pipeline_cost_scaling = 1
 
         process_emission = process.process_emission_in_tons(production_in_tons)
         self._add_entry(self._process_emission_df, year, process_emission)
-        print('emissions', process_emission, ' in ', str(year))
+        logging.debug('Emissions %s in %s', process_emission, year)
 
         new_investment_in_euro = self._new_investment_in_euro
         self._add_entry(self._investment_df, year, new_investment_in_euro)
-        print('Investment', new_investment_in_euro, ' in ', str(year))
+        logging.debug('Investment %s in %s', new_investment_in_euro, year)
 
         annuity_per_ton = process.annuity_on_investment_per_ton(year)
         self._add_entry(self._annuity_on_investment_per_ton_df, year, annuity_per_ton)
@@ -269,16 +257,16 @@ class TabularResultVisitor(Visitor):
 
         process_emission_cost = process_emission * co2_cost_in_euro_per_ton_c02
         self._add_entry(self._process_emission_cost_df, year, process_emission_cost)
-        print('emissions', process_emission, ' in ', str(year))
+        logging.debug('Emissions %s in %s', process_emission, year)
 
         process_emission_cost_per_ton = (process_emission / production_in_tons) * co2_cost_in_euro_per_ton_c02
         self._add_entry(self._process_emission_cost_per_ton_df, year, process_emission_cost_per_ton)
-        print('emissions', process_emission, ' in ', str(year))
+        logging.debug('Emissions %s in %s', process_emission, year)
 
         production_cost_in_euro_per_ton = process.production_cost_in_euro_per_ton(year)
         self._add_entry(self._production_cost_per_ton_df, year, production_cost_in_euro_per_ton)
 
-        energy_and_feedstock_cost_per_ton = process._energy_carrier_cost_in_euro_per_ton(year)
+        energy_and_feedstock_cost_per_ton = process.energy_carrier_cost_in_euro_per_ton(year)
         self._add_entry(self._energy_and_feedstock_cost_per_ton_df, year, energy_and_feedstock_cost_per_ton)
 
         for demand in process.energy_demands:
@@ -387,7 +375,7 @@ class TabularResultVisitor(Visitor):
             )
 
     def finalize(self):
-        print('finalize')
+        logging.info('finalize')
         output_folder = '../output'  # assumes that 'src' is the working directory
         file_utils.create_folder_if_not_exists(output_folder)
 
@@ -427,7 +415,7 @@ class TabularResultVisitor(Visitor):
         self._save(self._process_emission_cost_per_ton_df, 'process_emission_cost_per_ton', output_folder)
         self._save(self._energy_emission_cost_per_ton_df, 'energy_emission_cost_per_ton', output_folder)
         self._save(self._steam_emission_cost_per_ton_df, 'steam_emission_cost_per_ton', output_folder)
-        # self._save(self._energy_and_feedstock_cost_per_ton_df, 'energy_and_feedstock_cost_per_ton', output_folder)
+
         self._save(self._production_cost_per_ton_df, 'production_cost_per_ton', output_folder)
         self._save(self._energy_cost_per_ton_df, 'energy_cost_per_ton', output_folder)
         self._save(self._steam_cost_per_ton_df, 'steam_cost_per_ton', output_folder)
@@ -492,7 +480,6 @@ class TabularResultVisitor(Visitor):
 
     @staticmethod
     def _create_empty_table_for_df(df, name, connection):
-        print('foo')
         query = 'CREATE TABLE ' + name + ' ('
         for column_name in df.index.names:
             query += column_name + ' integer NOT NULL, '
@@ -503,8 +490,6 @@ class TabularResultVisitor(Visitor):
         query += 'PRIMARY KEY (' + ', '.join(df.index.names) + ')'
 
         query += ')'
-
-        print(query)
 
         connection.execute(query)
 
@@ -517,11 +502,11 @@ class TabularResultVisitor(Visitor):
         self._add_entry_at(df, index_keys, year, value)
 
     def _add_entry_for_process_and_energy_carrier(self, df, id_process, id_energy_carrier, year, value):
-        index_keys = tuple(self._base_row_for_comparison(id_process) + [id_energy_carrier])
+        index_keys = (*self._base_row_for_comparison(id_process), id_energy_carrier)
         self._add_entry_at(df, index_keys, year, value)
 
     def _add_energy_carrier_entry(self, df, id_energy_carrier, year, value):
-        index_keys = tuple(self._base_row() + [id_energy_carrier])
+        index_keys = (*self._base_row(), id_energy_carrier)
         self._add_entry_at(df, index_keys, year, value)
 
     @staticmethod
@@ -536,256 +521,28 @@ class TabularResultVisitor(Visitor):
 
         df.loc[keys, year_column_name] = value
 
-    def _initialize_production_df(self):
+    def _empty_base_table(self):
         column_names = self._base_column_names
         df = pd.DataFrame(columns=column_names)
-        df.set_index(column_names, inplace=True)
+        df = df.set_index(column_names)
         return df
 
-    def _initialize_process_emission_df(self):
-        column_names = self._base_column_names
+    def _empty_energy_carrier_table(self):
+        column_names = [*self._base_column_names, 'id_energy_carrier']
         df = pd.DataFrame(columns=column_names)
-        df.set_index(column_names, inplace=True)
+        df = df.set_index(column_names)
         return df
 
-    def _initialize_process_emission_cost_df(self):
-        column_names = self._base_column_names
-        df = pd.DataFrame(columns=column_names)
-        df.set_index(column_names, inplace=True)
-        return df
-
-    def _initialize_process_emission_cost_per_ton_df(self):
-        column_names = self._base_column_names
-        df = pd.DataFrame(columns=column_names)
-        df.set_index(column_names, inplace=True)
-        return df
-
-    def _initialize_final_energy_demand_df(self):
-        column_names = self._base_column_names + ['id_energy_carrier']
-        df = pd.DataFrame(columns=column_names)
-        df.set_index(column_names, inplace=True)
-        return df
-
-    def _initialize_final_steam_demand_df(self):
-        column_names = self._base_column_names + ['id_energy_carrier']
-        df = pd.DataFrame(columns=column_names)
-        df.set_index(column_names, inplace=True)
-        return df
-
-    def _initialize_final_feedstock_demand_df(self):
-        column_names = self._base_column_names + ['id_energy_carrier']
-        df = pd.DataFrame(columns=column_names)
-        df.set_index(column_names, inplace=True)
-        return df
-
-    def _initialize_production_cost_df(self):
-        column_names = self._base_column_names
-        df = pd.DataFrame(columns=column_names)
-        df.set_index(column_names, inplace=True)
-        return df
-
-    def _initialize_production_cost_per_ton_df(self):
-        column_names = self._base_column_names
-        df = pd.DataFrame(columns=column_names)
-        df.set_index(column_names, inplace=True)
-        return df
-
-    def _initialize_total_production_cost_per_ton_df(self):
-        column_names = self._base_column_names
-        df = pd.DataFrame(columns=column_names)
-        df.set_index(column_names, inplace=True)
-        return df
-
-    def _initialize_investment_df(self):
-        column_names = self._base_column_names
-        df = pd.DataFrame(columns=column_names)
-        df.set_index(column_names, inplace=True)
-        return df
-
-    def _initialize_annuity_on_investment_df(self):
-        column_names = self._base_column_names
-        df = pd.DataFrame(columns=column_names)
-        df.set_index(column_names, inplace=True)
-        return df
-
-    def _initialize_annuity_on_investment_per_ton_df(self):
-        column_names = self._base_column_names
-        df = pd.DataFrame(columns=column_names)
-        df.set_index(column_names, inplace=True)
-        return df
-
-    def _initialize_opex_in_euro_per_ton_df(self):
-        column_names = self._base_column_names
-        df = pd.DataFrame(columns=column_names)
-        df.set_index(column_names, inplace=True)
-        return df
-
-    def _initialize_opex_df(self):
-        column_names = self._base_column_names
-        df = pd.DataFrame(columns=column_names)
-        df.set_index(column_names, inplace=True)
-        return df
-
-    def _initialize_energy_cost_df(self):
-        column_names = self._base_column_names + ['id_energy_carrier']
-        df = pd.DataFrame(columns=column_names)
-        df.set_index(column_names, inplace=True)
-        return df
-
-    def _initialize_energy_cost_per_ton_df(self):
-        column_names = self._base_column_names + ['id_energy_carrier']
-        df = pd.DataFrame(columns=column_names)
-        df.set_index(column_names, inplace=True)
-        return df
-
-    def _initialize_steam_cost_per_ton_df(self):
-        column_names = self._base_column_names + ['id_energy_carrier']
-        df = pd.DataFrame(columns=column_names)
-        df.set_index(column_names, inplace=True)
-        return df
-
-    def _initialize_feedstock_cost_per_ton_df(self):
-        column_names = self._base_column_names + ['id_energy_carrier']
-        df = pd.DataFrame(columns=column_names)
-        df.set_index(column_names, inplace=True)
-        return df
-
-    def _initialize_energy_and_feedstock_cost_per_ton_df(self):
-        column_names = self._base_column_names
-        df = pd.DataFrame(columns=column_names)
-        df.set_index(column_names, inplace=True)
-        return df
-
-    def _initialize_steam_cost_df(self):
-        column_names = self._base_column_names + ['id_energy_carrier']
-        df = pd.DataFrame(columns=column_names)
-        df.set_index(column_names, inplace=True)
-        return df
-
-    def _initialize_feedstock_cost_df(self):
-        column_names = self._base_column_names + ['id_energy_carrier']
-        df = pd.DataFrame(columns=column_names)
-        df.set_index(column_names, inplace=True)
-        return df
-
-    def _initialize_energy_and_emission_cost_df(self):
-        column_names = self._base_column_names + ['id_energy_carrier']
-        df = pd.DataFrame(columns=column_names)
-        df.set_index(column_names, inplace=True)
-        return df
-
-    def _initialize_steam_and_steam_emission_cost_df(self):
-        column_names = self._base_column_names + ['id_energy_carrier']
-        df = pd.DataFrame(columns=column_names)
-        df.set_index(column_names, inplace=True)
-        return df
-
-    def _initialize_energy_emission_df(self):
-        column_names = self._base_column_names + ['id_energy_carrier']
-        df = pd.DataFrame(columns=column_names)
-        df.set_index(column_names, inplace=True)
-        return df
-
-    def _initialize_steam_emission_df(self):
-        column_names = self._base_column_names + ['id_energy_carrier']
-        df = pd.DataFrame(columns=column_names)
-        df.set_index(column_names, inplace=True)
-        return df
-
-    def _initialize_energy_emission_cost_df(self):
-        column_names = self._base_column_names + ['id_energy_carrier']
-        df = pd.DataFrame(columns=column_names)
-        df.set_index(column_names, inplace=True)
-        return df
-
-    def _initialize_energy_emission_cost_per_ton_df(self):
-        column_names = self._base_column_names + ['id_energy_carrier']
-        df = pd.DataFrame(columns=column_names)
-        df.set_index(column_names, inplace=True)
-        return df
-
-    def _initialize_steam_emission_cost_per_ton_df(self):
-        column_names = self._base_column_names + ['id_energy_carrier']
-        df = pd.DataFrame(columns=column_names)
-        df.set_index(column_names, inplace=True)
-        return df
-
-    def _initialize_steam_emission_cost_df(self):
-        column_names = self._base_column_names + ['id_energy_carrier']
-        df = pd.DataFrame(columns=column_names)
-        df.set_index(column_names, inplace=True)
-        return df
-
-    def _initialize_pipeline_df(self):
-        column_names = self._base_column_names
-        df = pd.DataFrame(columns=column_names)
-        df.set_index(column_names, inplace=True)
-        return df
-
-    def _initialize_virtual_production_cost_per_ton_per_process_df(self):
+    def _empty_comparison_table(self):
         column_names = self._columns_for_comparison
         df = pd.DataFrame(columns=column_names)
-        df.set_index(column_names, inplace=True)
+        df = df.set_index(column_names)
         return df
 
-    def _initialize_virtual_process_emission_costs_per_process_df(self):
-        column_names = self._columns_for_comparison
+    def _empty_energy_carrier_comparison_table(self):
+        column_names = [*self._columns_for_comparison, 'id_energy_carrier']
         df = pd.DataFrame(columns=column_names)
-        df.set_index(column_names, inplace=True)
-        return df
-
-    def _initialize_virtual_energy_emission_costs_per_process_df(self):
-        column_names = self._columns_for_comparison
-        df = pd.DataFrame(columns=column_names)
-        df.set_index(column_names, inplace=True)
-        return df
-
-    def _initialize_virtual_annuity_per_ton_per_process_df(self):
-        column_names = self._columns_for_comparison
-        df = pd.DataFrame(columns=column_names)
-        df.set_index(column_names, inplace=True)
-        return df
-
-    def _initialize_virtual_energy_emission_costs_per_energy_carrier_df(self):
-        column_names = self._columns_for_comparison + ['id_energy_carrier']
-        df = pd.DataFrame(columns=column_names)
-        df.set_index(column_names, inplace=True)
-        return df
-
-    def _initialize_virtual_steam_emission_costs_per_energy_carrier_df(self):
-        column_names = self._columns_for_comparison + ['id_energy_carrier']
-        df = pd.DataFrame(columns=column_names)
-        df.set_index(column_names, inplace=True)
-        return df
-
-    def _initialize_virtual_energy_costs_per_energy_carrier_df(self):
-        column_names = self._columns_for_comparison + ['id_energy_carrier']
-        df = pd.DataFrame(columns=column_names)
-        df.set_index(column_names, inplace=True)
-        return df
-
-    def _initialize_virtual_steam_costs_per_energy_carrier_df(self):
-        column_names = self._columns_for_comparison + ['id_energy_carrier']
-        df = pd.DataFrame(columns=column_names)
-        df.set_index(column_names, inplace=True)
-        return df
-
-    def _initialize_virtual_feedstock_costs_per_energy_carrier_df(self):
-        column_names = self._columns_for_comparison + ['id_energy_carrier']
-        df = pd.DataFrame(columns=column_names)
-        df.set_index(column_names, inplace=True)
-        return df
-
-    def _initialize_virtual_opex_per_process_df(self):
-        column_names = self._columns_for_comparison
-        df = pd.DataFrame(columns=column_names)
-        df.set_index(column_names, inplace=True)
-        return df
-
-    def _initialize_virtual_annuity_per_process_df(self):
-        column_names = self._columns_for_comparison
-        df = pd.DataFrame(columns=column_names)
-        df.set_index(column_names, inplace=True)
+        df = df.set_index(column_names)
         return df
 
     def _base_row(self):

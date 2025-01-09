@@ -157,7 +157,7 @@ def test__initialize_final_energy_demand_df(sut):
 
 
 def test__initialize_production_cost_df(sut):
-    result = sut._initialize_production_cost_df()
+    result = sut._empty_base_table()
     assert result.index.names == [*sut._base_column_names, 'id_energy_carrier']
 
 

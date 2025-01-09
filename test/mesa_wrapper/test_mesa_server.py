@@ -43,7 +43,7 @@ def test_run(sut):
 class TestAgentPortrayal:
 
     site_mock = MagicMock()
-    site_mock.process_ids = []  # noqa: RUF012
+    site_mock.process_ids = []
 
     site_agent = MagicMock()
     site_agent.site = site_mock

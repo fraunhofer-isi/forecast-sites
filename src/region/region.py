@@ -52,3 +52,7 @@ class Region(Entity):
             id_process = production_unit.process.id
             process_ids.append(id_process)
         return process_ids
+
+    @property
+    def scenario(self):
+        return self._data_interface.id_scenario

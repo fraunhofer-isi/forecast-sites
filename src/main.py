@@ -2,6 +2,8 @@
 #
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
+import logging
+
 from data_interface import DataInterface
 from mesa_wrapper.mesa_server import MesaServer
 from region.region import Region
@@ -13,6 +15,8 @@ from visitor.tabular_result_visitor import TabularResultVisitor
 
 
 def main():
+
+    _initialize_logging()
     id_scenario = 6
 
     scenario_options = {
@@ -64,16 +68,20 @@ def main():
     simulate(id_scenario, time_span, scenario_options)
 
 
+def _initialize_logging():
+    logger = logging.getLogger()
+    logger.setLevel(logging.DEBUG)
+
+
 def simulate(id_scenario, time_span, scenario_options):
     regions = {}
     for region_id in scenario_options['region_ids']:
         data_interface = DataInterface(id_scenario, scenario_options, region_id)
-        simulation_mode = scenario_options['simulation_mode']
-
         region = Region(region_id, data_interface)
         regions[region_id] = region
     visitors = [TabularResultVisitor(), ShapeFileVisitor()]
 
+    simulation_mode = scenario_options['simulation_mode']
     if scenario_options['is_using_mesa']:
         mesa_server = MesaServer(simulation_mode, time_span, regions, visitors)
         mesa_server.run()

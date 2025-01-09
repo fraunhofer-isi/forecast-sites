@@ -111,7 +111,7 @@ def test_energy_demand_in_gj_per_ton(sut):
 
 def test_energy_and_emission_cost(sut):
     year = 2015
-    sut._energy_carrier_cost_in_euro_per_ton = MagicMock(return_value=2)
+    sut.energy_carrier_cost_in_euro_per_ton = MagicMock(return_value=2)
     sut.energy_emissions_in_ton_co2_per_ton = MagicMock(return_value=1)
     co2_cost_in_euro_per_ton_c02 = 2
     result = sut.energy_and_emission_cost(year, co2_cost_in_euro_per_ton_c02)
@@ -136,7 +136,7 @@ def test_annuity_on_investment_per_ton(sut):
 
 
 def test_energy_carrier_cost_in_euro_per_ton(sut):
-    result = sut._energy_carrier_cost_in_euro_per_ton(year=2015)
+    result = sut.energy_carrier_cost_in_euro_per_ton(year=2015)
     assert result == 0
 
 

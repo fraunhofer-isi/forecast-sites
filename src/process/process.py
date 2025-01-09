@@ -90,7 +90,7 @@ class Process(Entity):
             self.annuity_on_investment_per_ton(year)
             + self.opex_in_euro_per_ton(year)
             + (
-                self._energy_carrier_cost_in_euro_per_ton(year)
+                self.energy_carrier_cost_in_euro_per_ton(year)
                 - self._energy_carrier_subsidies_in_euro_per_ton(year)
                 + self._energy_carrier_taxes_in_euro_per_ton(year)
             )
@@ -110,7 +110,7 @@ class Process(Entity):
         return self.feedstock_demands
 
     def energy_and_emission_cost(self, year, co2_cost_in_euro_per_ton_c02):
-        return self._energy_carrier_cost_in_euro_per_ton(year) + (
+        return self.energy_carrier_cost_in_euro_per_ton(year) + (
             (self.energy_emissions_in_ton_co2_per_ton(year) + self.process_emission_in_ton_co2_per_ton)
             * co2_cost_in_euro_per_ton_c02
         )
@@ -136,6 +136,16 @@ class Process(Entity):
         self.energy_demands = new_energy_demands
         return self.energy_demands
 
+    def annuity_on_investment_per_ton(self, year):
+        return self._annuity_factor() * (self._capex_in_euro_per_ton(year) - self._investment_funding(year))
+
+    def energy_carrier_cost_in_euro_per_ton(self, year):
+        energy_cost = object_sum(self.energy_demands, lambda demand: demand.energy_carrier_cost_in_euro_per_ton(year))
+        steam_cost = object_sum(self.steam_demands, lambda demand: demand.steam_cost_in_euro_per_ton(year))
+        feedstock_cost = object_sum(self.feedstock_demands, lambda demand: demand.feedstock_cost_in_euro_per_ton(year))
+        total_energy_carrier_cost = energy_cost + steam_cost + feedstock_cost
+        return total_energy_carrier_cost
+
     def _annuity_factor(self):
         return (((1 + self._interest_rate) ** self._depreciation_period) * self._interest_rate) / (
             ((1 + self._interest_rate) ** self._depreciation_period) - 1
@@ -143,16 +153,6 @@ class Process(Entity):
 
     def _annuity_on_pipeline_investment(self, pipeline_cost):
         return self._annuity_factor() * pipeline_cost
-
-    def annuity_on_investment_per_ton(self, year):
-        return self._annuity_factor() * (self._capex_in_euro_per_ton(year) - self._investment_funding(year))
-
-    def _energy_carrier_cost_in_euro_per_ton(self, year):
-        energy_cost = object_sum(self.energy_demands, lambda demand: demand.energy_carrier_cost_in_euro_per_ton(year))
-        steam_cost = object_sum(self.steam_demands, lambda demand: demand.steam_cost_in_euro_per_ton(year))
-        feedstock_cost = object_sum(self.feedstock_demands, lambda demand: demand.feedstock_cost_in_euro_per_ton(year))
-        total_energy_carrier_cost = energy_cost + steam_cost + feedstock_cost
-        return total_energy_carrier_cost
 
     def _energy_carrier_subsidies_in_euro_per_ton(self, year):
         energy_subsidies = object_sum(
