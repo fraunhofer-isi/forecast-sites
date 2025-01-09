@@ -24,10 +24,11 @@ class Site(Entity):
         distance_to_closest_h2_pipeline,
     ):
         distance_threshold = 50
-        pipelines_are_close = distance_to_closest_h2_pipeline < distance_threshold
 
-        if distance_to_closest_h2_pipeline is not None and pipelines_are_close:
-            pipeline_cost_scaling = 1
+        if distance_to_closest_h2_pipeline is not None:
+            pipelines_are_close = distance_to_closest_h2_pipeline < distance_threshold
+            if pipelines_are_close:
+                pipeline_cost_scaling = 1
 
         for production_unit in self.production_units:
             self._process_production_unit(

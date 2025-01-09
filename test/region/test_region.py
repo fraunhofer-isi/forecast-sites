@@ -42,7 +42,7 @@ def test_process_year(sut):
         year=2020,
         simulation_mode='mocked_simulation_mode',
         pipeline_cost_scaling=1,
-        distance_to_closest_H2_pipeline=1,
+        distance_to_closest_h2_pipeline=1,
     )
 
     assert sut.co2_cost_in_euro_per_ton_c02.called

@@ -84,7 +84,7 @@ def test_investment_in_euro(sut):
 
 
 def test_annuity_on_investment(sut):
-    sut._annuity_on_investment_per_ton = MagicMock(return_value=10)
+    sut.annuity_on_investment_per_ton = MagicMock(return_value=10)
     result = sut.annuity_on_investment(year=2020, production_in_tons=2)
     assert result == 10 * 2
 
@@ -131,7 +131,7 @@ def test_annuity_on_pipeline_investment(sut):
 
 def test_annuity_on_investment_per_ton(sut):
     year = 2015
-    result = sut._annuity_on_investment_per_ton(year)
+    result = sut.annuity_on_investment_per_ton(year)
     assert result == 4
 
 
@@ -158,7 +158,7 @@ def test_capex_in_euro_per_ton(sut):
 
 def test_opex_in_euro_per_ton(sut):
     year = 2015
-    result = sut._opex_in_euro_per_ton(year)
+    result = sut.opex_in_euro_per_ton(year)
     assert result == 2
 
 

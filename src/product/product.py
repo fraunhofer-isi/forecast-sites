@@ -39,11 +39,11 @@ class Product(Entity):
     def virtual_annuity_per_process(self, year):
         virtual_annuity_per_process = {}
         for process in self.available_processes:
-            virtual_annuity_per_process[process.id] = process._annuity_on_investment_per_ton(year)
+            virtual_annuity_per_process[process.id] = process.annuity_on_investment_per_ton(year)
         return virtual_annuity_per_process
 
     def virtual_opex_per_process(self, year):
         virtual_opex = {}
         for process in self.available_processes:
-            virtual_opex[process.id] = process._opex_in_euro_per_ton(year)
+            virtual_opex[process.id] = process.opex_in_euro_per_ton(year)
         return virtual_opex

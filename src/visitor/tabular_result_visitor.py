@@ -246,16 +246,16 @@ class TabularResultVisitor(Visitor):
         self._add_entry(self._investment_df, year, new_investment_in_euro)
         print('Investment', new_investment_in_euro, ' in ', str(year))
 
-        annuity_per_ton = process._annuity_on_investment_per_ton(year)
+        annuity_per_ton = process.annuity_on_investment_per_ton(year)
         self._add_entry(self._annuity_on_investment_per_ton_df, year, annuity_per_ton)
 
-        annuity = process._annuity_on_investment_per_ton(year) * production_in_tons
+        annuity = process.annuity_on_investment_per_ton(year) * production_in_tons
         self._add_entry(self._annuity_on_investment_df, year, annuity)
 
-        opex_per_ton = process._opex_in_euro_per_ton(year)
+        opex_per_ton = process.opex_in_euro_per_ton(year)
         self._add_entry(self._opex_in_euro_per_ton_df, year, opex_per_ton)
 
-        opex = process._opex_in_euro_per_ton(year) * production_in_tons
+        opex = process.opex_in_euro_per_ton(year) * production_in_tons
         self._add_entry(self._opex_df, year, opex)
 
         co2_cost_in_euro_per_ton_c02 = self._region.co2_cost_in_euro_per_ton_c02(year)

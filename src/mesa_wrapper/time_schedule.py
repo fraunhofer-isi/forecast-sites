@@ -23,7 +23,8 @@ class TimeSchedule(SimultaneousActivation):
         self._time_span = time_span
         self.random = random.Random()
         if len(time_span) < 1:
-            raise ValueError('Time span must not be empty!')
+            message = 'Time span must not be empty!'
+            raise ValueError(message)
         self.time = time_span[0]
         self.previous_time = None
         self.steps = 0
@@ -32,7 +33,8 @@ class TimeSchedule(SimultaneousActivation):
         """Step all agents, then advance them."""
         has_current_step = len(self._time_span) > self.steps
         if not has_current_step:
-            raise StopIteration('Next step is not available. End of time span already reached')
+            message = 'Next step is not available. End of time span already reached'
+            raise StopIteration(message)
 
         for agent in self._agents:
             agent.step()

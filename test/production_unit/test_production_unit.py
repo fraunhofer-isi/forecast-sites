@@ -33,17 +33,17 @@ class TestProbabilityOfChange:
 
     def test_without_year_of_last_reinvestment(self, sut):
         sut.year_of_last_reinvestment = None
-        result = sut._probability_of_change(2020, 1, 1)
+        result = sut.probability_of_change(2020, 1, 1)
         assert result == 1
 
     def test_end_of_life_before_year(self, sut):
         sut.process.year_of_new_investment = MagicMock(return_value=2010)
-        result = sut._probability_of_change(2020)
+        result = sut.probability_of_change(2020)
         assert result == 1
 
     def test_end_of_life_after_year(self, sut):
         sut.process.year_of_new_investment = MagicMock(return_value=2030)
-        result = sut._probability_of_change(2020)
+        result = sut.probability_of_change(2020)
         assert result == 0
 
 

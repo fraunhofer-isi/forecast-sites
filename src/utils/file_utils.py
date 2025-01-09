@@ -2,14 +2,17 @@
 #
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
-import os
+
+from pathlib import Path
 
 
 def create_folder_if_not_exists(folder_path):
-    if not os.path.isdir(folder_path):
-        os.mkdir(folder_path)
+    path = Path(folder_path)
+    if not path.is_dir():
+        path.mkdir()
 
 
 def delete_file_if_exists(file_path):
-    if os.path.isfile(file_path):
-        os.remove(file_path)
+    path = Path(file_path)
+    if path.is_file():
+        path.unlink()

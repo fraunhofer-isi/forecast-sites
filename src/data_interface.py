@@ -62,8 +62,8 @@ class DataInterface:
         return df
 
     def _read_site_data(self, connection):
-        query = 'SELECT * from site WHERE id_region = ' + str(self.id_region)
-        df = pd.read_sql_query(query, connection, index_col=['id'])
+        query = 'SELECT * from site WHERE id_region = ?'
+        df = pd.read_sql_query(query, connection, index_col=['id'], params=(self.id_region,))
 
         df['geometry'] = geopandas.points_from_xy(df['longitude'], df['latitude'])
         geo_df = geopandas.GeoDataFrame(df, geometry='geometry')
@@ -80,16 +80,16 @@ class DataInterface:
 
         site_map = {}
         for id_site in site_ids:
-            query = 'SELECT * from production_unit WHERE id_site = ' + str(id_site)
+            query = 'SELECT * from production_unit WHERE id_site = ?'
 
             if is_filtering_products:
                 query += ' AND id_product IN (' + product_ids + ')'
 
-            df = pd.read_sql_query(query, connection)
+            df = pd.read_sql_query(query, connection, params=(id_site,))
             if len(df) > 0:
                 site_map[id_site] = df
             else:
-                self.site_data.drop(id_site, inplace=True)
+                self.site_data = self.site_data.drop(id_site)
 
         return site_map
 

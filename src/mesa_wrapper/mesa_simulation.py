@@ -5,7 +5,7 @@
 import random
 from math import asin, cos, pi, sqrt
 
-import pandas
+import pandas as pd
 from mesa import Model
 from mesa.datacollection import DataCollector
 from mesa_geo import AgentCreator, GeoSpace
@@ -19,13 +19,25 @@ from simulation.simulation import Simulation
 class MesaSimulation(Simulation, Model):
     COORDINATE_REFERENCE_SYSTEM = "epsg:4326"
 
-    def __init__(self, simulation_mode, time_span, regions, visitors):
+    def __init__(
+        self,
+        simulation_mode,
+        time_span,
+        regions,
+        visitors,
+    ):
 
-        Simulation.__init__(self, simulation_mode, time_span, regions, visitors)
+        Simulation.__init__(
+            self,
+            simulation_mode,
+            time_span,
+            regions,
+            visitors,
+        )
         Model.__init__(self)
 
         # do not rename following model properties; they are required by mesa server
-        self.random = random.Random()
+        self.random = random.Random()  # noqa: S311
         self.schedule = TimeSchedule(self, time_span)
         self.grid = GeoSpace(MesaSimulation.COORDINATE_REFERENCE_SYSTEM)
         self.datacollector = self._create_data_collector()
@@ -36,15 +48,13 @@ class MesaSimulation(Simulation, Model):
         self.recognize_pipelines = True
         self.pipelines = Pipelines()
         if self.recognize_pipelines:
-            site_ids = []
-            for region in self.regions.values():
-                for site in region.sites:
-                    site_ids.append(site.id)
-            psr_multiindex = pandas.MultiIndex.from_product(
+            site_ids = self._site_ids()
+
+            psr_multiindex = pd.MultiIndex.from_product(
                 [site_ids, self.pipelines.pipeline_indices],
                 names=['site', 'pipeline'],
             )
-            self.pipeline_site_relations = pandas.DataFrame(index=psr_multiindex, columns=['distance', 'mode'])
+            self.pipeline_site_relations = pd.DataFrame(index=psr_multiindex, columns=['distance', 'mode'])
             self.calculate_pipeline_site_distances()
 
     def step(self):
@@ -84,7 +94,6 @@ class MesaSimulation(Simulation, Model):
                     },
                 )
                 site_agent = agent_creator.create_agent(agent_shape)
-                site_agent
 
                 self.schedule.add(site_agent)
                 self.grid.add_agents(site_agent)
@@ -95,6 +104,13 @@ class MesaSimulation(Simulation, Model):
             model_reporters={"agent_count": lambda m: m.schedule.get_agent_count()},
             agent_reporters={"process_ids": self._determine_process_ids},
         )
+
+    def _site_ids(self):
+        all_site_ids = []
+        for region in self.regions.values():
+            site_ids = [site.id for site in region.sites]
+            all_site_ids += site_ids
+        return all_site_ids
 
     @staticmethod
     def _determine_process_ids(site_agent):
@@ -167,7 +183,7 @@ class MesaSimulation(Simulation, Model):
                     relation = self.pipeline_site_relations.loc[site.id, pipeline_id]
                     relation['mode'] = pipeline[1]['mode']
                     self.pipeline_site_relations.loc[site.id, pipeline_id] = relation
-                    SiteAgent.get_distance_to_closest_H2_pipeline()
+                    SiteAgent.get_distance_to_closest_h2_pipeline()
 
     def _pipeline_check(self):
         pass

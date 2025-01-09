@@ -161,11 +161,15 @@ ignore = [
 
     "INP001", # implicit-namespace-package
 
+    "PD901",  # pandas-df-variable-name
+
     "Q000",   # bad-quotes-inline-string
 
     "RET504", # unnecessary-assign
 
     "RUF012", #	mutable-class-default
+
+    "S311",   # suspicious-non-cryptographic-random-usage
 
     "TD002",  # missing-todo-author
     "TD004",  # missing-todo-colon

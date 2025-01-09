@@ -39,7 +39,7 @@ class ProductionUnit(Entity):
                 self._children,
             )
         else:
-            probability_of_change = self._probability_of_change(
+            probability_of_change = self.probability_of_change(
                 year,
                 co2_cost_in_euro_per_ton_co2,
                 pipeline_cost_scaling,
@@ -69,7 +69,12 @@ class ProductionUnit(Entity):
             self.previous_year_of_last_reinvestment = self.year_of_last_reinvestment
             self.year_of_last_reinvestment = year
 
-    def _probability_of_change(self, year, co2_cost_in_euro_per_ton_co2, pipeline_cost_scaling):
+    def probability_of_change(
+        self,
+        year,
+        co2_cost_in_euro_per_ton_co2,
+        pipeline_cost_scaling,
+    ):
         if self.has_children:
             probability = self._probability_of_change_of_children(
                 year,
@@ -93,17 +98,18 @@ class ProductionUnit(Entity):
 
     @staticmethod
     def check_h2_use(process):
+        hydrogen = 15
         for energy_demand in process.energy_demands:
             energy_carrier = energy_demand.energy_carrier
-            if energy_carrier.id == 15:
+            if energy_carrier.id == hydrogen:
                 return True
         for steam_demand in process.steam_demands:
             energy_carrier = steam_demand.energy_carrier
-            if energy_carrier.id == 15:
+            if energy_carrier.id == hydrogen:
                 return True
         for feedstock_demand in process.feedstock_demands:
             energy_carrier = feedstock_demand.energy_carrier
-            if energy_carrier.id == 15:
+            if energy_carrier.id == hydrogen:
                 return True
         return False
 
@@ -111,13 +117,16 @@ class ProductionUnit(Entity):
     def has_children(self):
         return len(self._children) > 0
 
-    def _check_fuel_switch(self, year, co2_cost_in_euro_per_ton_co2, distance_to_closest_H2_pipeline):
-        if self.process.id == 39 or self.process.id == 38:
+    def _check_fuel_switch(self, year, co2_cost_in_euro_per_ton_co2, distance_to_closest_h2_pipeline):
+        direct_reduction_h2 = 38
+        direct_reduction_ng = 39
+        process_id = self.process.id
+        if process_id in (direct_reduction_h2, direct_reduction_ng):
             available_processes = []
             for process in self._product.available_processes:
                 available_processes.append(process)
                 if self.check_energy_availability(year, process):
-                    if self.check_h2_distance(process, distance_to_closest_H2_pipeline):
+                    if self.check_h2_distance(process, distance_to_closest_h2_pipeline):
                         available_processes.remove(process)
                 else:
                     available_processes.remove(process)
@@ -242,12 +251,12 @@ class ProductionUnit(Entity):
 
         return True
 
-    def check_h2_distance(self, process, distance_to_closest_H2_pipeline):
+    def check_h2_distance(self, process, distance_to_closest_h2_pipeline):
+        distance_threshold = 50
         if self.check_h2_use(process):
-            if distance_to_closest_H2_pipeline is not None:
-                if distance_to_closest_H2_pipeline > 50:
-                    return True
-                return False
+            if distance_to_closest_h2_pipeline is not None:
+                distance_is_larger = distance_to_closest_h2_pipeline > distance_threshold
+                return distance_is_larger
             return True
         return False
 
@@ -268,7 +277,7 @@ class ProductionUnit(Entity):
         year,
         co2_cost_in_euro_per_ton_co2,
         pipeline_cost_scaling,
-        distance_to_closest_H2_pipeline,
+        distance_to_closest_h2_pipeline,
         children,
     ):
         for child in children:
@@ -276,13 +285,18 @@ class ProductionUnit(Entity):
                 year,
                 co2_cost_in_euro_per_ton_co2,
                 pipeline_cost_scaling,
-                distance_to_closest_H2_pipeline,
+                distance_to_closest_h2_pipeline,
             )
 
     @staticmethod
-    def _probability_of_change_of_children(year, co2_cost_in_euro_per_ton_co2, pipeline_cost_scaling, children):
+    def _probability_of_change_of_children(
+        year,
+        co2_cost_in_euro_per_ton_co2,
+        pipeline_cost_scaling,
+        children,
+    ):
         for child in children:
-            probability = child._probability_of_change(
+            probability = child.probability_of_change(
                 year,
                 co2_cost_in_euro_per_ton_co2,
                 pipeline_cost_scaling,

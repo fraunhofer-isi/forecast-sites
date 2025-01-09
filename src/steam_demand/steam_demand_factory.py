@@ -26,7 +26,7 @@ class SteamDemandFactory:
                 steam_share_entries = self._process_steam_mapping.query(query)
             except KeyError as error:
                 message = 'No fuel shares for id_product | id_process: ' + str(id_product) + ' | ' + str(id_process)
-                raise Exception(message) from error
+                raise ValueError(message) from error
 
             for _, row in steam_share_entries.iterrows():
                 steam_demand = self._create_steam_demand(row, steam_demand_in_gj_per_ton)

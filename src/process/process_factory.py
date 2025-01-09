@@ -18,7 +18,7 @@ class ProcessFactory:
         self._steam_demand_factory = SteamDemandFactory(data_interface, energy_carriers)
 
     def create_processes(self, id_product, process_ids):
-        processes = list(map(lambda id_process: self.create_process(id_product, id_process), process_ids))
+        processes = [self.create_process(id_product, id_process) for id_process in process_ids]
         return processes
 
     # pylint: disable=too-many-locals
@@ -69,24 +69,25 @@ class ProcessFactory:
             steam_demand_in_gj_per_ton,
         )
 
-        process = Process(
-            id_process,
-            capex_2015_in_euro_per_ton,
-            capex_2050_in_euro_per_ton,
-            opex_2015_in_euro_per_ton,
-            opex_2050_in_euro_per_ton,
-            lifetime_in_years,
-            interest_rate,
-            depreciation_period,
-            process_emission_in_ton_co2_per_ton,
-            efficiency_improvement_2015,
-            efficiency_improvement_2050,
-            investment_funding_2015,
-            investment_funding_2050,
-            investment_flexibility_2015,
-            investment_flexibility_2050,
-            energy_demands,
-            feedstock_demands,
-            steam_demands,
-        )
+        process_data = {
+            'capex_2015_in_euro_per_ton': capex_2015_in_euro_per_ton,
+            'capex_2050_in_euro_per_ton': capex_2050_in_euro_per_ton,
+            'opex_2015_in_euro_per_ton': opex_2015_in_euro_per_ton,
+            'opex_2050_in_euro_per_ton': opex_2050_in_euro_per_ton,
+            'lifetime_in_years': lifetime_in_years,
+            'interest_rate': interest_rate,
+            'depreciation_period': depreciation_period,
+            'process_emission_in_ton_co2_per_ton': process_emission_in_ton_co2_per_ton,
+            'efficiency_improvement_2015': efficiency_improvement_2015,
+            'efficiency_improvement_2050': efficiency_improvement_2050,
+            'investment_funding_2015': investment_funding_2015,
+            'investment_funding_2050': investment_funding_2050,
+            'investment_flexibility_2015': investment_flexibility_2015,
+            'investment_flexibility_2050': investment_flexibility_2050,
+            'energy_demands': energy_demands,
+            'feedstock_demands': feedstock_demands,
+            'steam_demands': steam_demands,
+        }
+
+        process = Process(id_process, process_data)
         return process

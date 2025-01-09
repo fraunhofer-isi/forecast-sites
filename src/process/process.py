@@ -12,50 +12,36 @@ from utils.time_utils import interpolate
 class Process(Entity):
 
     # pylint: disable=too-many-instance-attributes, too-many-arguments
-    def __init__(
-        self,
-        id_process,
-        capex_2015_in_euro_per_ton,
-        capex_2050_in_euro_per_ton,
-        opex_2015_in_euro_per_ton,
-        opex_2050_in_euro_per_ton,
-        lifetime_in_years,
-        interest_rate,
-        depreciation_period,
-        process_emission_in_ton_co2_per_ton,
-        efficiency_improvement_2015,
-        efficiency_improvement_2050,
-        investment_funding_2015,
-        investment_funding_2050,
-        investment_flexibility_2015,
-        investment_flexibility_2050,
-        energy_demands,
-        feedstock_demands,
-        steam_demands,
-    ):
+    def __init__(self, id_process, data):
         self.id = id_process
-        self.lifetime_in_years = lifetime_in_years
-        self.energy_demands = energy_demands
-        self.feedstock_demands = feedstock_demands
-        self.steam_demands = steam_demands
-        self._capex_2015_in_euro_per_ton = capex_2015_in_euro_per_ton
-        self._capex_2050_in_euro_per_ton = capex_2050_in_euro_per_ton
-        self._opex_2015_in_euro_per_ton = opex_2015_in_euro_per_ton
-        self._opex_2050_in_euro_per_ton = opex_2050_in_euro_per_ton
-        self._interest_rate = interest_rate
-        self._depreciation_period = depreciation_period
-        self.process_emission_in_ton_co2_per_ton = process_emission_in_ton_co2_per_ton
-        self._efficiency_improvement_2015 = efficiency_improvement_2015
-        self._efficiency_improvement_2050 = efficiency_improvement_2050
-        self._investment_funding_2015 = investment_funding_2015
-        self._investment_funding_2050 = investment_funding_2050
-        self._investment_flexibility_2015 = investment_flexibility_2015
-        self._investment_flexibility_2050 = investment_flexibility_2050
+        self.lifetime_in_years = data['lifetime_in_years']
+        self.energy_demands = data['energy_demands']
+        self.feedstock_demands = data['feedstock_demands']
+        self.steam_demands = data['steam_demands']
+        self._capex_2015_in_euro_per_ton = data['capex_2015_in_euro_per_ton']
+        self._capex_2050_in_euro_per_ton = data['capex_2050_in_euro_per_ton']
+        self._opex_2015_in_euro_per_ton = data['opex_2015_in_euro_per_ton']
+        self._opex_2050_in_euro_per_ton = data['opex_2050_in_euro_per_ton']
+        self._interest_rate = data['interest_rate']
+        self._depreciation_period = data['depreciation_period']
+        self.process_emission_in_ton_co2_per_ton = data['process_emission_in_ton_co2_per_ton']
+        self._efficiency_improvement_2015 = data['efficiency_improvement_2015']
+        self._efficiency_improvement_2050 = data['efficiency_improvement_2050']
+        self._investment_funding_2015 = data['investment_funding_2015']
+        self._investment_funding_2050 = data['investment_funding_2050']
+        self._investment_flexibility_2015 = data['investment_flexibility_2015']
+        self._investment_flexibility_2050 = data['investment_flexibility_2050']
 
     def accept(self, visitor, year):
         visitor.visit_process(self, year)
 
-    def production_cost_in_euro(self, year, production_in_tons, co2_cost_in_euro_per_ton_c02, pipeline_cost_scaling):
+    def production_cost_in_euro(
+        self,
+        year,
+        production_in_tons,
+        co2_cost_in_euro_per_ton_c02,
+        pipeline_cost_scaling,
+    ):
         if 15 in self.check_energy_carrier():
             pipeline_cost = pipeline_cost_scaling
         else:
@@ -86,7 +72,7 @@ class Process(Entity):
         return (self._capex_in_euro_per_ton(year) - self._investment_funding(year)) * production_in_tons
 
     def annuity_on_investment(self, year, production_in_tons):
-        return self._annuity_on_investment_per_ton(year) * production_in_tons
+        return self.annuity_on_investment_per_ton(year) * production_in_tons
 
     def year_of_new_investment(self, year_of_last_reinvestment):
         return self.lifetime_in_years + year_of_last_reinvestment
@@ -101,8 +87,8 @@ class Process(Entity):
 
     def production_cost_in_euro_per_ton(self, year):
         return (
-            self._annuity_on_investment_per_ton(year)
-            + self._opex_in_euro_per_ton(year)
+            self.annuity_on_investment_per_ton(year)
+            + self.opex_in_euro_per_ton(year)
             + (
                 self._energy_carrier_cost_in_euro_per_ton(year)
                 - self._energy_carrier_subsidies_in_euro_per_ton(year)
@@ -158,7 +144,7 @@ class Process(Entity):
     def _annuity_on_pipeline_investment(self, pipeline_cost):
         return self._annuity_factor() * pipeline_cost
 
-    def _annuity_on_investment_per_ton(self, year):
+    def annuity_on_investment_per_ton(self, year):
         return self._annuity_factor() * (self._capex_in_euro_per_ton(year) - self._investment_funding(year))
 
     def _energy_carrier_cost_in_euro_per_ton(self, year):
@@ -194,7 +180,7 @@ class Process(Entity):
     def _capex_in_euro_per_ton(self, year):
         return interpolate(year, self._capex_2015_in_euro_per_ton, self._capex_2050_in_euro_per_ton)
 
-    def _opex_in_euro_per_ton(self, year):
+    def opex_in_euro_per_ton(self, year):
         return interpolate(year, self._opex_2015_in_euro_per_ton, self._opex_2050_in_euro_per_ton)
 
     def _efficiency_improvement(self, year):

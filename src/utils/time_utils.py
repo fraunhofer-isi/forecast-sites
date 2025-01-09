@@ -23,20 +23,22 @@ def interpolate(year, value_2015, value_2050):
 
 
 def interpolate_cost(year, value_2015, value_2030, value_2050):
-    if year <= 2030:
-        slope = (value_2030 - value_2015) / (2030 - 2022)
+    year_threshold = 2030
+    if year <= year_threshold:
+        slope = (value_2030 - value_2015) / (year_threshold - 2022)
         value = value_2015 + slope * (year - 2022)
     else:
-        slope = (value_2050 - value_2030) / (2050 - 2030)
-        value = value_2030 + slope * (year - 2030)
+        slope = (value_2050 - value_2030) / (2050 - year_threshold)
+        value = value_2030 + slope * (year - year_threshold)
     return value
 
 
 def exponential_decrease(year, value_2015, value_2030, value_2050):
-    if year <= 2030:
-        slope = (value_2030 / value_2015) ** (1 / (2030 - 2022))
+    year_threshold = 2030
+    if year <= year_threshold:
+        slope = (value_2030 / value_2015) ** (1 / (year_threshold - 2022))
         value = value_2015 * slope ** (year - 2022)
     else:
-        slope = (value_2050 - value_2030) / (2050 - 2030)
-        value = value_2030 + slope * (year - 2030)
+        slope = (value_2050 - value_2030) / (2050 - year_threshold)
+        value = value_2030 + slope * (year - year_threshold)
     return value
