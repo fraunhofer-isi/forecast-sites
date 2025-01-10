@@ -175,15 +175,5 @@ class MesaSimulation(Simulation, Model):
                     relation['mode'] = pipeline[1]['mode']
                     self.pipeline_site_relations.loc[site.id, pipeline_id] = relation
 
-    def update_pipline_site_distances(self):
-        for region in self.regions.values():
-            for site in region.sites:
-                for pipeline in self.pipelines.pipelines_df.iterrows():
-                    pipeline_id = pipeline[1]['id']
-                    relation = self.pipeline_site_relations.loc[site.id, pipeline_id]
-                    relation['mode'] = pipeline[1]['mode']
-                    self.pipeline_site_relations.loc[site.id, pipeline_id] = relation
-                    SiteAgent.get_distance_to_closest_h2_pipeline()
-
     def _pipeline_check(self):
         pass
