@@ -45,7 +45,7 @@ class MapModule(VisualizationElement):
         feature_collection = self._extract_serializable_json(model)
 
         j = json.dumps(feature_collection)
-        with Path('data.json').open('w') as f:
+        with Path('data.json').open('w', encoding='utf8') as f:
             f.write(j)
         return feature_collection
 

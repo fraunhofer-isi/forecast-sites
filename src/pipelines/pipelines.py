@@ -12,7 +12,7 @@ class Pipelines:
 
     def __init__(self):
         file_path = './src/pipelines/pipelines.geojson'
-        with Path(file_path).open() as f:
+        with Path(file_path).open(encoding='utf8') as f:
             self.pipelines_json = json.load(f)
         self.pipelines_df = geopandas.read_file(file_path)
 
