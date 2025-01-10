@@ -2,21 +2,25 @@
 #
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
+import logging
+import os
+import re
+
 # This module checks if all file and folder names follow
 # the snake_case naming convention.
 # It is included from the pyproject.toml file via init-hook
 # of pylint.
 
-import os
-import re
-
 
 def main(directory_to_check="."):
+    _initialize_logging()
+    logging.info('Checking if all file and folder names are in snake_case...')
     folders_to_exclude = [
         "LICENSES",
         "web",
         ".git",
         ".idea",
+        ".ruff_cache",
         ".pytest_cache",
         ".vscode",
         "__pycache__",
@@ -31,6 +35,12 @@ def main(directory_to_check="."):
         folders_to_exclude,
         file_names_to_exclude,
     )
+    logging.info('... naming convention check finished.')
+
+
+def _initialize_logging():
+    logger = logging.getLogger()
+    logger.setLevel(logging.INFO)
 
 
 def check_folders_and_files_to_be_in_snake_case(

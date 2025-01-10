@@ -1,7 +1,9 @@
 # © 2024 Fraunhofer-Gesellschaft e.V., München
 #
 # SPDX-License-Identifier: AGPL-3.0-or-later
+import functools
 import logging
+import operator
 from sys import exit as sysexit
 
 from license_scanner import get_all_licenses
@@ -33,13 +35,20 @@ def main():
         # considers all packages from the workspace; only makes sense in the context of
         # continuous integration pipelines/workflow actions (or within virtualenvs)
         licenses_from_license_scanner = get_all_licenses()
-        requirements = sum(licenses_from_license_scanner.values(), [])
+        license_lists = licenses_from_license_scanner.values()
+        requirements = functools.reduce(operator.iadd, license_lists, [])
+
     else:
         # only considers direct dependencies
-        requirements = get_deps.getReqs(using)
+        requirements = get_deps.getReqs(using, [])
 
     project_license, dependencies = _license_and_dependencies(
-        using, ignore_packages, fail_packages, ignore_licenses, fail_licenses, requirements,
+        using,
+        ignore_packages,
+        fail_packages,
+        ignore_licenses,
+        fail_licenses,
+        requirements,
     )
 
     ansi_format = formatter.formatMap['ansi']
@@ -59,10 +68,10 @@ def _license_and_dependencies(  # pylint: disable=too-many-arguments
     fail_packages: list[str],
     ignore_licenses: list[str],
     fail_licenses: list[str],
-    requirements: set[str] = None,
+    requirements: set[str] = None,  # noqa: RUF013
 ) -> tuple[License, set[PackageInfo]]:
     if requirements is None:
-        requirements = get_deps.getReqs(using)
+        requirements = get_deps.getReqs(using, [])
 
     project_license = _project_license()
     packages = packageinfo.getPackages(requirements)

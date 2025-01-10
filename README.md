@@ -135,7 +135,9 @@ Click on some badge to navigate to the corresponding **quality assurance** workf
 
 ### Formatting & linting
 
-TODO: Badge "Checks Python code formatting with ..."
+[![lint](https://github.com/fraunhofer-isi/forecast-sites/actions/workflows/lint.yml/badge.svg)](https://github.com/fraunhofer-isi/forecast-sites/actions/workflows/lint.yml) Checks Python code formatting with [ruff](https://docs.astral.sh/ruff/)
+
+[![naming_conventions](https://github.com/fraunhofer-isi/forecast-sites/actions/workflows/naming_conventions.yml/badge.svg)](https://github.com/fraunhofer-isi/forecast-sites/actions/workflows/naming_conventions.yml) Checks Python folder and file names to be snake_case.
 
 [![web_lint](https://github.com/fraunhofer-isi/forecast-sites/actions/workflows/web_lint.yml/badge.svg)](https://github.com/fraunhofer-isi/forecast-sites/actions/workflows/web_lint.yml) Checks JavaScript code formatting with [ESlint](https://eslint.org/)
 
