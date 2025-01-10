@@ -4,7 +4,6 @@
 
 
 class SteamDemand:
-
     def __init__(self, energy_carrier, steam_demand_in_gj_per_ton):
         self.energy_carrier = energy_carrier
         self.steam_demand_in_gj_per_ton = steam_demand_in_gj_per_ton

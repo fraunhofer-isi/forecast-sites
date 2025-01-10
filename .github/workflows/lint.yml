@@ -25,6 +25,9 @@ jobs:
         # python -m pip install --upgrade pip
         # also see settings in pyproject.toml
         pip install .[dev]  | grep -v 'already satisfied' # The grep part removes "already satisfied" messages from the pip3 install output on linux systems
+    - name: format
+      run: |
+        ruff format
     - name: lint
       run: |
         ruff check

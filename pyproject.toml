@@ -49,10 +49,6 @@ lint = [
     'ruff==0.9.0',
 ]
 
-format = [
-    'black[d]==24.10.0',
-]
-
 test = [
     'pytest==8.3.4',
     'pytest-cov==6.0.0',
@@ -69,7 +65,7 @@ license = [
 
 ]
 
-dev = ['forecast-sites[lint, format, test, license]']
+dev = ['forecast-sites[lint, test, license]']
 
 [tool.hatch.build.targets.wheel]
 packages = ['src', 'test/test_utils']
@@ -82,10 +78,6 @@ using = 'PEP631'
 zero = true  # results in non-zero exit code if incompatibilities are found
 ignore_licenses = ['ZOPE PUBLIC LICENSE', 'REPOZE PUBLIC LICENSE', 'Apache Software License']
 
-
-[tool.black]
-line-length = 120
-skip-string-normalization = true
 
 [tool.isort]
 profile = 'black'
@@ -156,14 +148,19 @@ ignore = [
     "D106",   # undocumented-public-nested-class
     "D107",   # undocumented-public-init
 
+    "D203",  # incorrect-blank-line-before-class
+    "D212",  # multi-line-summary-first-line
+
     "D400",   # missing-trailing-period
     "D415",   # missing-terminal-punctuation
 
     "INP001", # implicit-namespace-package
+    "ISC001", # single-line-implicit-string-concatenation
 
     "PD901",  # pandas-df-variable-name
 
     "Q000",   # bad-quotes-inline-string
+    "Q003",  # avoidable-escaped-quote
 
     "RET504", # unnecessary-assign
 
@@ -199,3 +196,4 @@ max-args = 10  # Set the allowed number of function arguments
 # Also see
 # https://docs.astral.sh/ruff/configuration/
 quote-style = "single"
+

@@ -4,7 +4,7 @@
 
 from abc import ABC, abstractmethod
 
-NOT_IMPLEMENTED = "You should implement this."
+NOT_IMPLEMENTED = 'You should implement this.'
 
 
 class Visitor(ABC):

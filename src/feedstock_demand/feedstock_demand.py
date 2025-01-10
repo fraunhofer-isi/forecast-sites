@@ -4,7 +4,6 @@
 
 
 class FeedstockDemand:
-
     def __init__(self, energy_carrier, feedstock_demand_in_gj_per_ton):
         self.energy_carrier = energy_carrier
         self.feedstock_demand_in_gj_per_ton = feedstock_demand_in_gj_per_ton

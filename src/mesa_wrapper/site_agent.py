@@ -9,7 +9,6 @@ from shapely import ops
 
 
 class SiteAgent(GeoAgent):
-
     def __init__(
         self,
         model,
@@ -86,8 +85,8 @@ class SiteAgent(GeoAgent):
         """
         simulation = self.model
         properties = dict(vars(self))
-        properties["model"] = str(simulation)
-        geometry = properties.pop("geometry")
-        properties.pop("site")  # <= removes site because it is not serializable
+        properties['model'] = str(simulation)
+        geometry = properties.pop('geometry')
+        properties.pop('site')  # <= removes site because it is not serializable
         geometry = ops.transform(simulation.grid.transformer.transform, geometry)
-        return {"type": "Feature", "geometry": shapley_geometry.mapping(geometry), "properties": properties}
+        return {'type': 'Feature', 'geometry': shapley_geometry.mapping(geometry), 'properties': properties}

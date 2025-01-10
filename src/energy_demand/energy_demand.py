@@ -4,7 +4,6 @@
 
 
 class EnergyDemand:
-
     def __init__(self, energy_carrier, demand_in_gj_per_ton):
         self.energy_carrier = energy_carrier
         self.demand_in_gj_per_ton = demand_in_gj_per_ton

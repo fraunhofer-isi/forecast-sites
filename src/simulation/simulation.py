@@ -4,7 +4,6 @@
 
 
 class Simulation:
-
     def __init__(self, simulation_mode, time_span, regions, visitors):
         self.simulation_mode = simulation_mode
         self.regions = regions

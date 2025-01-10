@@ -6,7 +6,6 @@ from feedstock_demand.feedstock_demand import FeedstockDemand
 
 
 class FeedstockDemandFactory:
-
     def __init__(self, data_interface, energy_carriers):
         self._process_feedstock_mapping = data_interface.process_feedstock_mapping
         self._energy_carriers = energy_carriers
@@ -17,7 +16,6 @@ class FeedstockDemandFactory:
         id_process,
         feedstock_demand_in_gj_per_ton,
     ):
-
         feedstock_demands = []
 
         if feedstock_demand_in_gj_per_ton > 0:

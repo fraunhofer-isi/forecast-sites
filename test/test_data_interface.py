@@ -66,7 +66,6 @@ def test__get_site_ids(sut):
 
 
 class TestReadProductionUnitMappingAndDeleteUnusedSites:
-
     def test_without_product_filter(self, sut):
         df_mock = pd.DataFrame({'id_site': [1], 'id_product': [10]})
 
@@ -92,7 +91,6 @@ class TestReadProductionUnitMappingAndDeleteUnusedSites:
 
 
 class TestReadProductProcessMapping:
-
     def test__without_product_filter(self, sut):
         df_mock = pd.DataFrame({'id_product': [1], 'id_process': [10]})
         with patch('utils.collection_utils.join_with_comma'), patch('pandas.read_sql_query', return_value=df_mock):
@@ -109,7 +107,6 @@ class TestReadProductProcessMapping:
 
 
 class TestReadProcessEnergyCarrierMapping:
-
     def test__without_product_filter(self, sut):
         df_mock = pd.DataFrame({'id_product': [1], 'id_process': [10], 'id_energy_carrier': [10], 'fuel_share': [0.5]})
         with patch('utils.collection_utils.join_with_comma'), patch('pandas.read_sql_query', return_value=df_mock):

@@ -19,7 +19,6 @@ def test_init_with_empty_timespan():
 
 
 class TestStep:
-
     def test_normal_usage(self, sut):
         agent_mock = MagicMock()
         sut._agents = {'foo': agent_mock}

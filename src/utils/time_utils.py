@@ -13,7 +13,7 @@ def to_year_strings(time_span):
 
 
 def _add_year_prefix(year):
-    return "Y" + str(year)
+    return 'Y' + str(year)
 
 
 def interpolate(year, value_2015, value_2050):

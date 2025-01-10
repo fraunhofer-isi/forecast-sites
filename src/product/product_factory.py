@@ -6,7 +6,6 @@ from product.product import Product
 
 
 class ProductFactory:
-
     def __init__(self, data_interface, process_factory):
         self._product_process_mapping = data_interface.product_process_mapping
         self._process_factory = process_factory

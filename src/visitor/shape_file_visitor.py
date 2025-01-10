@@ -9,7 +9,6 @@ from visitor.visitor import Visitor
 
 
 class ShapeFileVisitor(Visitor):
-
     def __init__(self):
         self._output_path = '../output'
         file_utils.create_folder_if_not_exists(self._output_path)

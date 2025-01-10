@@ -57,12 +57,11 @@ def test_main(*_args):
     try:
         main.main()
     except Exception as exception:
-        message = f"main raised an exception {exception}"
+        message = f'main raised an exception {exception}'
         raise AssertionError(message) from exception
 
 
 class TestSimulate:
-
     @patch.object(DataInterface, '__init__', data_interface_init_mock)
     @patch.object(Region, '__init__', region_init_mock)
     @patch.object(Simulation, '__init__', simulation_init_mock)
@@ -76,7 +75,7 @@ class TestSimulate:
         try:
             main.simulate(id_scenario, id_region, time_span, scenario_options)
         except Exception as exception:
-            message = f"simulation raised an exception {exception}"
+            message = f'simulation raised an exception {exception}'
             raise AssertionError(message) from exception
 
     @patch.object(DataInterface, '__init__', data_interface_init_mock)
@@ -92,5 +91,5 @@ class TestSimulate:
         try:
             main.simulate(id_scenario, id_region, time_span, scenario_options)
         except Exception as exception:
-            message = f"simulation raised an exception {exception}"
+            message = f'simulation raised an exception {exception}'
             raise AssertionError(message) from exception

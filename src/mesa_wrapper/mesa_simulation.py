@@ -17,7 +17,7 @@ from simulation.simulation import Simulation
 
 
 class MesaSimulation(Simulation, Model):
-    COORDINATE_REFERENCE_SYSTEM = "epsg:4326"
+    COORDINATE_REFERENCE_SYSTEM = 'epsg:4326'
 
     def __init__(
         self,
@@ -26,7 +26,6 @@ class MesaSimulation(Simulation, Model):
         regions,
         visitors,
     ):
-
         Simulation.__init__(
             self,
             simulation_mode,
@@ -89,8 +88,8 @@ class MesaSimulation(Simulation, Model):
                     model=self,
                     crs=MesaSimulation.COORDINATE_REFERENCE_SYSTEM,
                     agent_kwargs={
-                        "region_id": region.id,
-                        "site": site,
+                        'region_id': region.id,
+                        'site': site,
                     },
                 )
                 site_agent = agent_creator.create_agent(agent_shape)
@@ -101,8 +100,8 @@ class MesaSimulation(Simulation, Model):
     def _create_data_collector(self):
         return DataCollector(
             # only model_reporters can be displayed by ChartModule of mesa server
-            model_reporters={"agent_count": lambda m: m.schedule.get_agent_count()},
-            agent_reporters={"process_ids": self._determine_process_ids},
+            model_reporters={'agent_count': lambda m: m.schedule.get_agent_count()},
+            agent_reporters={'process_ids': self._determine_process_ids},
         )
 
     def _site_ids(self):

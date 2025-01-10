@@ -6,7 +6,6 @@ from utils import collection_utils
 
 
 class TestMinObject:
-
     def test_normal_usage(self):
         collection = [(1, 2), (1, -5), (0.5, 0.5)]
         default_object = (1, 2)

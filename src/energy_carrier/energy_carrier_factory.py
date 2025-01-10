@@ -6,7 +6,6 @@ from energy_carrier.energy_carrier import EnergyCarrier
 
 
 class EnergyCarrierFactory:
-
     def __init__(self, data_interface):
         self._id_scenario = data_interface.id_scenario
         self._id_region = data_interface.id_region

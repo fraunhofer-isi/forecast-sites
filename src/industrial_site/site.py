@@ -9,7 +9,6 @@ from simulation.simulation_mode import SimulationMode
 
 
 class Site(Entity):
-
     def __init__(self, id_site, geometry, production_units):
         self.id = id_site
         self.production_units = production_units
@@ -79,7 +78,7 @@ class Site(Entity):
                 probability_limit,
             )
         else:
-            message = "Unknown simulation mode"
+            message = 'Unknown simulation mode'
             raise ValueError(message)
 
     @property

@@ -8,7 +8,6 @@ from production_unit.production_unit import ProductionUnit
 
 
 class ProductionUnitFactory:
-
     def __init__(self, data_interface, energy_carriers):
         self._data_interface = data_interface
         self._production_unit_mapping = data_interface.production_unit_mapping

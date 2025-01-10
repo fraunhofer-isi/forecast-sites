@@ -12,23 +12,23 @@ import re
 # of pylint.
 
 
-def main(directory_to_check="."):
+def main(directory_to_check='.'):
     _initialize_logging()
     logging.info('Checking if all file and folder names are in snake_case...')
     folders_to_exclude = [
-        "LICENSES",
-        "web",
-        ".git",
-        ".idea",
-        ".ruff_cache",
-        ".pytest_cache",
-        ".vscode",
-        "__pycache__",
+        'LICENSES',
+        'web',
+        '.git',
+        '.idea',
+        '.ruff_cache',
+        '.pytest_cache',
+        '.vscode',
+        '__pycache__',
     ]
     file_names_to_exclude = [
-        "Dockerfile",
-        "README.md",
-        "THIRDPARTY.md",
+        'Dockerfile',
+        'README.md',
+        'THIRDPARTY.md',
     ]
     check_folders_and_files_to_be_in_snake_case(
         directory_to_check,
@@ -54,7 +54,7 @@ def check_folders_and_files_to_be_in_snake_case(
                 continue
 
             check_folders_and_files_to_be_in_snake_case(
-                directory_to_check + "/" + sub_folder,
+                directory_to_check + '/' + sub_folder,
                 folders_to_exclude,
                 file_names_to_exclude,
             )
@@ -79,20 +79,20 @@ def _is_excluded_folder(path, folders_to_exclude):
 
 def _check_snake_case(path, name):
     if not _is_snake_case(name):
-        message = "Directory or file name is not in snake_case:\n" + path + "/" + name
+        message = 'Directory or file name is not in snake_case:\n' + path + '/' + name
         raise NameError(message)
 
 
 def _is_snake_case(name):
-    items = name.split(".")
+    items = name.split('.')
     name_without_ending = items[0]
-    if name_without_ending == "":
+    if name_without_ending == '':
         return True
 
-    _rex = re.compile("_?[a-z0-9]+(?:_+[a-z0-9]+)*")
+    _rex = re.compile('_?[a-z0-9]+(?:_+[a-z0-9]+)*')
     is_snake = _rex.fullmatch(name_without_ending)
     return is_snake
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()

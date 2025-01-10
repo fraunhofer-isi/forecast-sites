@@ -116,7 +116,6 @@ def test__add_energy_carrier_entry(sut):
 
 
 class TestAddEntryAt:
-
     def test_existing_index(self, sut):
         df = pd.DataFrame({'id_region': [1], 'id_site': [10]})
         df = df.set_index(['id_region', 'id_site'])

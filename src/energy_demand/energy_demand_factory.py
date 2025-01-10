@@ -6,7 +6,6 @@ from energy_demand.energy_demand import EnergyDemand
 
 
 class EnergyDemandFactory:
-
     def __init__(self, data_interface, energy_carriers):
         self._process_energy_carrier_mapping = data_interface.process_energy_carrier_mapping
         self._energy_carriers = energy_carriers

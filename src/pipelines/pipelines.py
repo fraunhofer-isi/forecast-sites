@@ -9,7 +9,6 @@ import geopandas
 
 
 class Pipelines:
-
     def __init__(self):
         file_path = './src/pipelines/pipelines.geojson'
         with Path(file_path).open(encoding='utf8') as f:
@@ -24,7 +23,7 @@ class Pipelines:
         self.modes = []
         for pipeline_index in self.pipelines_df.index:
             if year >= self.pipelines_df.loc[pipeline_index]['Commissioning Year First']:
-                self.pipelines_df.loc[self.pipelines_df["id"] == pipeline_index, "mode"] = 'H2'
+                self.pipelines_df.loc[self.pipelines_df['id'] == pipeline_index, 'mode'] = 'H2'
 
         for feature in self.pipelines_json['features']:
             if year >= feature['properties']['Commissioning Year First']:

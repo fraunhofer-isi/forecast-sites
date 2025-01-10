@@ -12,7 +12,6 @@ from utils import collection_utils, time_utils
 
 # pylint: disable=too-many-instance-attributes
 class DataInterface:
-
     def __init__(self, id_scenario, scenario_options, id_region):
         self.id_scenario = id_scenario
         self._scenario_options = scenario_options
@@ -74,7 +73,6 @@ class DataInterface:
         return list(self.site_data.apply(lambda row: row.name, axis=1))
 
     def _read_production_unit_mapping_and_delete_unused_sites(self, site_ids, connection, id_product_filter):
-
         is_filtering_products = len(id_product_filter) > 0
         product_ids = collection_utils.join_with_comma(id_product_filter)
 

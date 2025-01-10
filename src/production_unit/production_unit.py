@@ -8,7 +8,6 @@ from utils import collection_utils
 
 # pylint: disable=too-many-instance-attributes
 class ProductionUnit(Entity):
-
     # pylint: disable=too-many-arguments
     def __init__(self, id_production_unit, product, process, production_in_tons, year_of_last_reinvestment):
         self.id = id_production_unit

@@ -8,7 +8,6 @@ from industrial_site.site_factory import SiteFactory
 
 
 class Region(Entity):
-
     def __init__(self, id_region, data_interface):
         self.id = id_region
         self._data_interface = data_interface

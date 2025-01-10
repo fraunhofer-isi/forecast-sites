@@ -46,9 +46,8 @@ def site_init_mock(
     self.id = id_site
 
 
-@pytest.mark.filterwarnings("ignore:The array interface.*")
+@pytest.mark.filterwarnings('ignore:The array interface.*')
 class TestCreateSites:
-
     def test_with_data(self, sut):
         sut._create_site = Mock(return_value='dummy_site')
         sites = sut.create_sites()
@@ -63,7 +62,7 @@ class TestCreateSites:
 
 
 @patch.object(Site, '__init__', site_init_mock)
-@pytest.mark.filterwarnings("ignore:The array interface.*")
+@pytest.mark.filterwarnings('ignore:The array interface.*')
 def test_create_site(sut):
     row = MagicMock()
     row.name = 39

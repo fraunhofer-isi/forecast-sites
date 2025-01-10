@@ -6,7 +6,6 @@ from utils.time_utils import exponential_decrease, interpolate, interpolate_cost
 
 
 class EnergyCarrier:
-
     def __init__(self, id_energy_carrier, name, data):
         self.id = id_energy_carrier
         self._name = name

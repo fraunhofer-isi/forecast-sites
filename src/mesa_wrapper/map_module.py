@@ -37,9 +37,9 @@ class MapModule(VisualizationElement):
             view = [0, 0]
         self.view = view
 
-        new_element = "new MapModule({}, {}, {}, {})"
+        new_element = 'new MapModule({}, {}, {}, {})'
         new_element = new_element.format(view, zoom, map_width, map_height)
-        self.js_code = "elements.push(" + new_element + ");"
+        self.js_code = 'elements.push(' + new_element + ');'
 
     def render(self, model):
         feature_collection = self._extract_serializable_json(model)
@@ -51,7 +51,7 @@ class MapModule(VisualizationElement):
 
     def _extract_serializable_json(self, model):
         feature_collection = {
-            'type': "FeatureCollection",
+            'type': 'FeatureCollection',
             'features': [],
         }
 
@@ -63,7 +63,7 @@ class MapModule(VisualizationElement):
     @staticmethod
     def _include_pipelines(feature_collection, model):
         for pipeline in model.pipelines.pipelines_json['features']:
-            feature_collection["features"].append(pipeline)
+            feature_collection['features'].append(pipeline)
         return feature_collection
 
     def _include_agents(self, feature_collection, model):
@@ -74,7 +74,7 @@ class MapModule(VisualizationElement):
             portrayal = self.portrayal_method(agent)
 
             for key, value in portrayal.items():
-                shape_info["properties"][key] = value
-                feature_collection["features"].append(shape_info)
+                shape_info['properties'][key] = value
+                feature_collection['features'].append(shape_info)
 
         return feature_collection

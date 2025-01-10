@@ -41,7 +41,6 @@ def test_run(sut):
 
 
 class TestAgentPortrayal:
-
     site_mock = MagicMock()
     site_mock.process_ids = []
 

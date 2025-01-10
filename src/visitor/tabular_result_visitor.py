@@ -13,7 +13,6 @@ from visitor.visitor import Visitor
 
 # pylint: disable=too-many-instance-attributes
 class TabularResultVisitor(Visitor):
-
     def __init__(self):
         # Initialisation of variables for writing results on different aggregation levels
         self._base_column_names = [
@@ -496,7 +495,7 @@ class TabularResultVisitor(Visitor):
 
         excel_path = output_folder + '/' + name + '.xlsx'
 
-        query = "DROP TABLE IF EXISTS " + name
+        query = 'DROP TABLE IF EXISTS ' + name
         connection.execute(query)
         file_utils.delete_file_if_exists(excel_path)
 

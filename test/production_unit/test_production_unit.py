@@ -30,7 +30,6 @@ def sut():
 
 
 class TestProbabilityOfChange:
-
     def test_without_year_of_last_reinvestment(self, sut):
         sut.year_of_last_reinvestment = None
         result = sut.probability_of_change(2020, 1, 1)
@@ -93,7 +92,6 @@ def test_process_with_min_production_cost(patched_min_object, sut):
 
 
 class TestProcessWithMinEnergyCost:
-
     @patch('utils.collection_utils.min_object', return_value='mocked_min_object')
     def test_with_available_processes(self, patched_min_object, sut):
         year = 2020
@@ -124,7 +122,6 @@ class TestProcessWithMinEnergyCost:
 
 
 class TestNumberOfProcessUsages:
-
     def test_process_is_used(self, sut):
         process = sut.process
         result = sut.number_of_process_usages(process)
@@ -137,7 +134,6 @@ class TestNumberOfProcessUsages:
 
 
 class TestNewInvestmentInEuro:
-
     def test_year_is_year_of_new_investment(self, sut):
         sut.previous_process.year_of_new_investment = MagicMock(return_value=2020)
         sut.process.investment_in_euro = MagicMock(return_value=999)
@@ -151,7 +147,6 @@ class TestNewInvestmentInEuro:
 
 
 class TestCheckEnergyAvailability:
-
     def test_energy_is_available(self, sut):
         year = 2015  # Set the desired year for testing
         process = MagicMock()  # Mock the process object

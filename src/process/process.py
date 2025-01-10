@@ -10,7 +10,6 @@ from utils.time_utils import interpolate
 
 
 class Process(Entity):
-
     # pylint: disable=too-many-instance-attributes, too-many-arguments
     def __init__(self, id_process, data):
         self.id = id_process

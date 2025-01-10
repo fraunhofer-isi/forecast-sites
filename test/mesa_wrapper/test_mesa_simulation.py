@@ -45,7 +45,6 @@ def sut():
 
 
 class TestStep:
-
     def test_running(self, sut):
         visitor = MagicMock()
         sut._visitors = [visitor]
@@ -78,7 +77,7 @@ def agent_creator_init_mock(
     self,
     _agent_class,
     _agent_kwargs,
-    _crs="epsg:3857",
+    _crs='epsg:3857',
 ):
     self.create_agent = MagicMock()
 

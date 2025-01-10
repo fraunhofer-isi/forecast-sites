@@ -65,7 +65,6 @@ def test_site_df(sut):
 
 
 def test_accept(sut):
-
     site_mock = MagicMock()
     sut.sites = [site_mock]
 

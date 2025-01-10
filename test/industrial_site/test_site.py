@@ -34,7 +34,6 @@ def sut():
 
 
 class TestProcessYear:
-
     def test_deterministic_mode(self, sut):
         sut.process_year(2018, SimulationMode.DETERMINISTIC, 0, 1, 1)
         for product in sut.production_units:
@@ -47,7 +46,7 @@ class TestProcessYear:
             assert product.optimize_process.called is True
 
     def test_unknown_mode(self, sut):
-        with pytest.raises(ValueError, match="Unknown simulation mode"):
+        with pytest.raises(ValueError, match='Unknown simulation mode'):
             sut.process_year(2015, 'FakeMode', 0, 1, 1)
 
 

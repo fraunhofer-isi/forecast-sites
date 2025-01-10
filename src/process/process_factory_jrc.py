@@ -9,7 +9,6 @@ from steam_demand.steam_demand_factory import SteamDemandFactory
 
 
 class ProcessFactoryJRC:
-
     def __init__(self, data_interface, energy_carriers):
         self._product_process_mapping = data_interface.product_process_mapping
         self._process_energy_carrier_mapping = data_interface.process_energy_carrier_mapping

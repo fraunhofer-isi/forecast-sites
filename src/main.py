@@ -15,7 +15,6 @@ from visitor.tabular_result_visitor import TabularResultVisitor
 
 
 def main():
-
     _initialize_logging()
     id_scenario = 6
 

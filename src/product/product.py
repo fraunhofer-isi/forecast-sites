@@ -6,7 +6,6 @@ from entity import Entity
 
 
 class Product(Entity):
-
     def __init__(self, product_id, available_processes):
         self.id = product_id
         self.available_processes = available_processes

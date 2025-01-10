@@ -6,7 +6,6 @@ from steam_demand.steam_demand import SteamDemand
 
 
 class SteamDemandFactory:
-
     def __init__(self, data_interface, energy_carriers):
         self._process_steam_mapping = data_interface.process_steam_mapping
         self._energy_carriers = energy_carriers
@@ -17,7 +16,6 @@ class SteamDemandFactory:
         id_process,
         steam_demand_in_gj_per_ton,
     ):
-
         steam_demands = []
 
         if steam_demand_in_gj_per_ton > 0:
