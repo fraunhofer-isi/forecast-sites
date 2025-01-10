@@ -2,7 +2,6 @@
 #
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
-
 def create_time_span(start_year, end_year, year_increment):
     return list(range(start_year, end_year + 1, year_increment))
 

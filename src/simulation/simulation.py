@@ -2,7 +2,6 @@
 #
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
-
 class Simulation:
     def __init__(self, simulation_mode, time_span, regions, visitors):
         self.simulation_mode = simulation_mode
