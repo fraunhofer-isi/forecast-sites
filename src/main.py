@@ -2,20 +2,20 @@
 #
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
-import logging
 
 from data_interface import DataInterface
 from mesa_wrapper.mesa_server import MesaServer
 from region.region import Region
 from simulation.simulation import Simulation
 from simulation.simulation_mode import SimulationMode
+from utils.logging_utils import initialize_logging
 from utils.time_utils import create_time_span
 from visitor.shape_file_visitor import ShapeFileVisitor
 from visitor.tabular_result_visitor import TabularResultVisitor
 
 
 def main():
-    _initialize_logging()
+    initialize_logging()
     id_scenario = 6
 
     scenario_options = {
@@ -64,11 +64,6 @@ def main():
     time_span = create_time_span(start_year, end_year, year_increment)  # for example [2015]
 
     simulate(id_scenario, time_span, scenario_options)
-
-
-def _initialize_logging():
-    logger = logging.getLogger()
-    logger.setLevel(logging.DEBUG)
 
 
 def simulate(id_scenario, time_span, scenario_options):

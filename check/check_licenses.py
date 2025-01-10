@@ -12,6 +12,8 @@ from licensecheck.types import JOINS, License, PackageInfo
 
 
 def main():
+    _initialize_logging()
+
     using = 'PEP631'
 
     ignore_packages = [
@@ -59,6 +61,11 @@ def main():
     is_incompatible = any(not dependency.licenseCompat for dependency in dependencies)
     exit_code = 1 if is_incompatible else 0
     sysexit(exit_code)
+
+
+def _initialize_logging():
+    logger = logging.getLogger()
+    logger.setLevel(logging.INFO)
 
 
 def _license_and_dependencies(  # pylint: disable=too-many-arguments
