@@ -77,7 +77,8 @@ class SiteAgent(GeoAgent):
         return s
 
     def __geo_interface__(self):
-        """Override the default __geo_interface__ method of GeoAgent to resolve some serialization issues.
+        """
+        Override the default __geo_interface__ method of GeoAgent to resolve some serialization issues.
 
         Return a GeoJSON Feature.
 
