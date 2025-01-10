@@ -66,7 +66,7 @@ def test_production_cost_in_euro(sut):
 
 
 def test_check_energy_carrier(sut):
-    sut.check_energy_carrier()
+    sut.used_energy_carriers()
     for demand in sut.energy_demands:
         assert demand.get_energy_carrier_id.called
 
@@ -101,12 +101,7 @@ def test_energy_emissions_in_ton_co2_per_ton(sut):
 
 def test_production_cost_in_euro_per_ton(sut):
     result = sut.production_cost_in_euro_per_ton(year=2015)
-    assert result == 6  # TODO errechne korrekten Wert
-
-
-def test_energy_demand_in_gj_per_ton(sut):
-    result = sut.energy_demand_in_gj_per_ton()
-    assert result == sut.energy_demands
+    assert result == 6
 
 
 def test_energy_and_emission_cost(sut):

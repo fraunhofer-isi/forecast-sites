@@ -45,12 +45,11 @@ class SiteAgent(GeoAgent):
         if simulation.recognize_pipelines:
             distance = distance_to_closest_h2_pipeline
 
-            if distance is not None:
-                # pipeline_cost_scaling = 100 * distance
-                pipeline_cost_scaling = 100000000000000
+            if distance is None:
+                pipeline_cost_scaling = 10e12
             else:
-                pipeline_cost_scaling = 10e6**2
-                # pipeline_cost_scaling = 1000000000
+                pipeline_cost_scaling = 100 * distance
+
         else:
             pipeline_cost_scaling = 1
         return pipeline_cost_scaling
@@ -62,7 +61,8 @@ class SiteAgent(GeoAgent):
             site_pipeline_relation = simulation.pipeline_site_relations.loc[site_pipeline_indices]
             site_pipeline_h2 = site_pipeline_relation.groupby('mode')
             site_pipeline_number_of_groups = site_pipeline_h2.ngroups
-            if site_pipeline_number_of_groups == 2:
+            required_group_size = 2
+            if site_pipeline_number_of_groups == required_group_size:
                 h2_group = site_pipeline_h2.get_group('H2')
                 closest_h2_pipeline = h2_group.sort_values(by='distance').head(1)
                 closest_h2_pipeline_distance = closest_h2_pipeline['distance'].to_numpy()[0]

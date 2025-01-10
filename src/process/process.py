@@ -42,7 +42,8 @@ class Process(Entity):
         co2_cost_in_euro_per_ton_c02,
         pipeline_cost_scaling,
     ):
-        if 15 in self.check_energy_carrier():
+        hydrogen = 15
+        if hydrogen in self.used_energy_carriers():
             pipeline_cost = pipeline_cost_scaling
         else:
             pipeline_cost = 1
@@ -58,7 +59,7 @@ class Process(Entity):
             self.process_emission_in_ton_co2_per_ton + self.energy_emissions_in_ton_co2_per_ton(year)
         ) * co2_cost_in_euro_per_ton_c02
 
-    def check_energy_carrier(self):
+    def used_energy_carriers(self):
         energy = [demand.get_energy_carrier_id() for demand in self.energy_demands]
         steam = [demand.get_energy_carrier_id() for demand in self.steam_demands]
         feedstock = [demand.get_energy_carrier_id() for demand in self.feedstock_demands]
@@ -95,13 +96,6 @@ class Process(Entity):
                 + self._energy_carrier_taxes_in_euro_per_ton(year)
             )
         )
-
-    def energy_demand_in_gj_per_ton(self):
-        demand = []
-        for energy_demand in self.energy_demands:
-            energy_carrier = energy_demand.energy_carrier
-
-        return self.energy_demands
 
     def steam_demand_in_gj_per_ton(self):
         return self.steam_demands

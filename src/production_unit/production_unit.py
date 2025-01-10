@@ -260,10 +260,6 @@ class ProductionUnit(Entity):
             return True
         return False
 
-    def virtual_production_cost_per_process_for_comparison(self, year):
-        for process in self._product.available_processes:
-            return process.production_cost_in_euro_per_ton(year)
-
     def accept(self, visitor, year):
         visitor.visit_production_unit(self, year)
         self._product.accept(visitor, year)

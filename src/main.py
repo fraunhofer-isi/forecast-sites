@@ -55,7 +55,6 @@ def main():
             31,
             32,
         ],
-        #'region_ids': [9],
         'simulation_mode': SimulationMode.DETERMINISTIC,
         'is_using_mesa': True,
     }

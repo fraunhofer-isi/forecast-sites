@@ -171,6 +171,8 @@ ignore = [
 
     "S311",   # suspicious-non-cryptographic-random-usage
 
+    "SIM108", #if-else-block-instead-of-if-exp
+
     "TD002",  # missing-todo-author
     "TD004",  # missing-todo-colon
 ]
