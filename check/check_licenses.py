@@ -15,7 +15,6 @@ def main():
     using = 'PEP631'
 
     ignore_packages = [
-        'forecast-sites',  # version 2024 of licensecheck does not seem to ignore the main package
         'reuse',  # combined license is not recognized: "Apache-2.0 AND CC0-1.0 AND CC-BY-SA-4.0 AND GPL-3.0-or-later"
     ]
 
