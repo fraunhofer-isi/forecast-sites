@@ -2,7 +2,6 @@
 #
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
-
 class EnergyDemand:
 
     def __init__(self, energy_carrier, demand_in_gj_per_ton):
