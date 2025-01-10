@@ -2,6 +2,7 @@
 #
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
+
 class FeedstockDemand:
     def __init__(self, energy_carrier, feedstock_demand_in_gj_per_ton):
         self.energy_carrier = energy_carrier
