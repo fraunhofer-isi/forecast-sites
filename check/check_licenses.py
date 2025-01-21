@@ -4,11 +4,10 @@
 import functools
 import logging
 import operator
-from sys import exit as sysexit
-
 from license_scanner import get_all_licenses
 from licensecheck import formatter, get_deps, license_matrix, packageinfo
 from licensecheck.types import JOINS, License, PackageInfo
+from sys import exit as sysexit
 
 
 def main():
@@ -18,6 +17,7 @@ def main():
 
     ignore_packages = [
         'reuse',  # combined license is not recognized: "Apache-2.0 AND CC0-1.0 AND CC-BY-SA-4.0 AND GPL-3.0-or-later"
+        'referencing' # has MIT license but is not recognized
     ]
 
     fail_packages = []
