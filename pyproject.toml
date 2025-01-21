@@ -9,12 +9,6 @@
 # In order to install all required packages use the command
 #
 # pip install .[dev]
-#
-# Also see
-# * pyproject.toml vs requirements.txt:
-# https://stackoverflow.com/questions/74508024/is-requirements-txt-still-needed-when-using-pyproject-toml
-# * poetry vs. pip:
-# https://gitlab.cc-asp.fraunhofer.de/isi/micat/-/issues/99
 
 [build-system]
 requires = ["hatchling"]

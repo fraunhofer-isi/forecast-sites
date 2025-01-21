@@ -46,7 +46,7 @@ The installation of the model follows typical Git and Python based schemes.
 - Python 3.12 or higher
 - Nodejs 23.5.0 or higher
 - Git
-- Python package requirements (see pryproject.toml file)
+- Python package requirements (see pyproject.toml file)
 - Node package requirements (see web/package.json)
 
 ### Steps
