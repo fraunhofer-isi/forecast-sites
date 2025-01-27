@@ -2,7 +2,6 @@
 #
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
-
 from mesa_wrapper.mesa_server import MesaServer
 from region.region_factory import RegionFactory
 from simulation.simulation import Simulation
