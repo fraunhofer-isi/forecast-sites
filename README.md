@@ -148,6 +148,47 @@ We welcome contributions to enhance the model or add new features. Please follow
 
 Click on some badge to navigate to the corresponding **quality assurance** workflow:
 
+### Formatting & linting
+
+[![lint](https://github.com/fraunhofer-isi/forecast-sites/actions/workflows/lint.yml/badge.svg)](https://github.com/fraunhofer-isi/forecast-sites/actions/workflows/lint.yml)
+Checks Python code formatting with [ruff](https://docs.astral.sh/ruff/)
+
+[![naming_conventions](https://github.com/fraunhofer-isi/forecast-sites/actions/workflows/naming_conventions.yml/badge.svg)](https://github.com/fraunhofer-isi/forecast-sites/actions/workflows/naming_conventions.yml)
+Checks Python folder and file names to be snake_case.
+
+[![web_lint](https://github.com/fraunhofer-isi/forecast-sites/actions/workflows/web_lint.yml/badge.svg)](https://github.com/fraunhofer-isi/forecast-sites/actions/workflows/web_lint.yml)
+Checks JavaScript code formatting with [ESlint](https://eslint.org/)
+
+### Test coverage
+
+[![coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/fhg-isi/4bb6f7ce335564341b0181db14bdc98f/raw/forecast-sites_coverage.json)](https://github.com/fraunhofer-isi/forecast-sites/actions/workflows/coverage.yml)
+Determines Python test coverage with [pytest-cov](https://github.com/pytest-dev/pytest-cov)
+
+[![web_coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/fhg-isi/4bb6f7ce335564341b0181db14bdc98f/raw/forecast-sites_web_coverage.json)](https://github.com/fraunhofer-isi/forecast-sites/actions/workflows/web_coverage.yml)
+Determines JavaScript test coverage with [jest](https://jestjs.io/)
+
+### License compliance
+
+[![license_check](https://github.com/fraunhofer-isi/forecast-sites/actions/workflows/license_check.yml/badge.svg)](https://github.com/fraunhofer-isi/forecast-sites/actions/workflows/license_check.yml)
+Checks Python license compatibility with [LicenseCheck](https://github.com/FHPythonUtils/LicenseCheck)
+
+[![web_license_check](https://github.com/fraunhofer-isi/forecast-sites/actions/workflows/web_license_check.yml/badge.svg)](https://github.com/fraunhofer-isi/forecast-sites/actions/workflows/web_license_check.yml)
+Checks JavaScript license compatibility with [license-checker](https://github.com/davglass/license-checker)
+
+[![reuse_annotate](https://github.com/fraunhofer-isi/forecast-sites/actions/workflows/reuse_annotate.yml/badge.svg)](https://github.com/fraunhofer-isi/forecast-sites/actions/workflows/reuse_annotate.yml)
+Creates copyright & license annotations with [reuse](https://git.fsfe.org/reuse/tool)
+
+[![reuse compliance](https://api.reuse.software/badge/github.com/fraunhofer-isi/forecast-sites)](https://api.reuse.software/info/github.com/fraunhofer-isi/forecast-sites)
+Checks for REUSE compliance with [reuse](https://git.fsfe.org/reuse/tool)
+
+### Dependency updates & security checks
+
+[![renovate](https://github.com/fraunhofer-isi/forecast-sites/actions/workflows/renovate.yml/badge.svg)](https://github.com/fraunhofer-isi/forecast-sites/actions/workflows/renovate.yml)
+Updates dependencies with [renovate](https://github.com/renovatebot/renovate)
+
+[![CodeQL](https://github.com/fraunhofer-isi/forecast-sites/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/fraunhofer-isi/forecast-sites/actions/workflows/github-code-scanning/codeql)
+Discovers vulnerabilities with [CodeQL](https://codeql.github.com/)
+
 ## Architecture
 
 This section describes the frameworks and design patterns used in the code.
@@ -183,6 +224,9 @@ described below.
 
 Our class [MesaSimulation](src/mesa_wrapper/mesa_simulation.py) also includes a custom implementation of
 the [Visitor pattern](#visitor-pattern), separating the hierarchical structure from its post-processing.
+
+If you are interested in the evaluating part of the mesa workflow, see section [Data collection](#data-collection)
+below.
 
 ### Hierarchy
 
@@ -305,47 +349,6 @@ Also see related visualization classes
 * [MapModule](src/mesa_warpper/map_module.py) (custom implementation for leaflet maps) and
 * [ChartVisualization](https://github.com/projectmesa/mesa-viz-tornado/blob/main/mesa_viz_tornado/modules/ChartVisualization.py)
   from [mesa-viz-tornado](https://github.com/projectmesa/mesa-viz-tornado).
-
-### Formatting & linting
-
-[![lint](https://github.com/fraunhofer-isi/forecast-sites/actions/workflows/lint.yml/badge.svg)](https://github.com/fraunhofer-isi/forecast-sites/actions/workflows/lint.yml)
-Checks Python code formatting with [ruff](https://docs.astral.sh/ruff/)
-
-[![naming_conventions](https://github.com/fraunhofer-isi/forecast-sites/actions/workflows/naming_conventions.yml/badge.svg)](https://github.com/fraunhofer-isi/forecast-sites/actions/workflows/naming_conventions.yml)
-Checks Python folder and file names to be snake_case.
-
-[![web_lint](https://github.com/fraunhofer-isi/forecast-sites/actions/workflows/web_lint.yml/badge.svg)](https://github.com/fraunhofer-isi/forecast-sites/actions/workflows/web_lint.yml)
-Checks JavaScript code formatting with [ESlint](https://eslint.org/)
-
-### Test coverage
-
-[![coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/fhg-isi/4bb6f7ce335564341b0181db14bdc98f/raw/forecast-sites_coverage.json)](https://github.com/fraunhofer-isi/forecast-sites/actions/workflows/coverage.yml)
-Determines Python test coverage with [pytest-cov](https://github.com/pytest-dev/pytest-cov)
-
-[![web_coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/fhg-isi/4bb6f7ce335564341b0181db14bdc98f/raw/forecast-sites_web_coverage.json)](https://github.com/fraunhofer-isi/forecast-sites/actions/workflows/web_coverage.yml)
-Determines JavaScript test coverage with [jest](https://jestjs.io/)
-
-### License compliance
-
-[![license_check](https://github.com/fraunhofer-isi/forecast-sites/actions/workflows/license_check.yml/badge.svg)](https://github.com/fraunhofer-isi/forecast-sites/actions/workflows/license_check.yml)
-Checks Python license compatibility with [LicenseCheck](https://github.com/FHPythonUtils/LicenseCheck)
-
-[![web_license_check](https://github.com/fraunhofer-isi/forecast-sites/actions/workflows/web_license_check.yml/badge.svg)](https://github.com/fraunhofer-isi/forecast-sites/actions/workflows/web_license_check.yml)
-Checks JavaScript license compatibility with [license-checker](https://github.com/davglass/license-checker)
-
-[![reuse_annotate](https://github.com/fraunhofer-isi/forecast-sites/actions/workflows/reuse_annotate.yml/badge.svg)](https://github.com/fraunhofer-isi/forecast-sites/actions/workflows/reuse_annotate.yml)
-Creates copyright & license annotations with [reuse](https://git.fsfe.org/reuse/tool)
-
-[![reuse compliance](https://api.reuse.software/badge/github.com/fraunhofer-isi/forecast-sites)](https://api.reuse.software/info/github.com/fraunhofer-isi/forecast-sites)
-Checks for REUSE compliance with [reuse](https://git.fsfe.org/reuse/tool)
-
-### Dependency updates & security checks
-
-[![renovate](https://github.com/fraunhofer-isi/forecast-sites/actions/workflows/renovate.yml/badge.svg)](https://github.com/fraunhofer-isi/forecast-sites/actions/workflows/renovate.yml)
-Updates dependencies with [renovate](https://github.com/renovatebot/renovate)
-
-[![CodeQL](https://github.com/fraunhofer-isi/forecast-sites/actions/workflows/github-code-scanning/codeql/badge.svg)](https://github.com/fraunhofer-isi/forecast-sites/actions/workflows/github-code-scanning/codeql)
-Discovers vulnerabilities with [CodeQL](https://codeql.github.com/)
 
 ## Contact
 
