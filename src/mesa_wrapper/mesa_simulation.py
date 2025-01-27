@@ -2,10 +2,9 @@
 #
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
+import pandas as pd
 import random
 from math import asin, cos, pi, sqrt
-
-import pandas as pd
 from mesa import Model
 from mesa.datacollection import DataCollector
 from mesa_geo import AgentCreator, GeoSpace
@@ -56,6 +55,10 @@ class MesaSimulation(Simulation, Model):
             self.pipeline_site_relations = pd.DataFrame(index=psr_multiindex, columns=['distance', 'mode'])
             self.calculate_pipeline_site_distances()
 
+    def run(self):
+        for _ in self._time_span:
+            self.step()
+
     def step(self):
         self.schedule.step()
         if self.recognize_pipelines:
@@ -74,10 +77,6 @@ class MesaSimulation(Simulation, Model):
     @property
     def year(self):
         return self.schedule.time
-
-    def run(self):
-        for _ in self._time_span:
-            self.step()
 
     def _create_site_agents(self):
         for region in self.regions.values():

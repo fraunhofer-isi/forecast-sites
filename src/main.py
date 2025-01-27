@@ -2,9 +2,9 @@
 #
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
-from data_interface import DataInterface
+
 from mesa_wrapper.mesa_server import MesaServer
-from region.region import Region
+from region.region_factory import RegionFactory
 from simulation.simulation import Simulation
 from simulation.simulation_mode import SimulationMode
 from utils.logging_utils import initialize_logging
@@ -66,11 +66,9 @@ def main():
 
 
 def simulate(id_scenario, time_span, scenario_options):
-    regions = {}
-    for region_id in scenario_options['region_ids']:
-        data_interface = DataInterface(id_scenario, scenario_options, region_id)
-        region = Region(region_id, data_interface)
-        regions[region_id] = region
+    region_factory = RegionFactory(id_scenario, scenario_options)
+    regions = region_factory.create_regions()
+
     visitors = [TabularResultVisitor(), ShapeFileVisitor()]
 
     simulation_mode = scenario_options['simulation_mode']
@@ -83,4 +81,4 @@ def simulate(id_scenario, time_span, scenario_options):
 
 
 if __name__ == '__main__':
-    main()
+    main()  # pragma: no cover
