@@ -4,7 +4,7 @@
 SPDX-License-Identifier: AGPL-3.0-or-later
 -->
 
-# FORECAST-Sites - A technology dffusion model to simulate industry transformation scenarios with high spatial resolution for energy-intensive industry branches
+# FORECAST-Sites - A technology diffusion model to simulate industry transformation scenarios with high spatial resolution for energy-intensive industry branches
 
 This repository contains the complete model code of the `FORECAST-Sites` modelling approach for technology diffusion
 scenarios for energy-intensive industries.
@@ -27,8 +27,9 @@ industry branches.
 6. [Visualization](#visualization)
 7. [Contributing](#contributing)
 8. [Badges](#badges)
-9. [Contact](#contact)
-10. [Notes](#notes)
+9. [Architecture](#architecture)
+10. [Contact](#contact)
+11. [Notes](#notes)
 
 ## Introduction
 
@@ -146,6 +147,164 @@ We welcome contributions to enhance the model or add new features. Please follow
 ## Badges
 
 Click on some badge to navigate to the corresponding **quality assurance** workflow:
+
+## Architecture
+
+This section describes the frameworks and design patterns used in the code.
+
+### Mesa
+
+[mesa](https://github.com/projectmesa/mesa) is a python framework for agent-based
+modeling. [mesa-geo](https://mesa-geo.readthedocs.io/stable/index.html)
+and [mesa_viz_tornado](https://github.com/projectmesa/mesa-viz-tornado) are related extensions.
+
+The concepts and features of mesa help us to structure the code and visualize results.
+See [modeling modules](https://mesa.readthedocs.io/stable/getting_started.html#modeling-modules)
+for a description of the Mesa-concepts "model", "agent", and "space" if you are not already familiar with them.
+
+If you do not want to use mesa, you can disable its usage by setting `is_using_mesa` to `False`
+in [main.py](src/main.py).
+
+TODO: clarify/update usage without mesa.
+
+Our class [MesaSimulation](src/mesa_wrapper/mesa_simulation.py) inherits
+from [mesa.Model](https://mesa.readthedocs.io/stable/apis/model.html) and implements following
+workflow functions:
+
+* `run`: runs the whole simulation by looping over a time span and calling the step function for each step in time.
+* `step`: represents a single [step](https://mesa.readthedocs.io/stable/apis/model.html#mesa.model.Model.step) in the
+  simulation.
+
+For each step, mesa delegates the actual work to [agents](https://mesa.readthedocs.io/stable/apis/agent.html).
+In our case, the agents are instances of the class [SiteAgent](src/mesa_wrapper/site_agent.py). Each SiteAgent wraps
+a [Site](src/industrial_site/site.py) and further delegates work to its underlying elements. Also see
+the [Hierarchy](#hierarchy)
+described below.
+
+Our class [MesaSimulation](src/mesa_wrapper/mesa_simulation.py) also includes a custom implementation of
+the [Visitor pattern](#visitor-pattern), separating the hierarchical structure from its post-processing.
+
+### Hierarchy
+
+The `FORECAST-Sites` model consists of a hierarchical structure and its elements are:
+
+* [Region](#region)
+* [Site](#site)
+* [ProductionUnit](#production-unit)
+* [Product](#product)
+* [Process](#process)
+
+#### Region
+
+The class [Region](src/region/region.py) represents a geographical region. Each region can have several [Site](#sites)s.
+Furthermore, each region knows about region specific properties like energy carrier prices and Co2 cost.
+
+The mesa framework does not consider regions in its original workflow. Our model considers regions while
+creating the agents, see function `_create_site_agents` in [MesaSimulation](src/mesa_wrapper/mesa_simulation.py) and
+while processing them. Each agent knows what region it belongs to.
+
+#### Site
+
+The class [Site](src/industrial_site/site.py) represents an industrial site. Each site can have
+several [ProductionUnit](#production-unit)s.
+
+In order to consider sites in the mesa framework, they are wrapped by the
+class [SiteAgent](src/mesa_wrapper/site_agent.py),
+implementing mesa- and mesa-geo specific functionality.
+
+#### Production Unit
+
+The class [ProductionUnit](src/industrial_site/production_unit.py) represents a production unit.
+
+By default, each `ProductionUnit` is responsible to produce one distinct [Product](#product) based on an
+associated [Process](#process).
+
+As an alternative, a `ProductionUnit` can be constructed from several sub `ProductionUnit`s and so on, resulting in a
+tree structure of
+`ProductionUnit`s. The parent elements delegate their work to the children and each leaf of the tree structure is
+responsible to
+produce one distinct [Product](#product) based on an associated [Process](#process). This allows to model complex
+production
+processes and optimize parts of production chains instead of replacing the whole process for a [Product](#product).
+
+The `Product` and its produced amount of a `ProductionUnit` are fixed, while the associated `Process` (or its child
+`ProductionUnit`s)
+might change over time.
+
+(TODO: Do we want to allow for changes in (sub)-products and their amounts?)
+
+A `ProductionUnit` maps from a `Product` to a currently applied `Process`. It also knows about the previously used
+`Process`.
+Furthermore, it has knowledge about the timing of investments.
+
+A `ProductionUnit` is responsible for optimizing the process, see function `optimize_process`. It does not know about
+alternative `Process`es itself, but is able to ask its `Product` about them.
+
+#### Product
+
+The class [Product](src/product/product.py) represents a product. Each `Product` knows what [Process](#process)es can be
+used to produce it. It is also able to determine the corresponding cost and emission.
+
+#### Process
+
+The class [Process](src/process/process.py) represents a process. Each `Process` includes data related to its energy
+demands,
+investment lifecycle, cost and emissions.
+
+### Construction
+
+The [factory method pattern](https://en.wikipedia.org/wiki/Factory_method_pattern) is used to separate the construction
+logic for the model [Hierarchy](hierarchy) from the model itself. The construction works as follows:
+
+* [main.py](src/main.py) applies a [RegionFactory](src/region/region_factory.py) to create [Region](#region)s. A region
+  specific [DataInterface](src/data_interface.py) is passed to the region and its subsequent entities, so that they are
+  able to initialize
+  themselves with the necessary data from [input.sqlite](input/input.sqlite).
+* Each `Region` applies a [SiteFactory](src/industrial_site/site_factory.py) to create corresponding [Site](#site)s,
+  including their
+  [ProductionUnit](#procution-unit)s based on [ProductionUnitFactory](src/production_unit/production_unit_factory.py).
+  The Region also applies an [EnergyCarrierFactory](src/energy_carrier/energy_carrier_factory.py) to create
+  `EnergyCarriers`.
+
+* The `ProductionUnitFactory` applies a [ProcessFactory](src/process/process_factory.py) and
+  a [ProductFactory](src/product/product_factory.py) to
+  create corresponding entities for the initialization of the `ProductionUnit`s.
+
+Once that [Hierarchy](hierarchy) has been created, the `MesaSimulation` creates
+a [SiteAgent](src/mesa_wrapper/site_agent.py) for each `Site`. (The `MesaSimulation` itself is created by the
+class [MesaServer](src/mesa_wrapper/mesa_server.py).)
+
+### Visitor pattern
+
+The [Visitor](https://en.wikipedia.org/wiki/Visitor_pattern) design pattern allows us to separate our
+model [Hierarchy](hierarchy) from its processing. It
+enables us to add new operations without touching the existing model classes.
+
+Currently [main.py](src/main.py) creates instances of [TabularResultVisitor](src/visitor/tabular_result_visitor.py) and
+[ShapeFileVisitor](src/visitor/shape_file_visitor.py) to process the model results. You can add new visitors by
+inheriting from
+[Visitor](src/visitor/visitor.py) and implementing its standardized functions (for example `visit_region`).
+
+As part of each simulation step, all the visitors will be passed down the model hierarchy to visit all the elements and
+interact with them. Also see the `step` function in [MesaSimulation](src/mesa_wrapper/mesa_simulation.py) and the
+`accept` functions
+in [Region](src/region/region.py), [Site](src/industrial_site/site.py), and so on.
+At the end of the simulation, the `finalize` function of each visitor will be called.
+
+### Data collection
+
+The mesa concept of [DataCollector](https://mesa.readthedocs.io/stable/apis/datacollection.html) and reporters serves
+a similar purpose as our [Visitor](#visitor) pattern but differs in its details.
+
+If you are interested in the mesa data collection workflow, you can take the property `agent_count` as en example.
+Also see the related methods `_create_data_collector` in [MesasSimulation](src/mesa_wrapper/mesa_simulation.py) and
+`_create_visualization_elements` in [MesaServer](src/mesa_wrapper/mesa_server.py).
+
+Also see related visualization classes
+
+* [MapModule](src/mesa_warpper/map_module.py) (custom implementation for leaflet maps) and
+* [ChartVisualization](https://github.com/projectmesa/mesa-viz-tornado/blob/main/mesa_viz_tornado/modules/ChartVisualization.py)
+  from [mesa-viz-tornado](https://github.com/projectmesa/mesa-viz-tornado).
 
 ### Formatting & linting
 
