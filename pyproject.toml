@@ -42,7 +42,7 @@ dependencies = [
 
 [project.optional-dependencies]
 lint = [
-	'ruff==0.9.3',
+	'ruff==0.9.4',
 ]
 
 test = [
