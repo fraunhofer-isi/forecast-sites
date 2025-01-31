@@ -5,7 +5,7 @@
   "private": true,
   "type": "module",
   "engines": {
-    "node": "23.6.1"
+    "node": "23.7.0"
   },
   "scripts": {
     "license-check": "node check/checkLicenses.js",
