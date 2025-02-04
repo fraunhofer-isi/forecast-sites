@@ -260,25 +260,14 @@ implementing mesa- and mesa-geo specific functionality.
 
 The class [ProductionUnit](src/industrial_site/production_unit.py) represents a production unit.
 
-By default, each `ProductionUnit` is responsible to produce one distinct [Product](#product) based on an
+Each `ProductionUnit` is responsible to produce one distinct [Product](#product) based on an
 associated [Process](#process).
 
-As an alternative, a `ProductionUnit` can be constructed from several sub `ProductionUnit`s and so on, resulting in a
-tree structure of
-`ProductionUnit`s. The parent elements delegate their work to the children and each leaf of the tree structure is
-responsible to
-produce one distinct [Product](#product) based on an associated [Process](#process). This allows to model complex
-production
-processes and optimize parts of production chains instead of replacing the whole process for a [Product](#product).
-
-The `Product` and its produced amount of a `ProductionUnit` are fixed, while the associated `Process` (or its child
-`ProductionUnit`s)
-might change over time.
-
-(TODO: Do we want to allow for changes in (sub)-products and their amounts?)
+The `Product` and its produced amount are fixed, while the associated `Process` might change over time.
 
 A `ProductionUnit` maps from a `Product` to a currently applied `Process`. It also knows about the previously used
-`Process`.
+`Process`. 
+
 Furthermore, it has knowledge about the timing of investments.
 
 A `ProductionUnit` is responsible for optimizing the process, see function `optimize_process`. It does not know about
