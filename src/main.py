@@ -14,13 +14,13 @@ from visitor.tabular_result_visitor import TabularResultVisitor
 
 def main():
     initialize_logging()
-    id_scenario = 6
+    id_scenario = 1
 
     scenario_options = {
         'co2_cost_2015_in_euro_per_ton_co2': 80,
-        'co2_cost_2050_in_euro_per_ton_co2': 300,
+        'co2_cost_2050_in_euro_per_ton_co2': 200,
         'id_product_filter': [
-            22
+            5,
         ],  # 22, 32, 51],  # only sites producing those products will be considered; all sites if empty array
         'region_ids': [
             1,

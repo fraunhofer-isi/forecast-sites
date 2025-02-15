@@ -402,7 +402,7 @@ class TabularResultVisitor(Visitor):
 
     def finalize(self):
         logging.info('finalize')
-        output_folder = '../output'  # assumes that 'src' is the working directory
+        output_folder = './output'  # assumes that 'src' is the working directory
         file_utils.create_folder_if_not_exists(output_folder)
 
         # Unspecific results for individual site and production unit

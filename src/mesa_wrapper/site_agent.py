@@ -20,6 +20,7 @@ class SiteAgent(GeoAgent):
         super().__init__(model, geometry, crs)
         self.region_id = region_id
         self.site = site
+        self.unique_id = site.id
 
     def step(self):
         simulation = self.model
