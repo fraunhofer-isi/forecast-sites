@@ -36,7 +36,7 @@ dependencies = [
     'rtree==1.4.0',
     'scipy==1.15.2',
     'jsonpickle==4.0.5',
-    'matplotlib==3.10.1',
+    'matplotlib==3.10.3',
     'colorlog==6.9.0'
 ]
 
