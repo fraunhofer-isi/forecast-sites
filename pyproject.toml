@@ -35,7 +35,7 @@ dependencies = [
     'pyproj==3.7.1',
     'rtree==1.4.0',
     'scipy==1.15.3',
-    'jsonpickle==4.1.0',
+    'jsonpickle==4.1.1',
     'matplotlib==3.10.3',
     'colorlog==6.9.0'
 ]
