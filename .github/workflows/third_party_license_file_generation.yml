@@ -37,6 +37,6 @@ jobs:
         rm requirements.txt
     - name: push changes
       # also see https://github.com/stefanzweifel/git-auto-commit-action
-      uses: stefanzweifel/git-auto-commit-action@v5
+      uses: stefanzweifel/git-auto-commit-action@v6
       with:
         commit_message: updated third party license file

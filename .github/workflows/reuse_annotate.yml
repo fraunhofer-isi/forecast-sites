@@ -29,6 +29,6 @@ jobs:
           args: annotate --copyright="Fraunhofer-Gesellschaft e.V., München" --copyright-style=symbol --merge-copyrights --license=AGPL-3.0-or-later --skip-unrecognised --recursive src test web THIRDPARTY.md
       - name: push changes made by reuse annotate
         # also see https://github.com/stefanzweifel/git-auto-commit-action
-        uses: stefanzweifel/git-auto-commit-action@v5
+        uses: stefanzweifel/git-auto-commit-action@v6
         with:
           commit_message: create copyright and license annotations with reuse tool
