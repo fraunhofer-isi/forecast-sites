@@ -34,7 +34,7 @@ dependencies = [
     'shapely==2.1.1', # 2.0.6 has a bug; working versions not compatible to python 3.12: https://github.com/shapely/shapely/issues/2186
     'pyproj==3.7.1',
     'rtree==1.4.0',
-    'scipy==1.15.3',
+    'scipy==1.16.0',
     'jsonpickle==4.1.1',
     'matplotlib==3.10.3',
     'colorlog==6.9.0'
