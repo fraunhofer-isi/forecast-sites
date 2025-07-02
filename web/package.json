@@ -27,7 +27,7 @@
     "eslint-plugin-jest": "^29.0.0",
     "eslint-plugin-unicorn": "59.0.1",
     "eslint-plugin-unused-imports": "4.1.4",
-    "globals": "16.2.0",
+    "globals": "16.3.0",
     "jest": "30.0.3",
     "jest-cli": "30.0.3",
     "license-checker": "25.0.1"
