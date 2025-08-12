@@ -14,7 +14,7 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: extract python version
         uses: ./.github/actions/extract-python-version
       - uses: actions/setup-python@v5
