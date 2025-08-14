@@ -33,7 +33,7 @@ dependencies = [
     'fiona==1.10.1',
     'shapely==2.1.1', # 2.0.6 has a bug; working versions not compatible to python 3.12: https://github.com/shapely/shapely/issues/2186
     'pyproj==3.7.1',
-    'rtree==1.4.0',
+    'rtree==1.4.1',
     'scipy==1.16.1',
     'jsonpickle==4.1.1',
     'matplotlib==3.10.5',
