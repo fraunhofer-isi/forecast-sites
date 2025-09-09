@@ -57,7 +57,7 @@ license = [
 	'license_scanner==0.3.1',
 	'reuse==5.1.0',
 	'pipreqs==0.5.0',
-	'third-party-license-file-generator==2025.9.5'
+	'third-party-license-file-generator==2025.9.8'
 ]
 
 dev = ['forecast-sites[lint, test, license]']
