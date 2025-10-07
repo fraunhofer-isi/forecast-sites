@@ -22,7 +22,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - name: create copyright and license annotations
-        uses: fsfe/reuse-action@v5
+        uses: fsfe/reuse-action@v6
         with:
           # also see https://reuse.readthedocs.io/en/v2.1.0/usage.html
           # copyright style follows the one used at https://www.fraunhofer.de/en/publishing-notes.html
