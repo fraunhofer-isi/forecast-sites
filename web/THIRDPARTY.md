@@ -1,9 +1,3 @@
-<!--
-© 2026 Fraunhofer-Gesellschaft e.V., München
-
-SPDX-License-Identifier: AGPL-3.0-or-later
--->
-
 This file was generated with the generate-license-file npm package!
 https://www.npmjs.com/package/generate-license-file
 
@@ -44,7 +38,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 The following npm package may be included in this product:
 
- - jquery@3.7.1
+ - jquery@4.0.0
 
 This package contains the following license:
 
