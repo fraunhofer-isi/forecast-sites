@@ -20,7 +20,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - name: self-hosted renovate
-        uses: renovatebot/github-action@v44.2.4
+        uses: renovatebot/github-action@v44.2.5
         with:
           # the required token can be provided as organization token for public sub projects.
           # private projects might need an extra tocken variable in the GitHub settings.
