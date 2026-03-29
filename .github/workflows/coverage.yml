@@ -33,7 +33,7 @@ jobs:
         echo "PYTEST_COVERAGE=$PYTEST_COVERAGE" >> $GITHUB_ENV
         echo "Pytest coverage is $PYTEST_COVERAGE"
     - name: badge
-      uses: schneegans/dynamic-badges-action@v1.7.0
+      uses: schneegans/dynamic-badges-action@v1.8.0
       with:
         auth: ${{ secrets.GIST_SECRET }}
         gistID: ${{ secrets.GIST_ID }}

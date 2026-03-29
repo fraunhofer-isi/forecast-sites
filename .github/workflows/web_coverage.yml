@@ -34,7 +34,7 @@ jobs:
         echo "JEST_COVERAGE=$JEST_COVERAGE" >> $GITHUB_ENV
         echo "Jest test coverage is $JEST_COVERAGE"
     - name: badge
-      uses: schneegans/dynamic-badges-action@v1.7.0
+      uses: schneegans/dynamic-badges-action@v1.8.0
       with:
         auth: ${{ secrets.GIST_SECRET }}
         gistID: ${{ secrets.GIST_ID }}
