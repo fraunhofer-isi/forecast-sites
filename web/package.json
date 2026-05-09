@@ -28,8 +28,8 @@
     "eslint-plugin-unicorn": "64.0.0",
     "eslint-plugin-unused-imports": "4.4.1",
     "globals": "17.6.0",
-    "jest": "30.4.0",
-    "jest-cli": "30.4.0",
+    "jest": "30.4.2",
+    "jest-cli": "30.4.2",
     "license-checker": "25.0.1"
   }
 }
