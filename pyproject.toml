@@ -53,7 +53,7 @@ test = [
 ]
 
 license = [
-	'licensecheck==2025.1.0',
+	'licensecheck==2026.0.1',
 	'license_scanner==0.4.4',
 	'reuse==6.2.0',
 	'pipreqs==0.5.0',
