@@ -18,7 +18,7 @@ jobs:
   renovate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: self-hosted renovate
         uses: renovatebot/github-action@v46.1.15
         with:
