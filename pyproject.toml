@@ -37,7 +37,7 @@ dependencies = [
     'scipy==1.18.0',
     'jsonpickle==4.1.2',
     'matplotlib==3.11.0',
-    'colorlog==6.10.1'
+    'colorlog==6.11.0'
 ]
 
 [project.optional-dependencies]
