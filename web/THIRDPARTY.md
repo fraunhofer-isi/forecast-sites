@@ -1,3 +1,9 @@
+<!--
+© 2026 Fraunhofer-Gesellschaft e.V., München
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
 This file was generated with the generate-license-file npm package!
 https://www.npmjs.com/package/generate-license-file
 
