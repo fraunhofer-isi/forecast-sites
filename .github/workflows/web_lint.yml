@@ -1,23 +1,24 @@
-# © 2024 Fraunhofer-Gesellschaft e.V., München
-#
+# SPDX-FileCopyrightText: 2026 Fraunhofer-Gesellschaft e.V., München
 # SPDX-License-Identifier: AGPL-3.0-or-later
+#
+# AI-assisted code generation was used during development.
 
 name: web_lint
 
 on:
   push:
-    branches: [ main ]
+    branches: [ '**' ]
   pull_request:
-    branches: [ main ]
+    branches: [ '**' ]
 
 jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v7
+    - uses: actions/checkout@v6
     - name: extract node version
       uses: ./.github/actions/extract-node-version
-    - uses: actions/setup-node@v7.1.0
+    - uses: actions/setup-node@v6
       with:
         node-version: ${{ env.NODE_VERSION }}
     - name: install dependencies

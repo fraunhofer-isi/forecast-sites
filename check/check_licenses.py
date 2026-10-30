@@ -1,128 +1,119 @@
-# © 2024 Fraunhofer-Gesellschaft e.V., München
+# SPDX-FileCopyrightText: 2026 Fraunhofer-Gesellschaft e.V., München
 #
 # SPDX-License-Identifier: AGPL-3.0-or-later
-import functools
+#
+# AI-assisted code generation was used during development.
+
+"""
+Check declared dependencies are license-compatible with this project.
+
+Exit codes:
+  0 = all dependencies are license-compatible
+  1 = at least one dependency is incompatible
+  2 = internal error (e.g., licensecheck bug, config error)
+"""
+
+from __future__ import annotations
+
 import logging
-import operator
-from license_scanner import get_all_licenses
-from licensecheck import formatter, get_deps, license_matrix, packageinfo
-from licensecheck.types import JOINS, License, PackageInfo
+import tomllib
+from dataclasses import dataclass
+from pathlib import Path
 from sys import exit as sysexit
 
+from licensecheck.models.license import License
+from licensecheck.models.packageinfo import PackageInfo  # noqa: TC002
 
-def main():
-    _initialize_logging()
+logger = logging.getLogger(__name__)
 
-    using = 'PEP631'
+_PYPROJECT = Path('pyproject.toml')
+_DEFAULT_PYPI_API = 'https://pypi.org'
 
-    ignore_packages = [
-        'reuse',  # combined license is not recognized: "Apache-2.0 AND CC0-1.0 AND CC-BY-SA-4.0 AND GPL-3.0-or-later"
-        'referencing' # has MIT license but is not recognized
-    ]
 
-    fail_packages = []
+@dataclass
+class LicenseCheckConfig:
+    """License-check settings read from [tool.licensecheck] in pyproject.toml."""
 
-    ignore_licenses = [
-        # work around for bug in licensecheck for apache
-        'APACHE SOFTWARE LICENSE',
-        # work around for bug in licensecheck for dual license
-        'MIT License;; Academic Free License (AFL)',
-    ]
+    pypi_api: str
+    extras: list[str]
+    groups: list[str]
+    ignore_packages: list[str]
+    fail_packages: list[str]
+    ignore_licenses: list[str]
+    fail_licenses: list[str]
+    only_licenses: list[str]
+    skip_dependencies: list[str]
 
-    fail_licenses = []
 
-    is_using_license_scanner = True
-    if is_using_license_scanner:
-        # considers all packages from the workspace; only makes sense in the context of
-        # continuous integration pipelines/workflow actions (or within virtualenvs)
-        licenses_from_license_scanner = get_all_licenses()
-        license_lists = licenses_from_license_scanner.values()
-        requirements = functools.reduce(operator.iadd, license_lists, [])
+def main() -> None:
+    """Run the license check and exit with the appropriate code."""
+    logging.basicConfig(level=logging.INFO, format='%(message)s')
+    try:
+        config = _load_config()
+        this_license = _project_license()
+        incompatible, packages = _run_check(config, this_license)
+        report = _format_report(this_license, packages)
+        logger.info(report)
+        sysexit(1 if incompatible else 0)
+    except Exception:
+        logger.exception('License check failed')
+        sysexit(2)
 
-    else:
-        # only considers direct dependencies
-        requirements = get_deps.getReqs(using, [])
 
-    project_license, dependencies = _license_and_dependencies(
-        using,
-        ignore_packages,
-        fail_packages,
-        ignore_licenses,
-        fail_licenses,
-        requirements,
+def _load_config(pyproject_path: Path = _PYPROJECT) -> LicenseCheckConfig:
+    """Read [tool.licensecheck] from pyproject.toml with sensible defaults."""
+    with pyproject_path.open('rb') as f:
+        data = tomllib.load(f)
+    cfg = data.get('tool', {}).get('licensecheck', {})
+    return LicenseCheckConfig(
+        pypi_api=cfg.get('pypi_api', _DEFAULT_PYPI_API),
+        extras=cfg.get('extras', ['dev']),
+        groups=cfg.get('groups', []),
+        ignore_packages=cfg.get('ignore_packages', []),
+        fail_packages=cfg.get('fail_packages', []),
+        ignore_licenses=cfg.get('ignore_licenses', []),
+        fail_licenses=cfg.get('fail_licenses', []),
+        only_licenses=cfg.get('only_licenses', []),
+        skip_dependencies=cfg.get('skip_dependencies', []),
     )
 
-    ansi_format = formatter.formatMap['ansi']
-    # noinspection PyTypeChecker
-    sorted_dependencies = sorted(dependencies)
-    output = ansi_format(project_license, sorted_dependencies)
-    logging.info(output)
 
-    is_incompatible = any(not dependency.licenseCompat for dependency in dependencies)
-    exit_code = 1 if is_incompatible else 0
-    sysexit(exit_code)
+def _project_license() -> License:
+    """Resolve this project's own license to a License enum."""
+    from licensecheck import license_matrix, packageinforesolver  # noqa: PLC0415
 
-
-def _initialize_logging():
-    logger = logging.getLogger()
-    logger.setLevel(logging.INFO)
+    text = packageinforesolver.ProjectMetadata.get_license()
+    licenses = license_matrix.licenseType(text)
+    return next(iter(licenses)) if licenses else License.UNKNOWN
 
 
-def _license_and_dependencies(  # pylint: disable=too-many-arguments
-    using: str,
-    ignore_packages: list[str],
-    fail_packages: list[str],
-    ignore_licenses: list[str],
-    fail_licenses: list[str],
-    requirements: set[str] = None,  # noqa: RUF013
-) -> tuple[License, set[PackageInfo]]:
-    if requirements is None:
-        requirements = get_deps.getReqs(using, [])
+def _run_check(config: LicenseCheckConfig, this_license: License) -> tuple[bool, set[PackageInfo]]:
+    """Invoke licensecheck's checker with project config."""
+    from licensecheck import checker, packageinforesolver  # noqa: PLC0415
 
-    project_license = _project_license()
-    packages = packageinfo.getPackages(requirements)
-
-    for package in packages:
-        _check_and_update_compatibility(
-            package,
-            project_license,
-            fail_licenses,
-            fail_packages,
-            ignore_licenses,
-            ignore_packages,
-        )
-    return project_license, packages
+    manager = packageinforesolver.PackageInfoManager(config.pypi_api)
+    return checker.check(
+        requirements_paths={'pyproject.toml'},
+        groups=set(config.groups),
+        extras=set(config.extras),
+        this_license=this_license,
+        package_info_manager=manager,
+        ignore_packages=set(config.ignore_packages),
+        fail_packages=set(config.fail_packages),
+        ignore_licenses=set(config.ignore_licenses),
+        fail_licenses=set(config.fail_licenses),
+        only_licenses=set(config.only_licenses),
+        skip_dependencies=set(config.skip_dependencies),
+    )
 
 
-def _check_and_update_compatibility(  # pylint: disable=too-many-arguments
-    package,
-    project_license,
-    fail_licenses,
-    fail_packages,
-    ignore_licenses,
-    ignore_packages,
-):
-    package_name = package.name.lower()
-    is_ignored_package = package_name in [package_name.lower() for package_name in ignore_packages]
-    is_failing_package = package_name in [package_name.lower() for package_name in fail_packages]
-    if is_ignored_package:
-        package.licenseCompat = True
-    elif is_failing_package:
-        package.licenseCompat = False
-    else:
-        package.licenseCompat = license_matrix.depCompatWMyLice(
-            project_license,
-            license_matrix.licenseType(package.license),
-            license_matrix.licenseType(JOINS.join(ignore_licenses)),
-            license_matrix.licenseType(JOINS.join(fail_licenses)),
-        )
-    return package
-
-
-def _project_license():
-    project_license_text = packageinfo.getMyPackageLicense()
-    project_license = license_matrix.licenseType(project_license_text)[0]
-    return project_license
+def _format_report(this_license: License, packages: set[PackageInfo]) -> str:
+    """Build a human-readable report, one line per package."""
+    lines = [f'Project License: {this_license}']
+    for pkg in sorted(packages, key=lambda p: p.name):
+        status = '✔' if pkg.licenseCompat else '✘'
+        lines.append(f'{status} {pkg.name}: {pkg.license}')
+    return '\n'.join(lines)
 
 
 if __name__ == '__main__':

@@ -1,0 +1,27 @@
+# SPDX-FileCopyrightText: 2026 Fraunhofer-Gesellschaft e.V., München
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+cff-version: 1.2.0
+message: If you use this software, please cite it using the metadata from this file.
+title: FORECAST-Sites
+abstract: >-
+  Technology diffusion model for simulating industry transformation scenarios with high spatial resolution.
+type: software
+version: 0.0.2
+authors:
+  - family-names: Neuwirth
+    given-names: Marius
+  - family-names: Bussmann
+    given-names: Simon L.
+  - family-names: Eidelloth
+    given-names: Stefan
+license: AGPL-3.0-or-later
+repository-code: https://github.com/fraunhofer-isi/forecast-sites
+url: https://fraunhofer-isi.github.io/forecast-sites/
+keywords:
+  - energy
+  - industry
+  - decarbonization
+  - technology diffusion
+  - simulation

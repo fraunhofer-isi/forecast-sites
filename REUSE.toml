@@ -1,0 +1,130 @@
+version = 1
+
+# Directory-level annotations (for directories with multiple file types)
+[[annotations]]
+path = "resources/**"
+precedence = "closest"
+SPDX-FileCopyrightText = "2026 Fraunhofer-Gesellschaft e.V., München"
+SPDX-License-Identifier = "AGPL-3.0-or-later"
+
+[[annotations]]
+path = "web/**"
+precedence = "closest"
+SPDX-FileCopyrightText = "2026 Fraunhofer-Gesellschaft e.V., München"
+SPDX-License-Identifier = "AGPL-3.0-or-later"
+
+[[annotations]]
+path = "src/**"
+precedence = "closest"
+SPDX-FileCopyrightText = "2026 Fraunhofer-Gesellschaft e.V., München"
+SPDX-License-Identifier = "AGPL-3.0-or-later"
+
+[[annotations]]
+path = ".idea/**"
+precedence = "closest"
+SPDX-FileCopyrightText = "2026 Fraunhofer-Gesellschaft e.V., München"
+SPDX-License-Identifier = "AGPL-3.0-or-later"
+
+# Format-based annotations (for specific file types)
+[[annotations]]
+path = "*.csv"
+precedence = "closest"
+SPDX-FileCopyrightText = "2026 Fraunhofer-Gesellschaft e.V., München"
+SPDX-License-Identifier = "AGPL-3.0-or-later"
+
+[[annotations]]
+path = "*.sqlite"
+precedence = "closest"
+SPDX-FileCopyrightText = "2026 Fraunhofer-Gesellschaft e.V., München"
+SPDX-License-Identifier = "AGPL-3.0-or-later"
+
+[[annotations]]
+path = "*.mmd"
+precedence = "closest"
+SPDX-FileCopyrightText = "2026 Fraunhofer-Gesellschaft e.V., München"
+SPDX-License-Identifier = "AGPL-3.0-or-later"
+
+[[annotations]]
+path = "*.svg"
+precedence = "closest"
+SPDX-FileCopyrightText = "2026 Fraunhofer-Gesellschaft e.V., München"
+SPDX-License-Identifier = "AGPL-3.0-or-later"
+
+[[annotations]]
+path = "*.png"
+precedence = "closest"
+SPDX-FileCopyrightText = "2026 Fraunhofer-Gesellschaft e.V., München"
+SPDX-License-Identifier = "AGPL-3.0-or-later"
+
+[[annotations]]
+path = "*.docx"
+precedence = "closest"
+SPDX-FileCopyrightText = "2026 Fraunhofer-Gesellschaft e.V., München"
+SPDX-License-Identifier = "AGPL-3.0-or-later"
+
+[[annotations]]
+path = "*.xlsx"
+precedence = "closest"
+SPDX-FileCopyrightText = "2026 Fraunhofer-Gesellschaft e.V., München"
+SPDX-License-Identifier = "AGPL-3.0-or-later"
+
+[[annotations]]
+path = "*.geojson"
+precedence = "closest"
+SPDX-FileCopyrightText = "2026 Fraunhofer-Gesellschaft e.V., München"
+SPDX-License-Identifier = "AGPL-3.0-or-later"
+
+[[annotations]]
+path = "*.iml"
+precedence = "closest"
+SPDX-FileCopyrightText = "2026 Fraunhofer-Gesellschaft e.V., München"
+SPDX-License-Identifier = "AGPL-3.0-or-later"
+
+# Build and cache directories (excluded from compliance)
+[[annotations]]
+path = ".beads/**"
+precedence = "closest"
+SPDX-FileCopyrightText = "NOASSERTION"
+SPDX-License-Identifier = "NOASSERTION"
+
+[[annotations]]
+path = ".opencode/**"
+precedence = "closest"
+SPDX-FileCopyrightText = "NOASSERTION"
+SPDX-License-Identifier = "NOASSERTION"
+
+[[annotations]]
+path = ".pytest_cache/**"
+precedence = "closest"
+SPDX-FileCopyrightText = "NOASSERTION"
+SPDX-License-Identifier = "NOASSERTION"
+
+[[annotations]]
+path = "__pycache__/**"
+precedence = "closest"
+SPDX-FileCopyrightText = "NOASSERTION"
+SPDX-License-Identifier = "NOASSERTION"
+
+[[annotations]]
+path = "*.egg-info/**"
+precedence = "closest"
+SPDX-FileCopyrightText = "NOASSERTION"
+SPDX-License-Identifier = "NOASSERTION"
+
+[[annotations]]
+path = "node_modules/**"
+precedence = "closest"
+SPDX-FileCopyrightText = "NOASSERTION"
+SPDX-License-Identifier = "NOASSERTION"
+
+[[annotations]]
+path = ".venv/**"
+precedence = "closest"
+SPDX-FileCopyrightText = "NOASSERTION"
+SPDX-License-Identifier = "NOASSERTION"
+
+[[annotations]]
+path = ".git/**"
+precedence = "closest"
+SPDX-FileCopyrightText = "NOASSERTION"
+SPDX-License-Identifier = "NOASSERTION"

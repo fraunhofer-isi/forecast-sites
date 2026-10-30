@@ -1,6 +1,7 @@
-# © 2024 Fraunhofer-Gesellschaft e.V., München
-#
+# SPDX-FileCopyrightText: 2026 Fraunhofer-Gesellschaft e.V., München
 # SPDX-License-Identifier: AGPL-3.0-or-later
+#
+# AI-assisted code generation was used during development.
 
 name: reuse_annotate
 
@@ -20,13 +21,36 @@ jobs:
       # added or changed files to the repository.
       contents: write
     steps:
-      - uses: actions/checkout@v7
-      - name: create copyright and license annotations
-        uses: fsfe/reuse-action@v6
+      - uses: actions/checkout@v6
+      - name: extract python version
+        uses: ./.github/actions/extract-python-version
+      - uses: actions/setup-python@v6
         with:
-          # also see https://reuse.readthedocs.io/en/v2.1.0/usage.html
-          # copyright style follows the one used at https://www.fraunhofer.de/en/publishing-notes.html
-          args: annotate --copyright="Fraunhofer-Gesellschaft e.V., München" --copyright-style=symbol --merge-copyrights --license=AGPL-3.0-or-later --skip-unrecognised --recursive src test web THIRDPARTY.md
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: install dependencies
+        run: |
+          pip install .[license]
+      - name: create copyright and license annotations
+        # The reuse version here must match the one developers run locally via
+        # .github/pipeline.bat. Otherwise the two write different header forms and
+        # every push costs a pair of commits that cancel out. Installing the pinned
+        # dependency from pyproject guarantees that; the previously used
+        # fsfe/reuse-action bundles its own version and caused exactly that skew.
+        #
+        # -t fraunhofer selects .reuse/templates/fraunhofer.jinja2, which supplies the
+        # AI-assisted note. Without it the default template would strip that note from
+        # every annotated file on each run.
+        #
+        # No copyright prefix is passed: the default already yields the required
+        # SPDX-FileCopyrightText form. The former --copyright-style option does not
+        # exist in current reuse at all.
+        #
+        # web is deliberately not in the scope. web/THIRDPARTY.md is overwritten
+        # headerless by generate-license-file, so annotating it only produced
+        # cancelling commits. REUSE.toml already annotates web/** with precedence
+        # closest, so compliance is unaffected.
+        run: |
+          python -m reuse annotate --copyright="Fraunhofer-Gesellschaft e.V., München" --merge-copyrights --license=AGPL-3.0-or-later --skip-unrecognised -t fraunhofer --recursive src test THIRDPARTY.md
       - name: push changes made by reuse annotate
         # also see https://github.com/stefanzweifel/git-auto-commit-action
         uses: stefanzweifel/git-auto-commit-action@v7

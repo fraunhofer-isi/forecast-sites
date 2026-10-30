@@ -1,0 +1,119 @@
+id,name
+1601,LB Botlek
+1602,Huntsman
+1603,Nobian
+1604,ShinEtsu
+1605,ExxonMobil
+1606,Shell Pernis Chemicals
+1607,BlueCircle_Olefins_Gasification
+1608,BlueCircle_Olefins_MtO
+1611,LB Botlek Steamboiler
+1612,LB Botlek Steamboiler NG Proxy
+1613,LB Botlek Steamboiler DG Proxy
+1621,ExxonMobil Furnaces
+1631,Nobian Steamboiler
+1632,Nobian Seamboiler NG Proxy
+1633,Nobian Seamboiler DG Proxy
+1634,Nobian Seamboiler H2 Proxy
+1635,Nobian CHP
+1641,SE Botlek Steamboiler
+1642,SE Botlek Steamboiler NG Proxy
+1643,ShinEtsu Cracking furnace (VCM)
+1651,ExxonMobil RAP
+1652,FischerTropsch1
+1653,DAC1
+1654,FischerTropsch2
+1655,DAC2
+1661,SE Botlek Steamboiler
+1662,SE Botlek Steamboiler DG Proxy
+1663,Shell Pernis SBA
+4000,CHP Draft
+4001,Esso Base refinery
+4002,Esso Hydrocracking
+4003,Esso CRF
+4004,Esso DCU
+4005,Esso SMR
+4006,Esso HCK proxy1
+4007,Esso HCK proxy2
+4008,Esso HCK proxy3
+4009,Esso HCK proxy4
+4011,BP Base refinery
+4012,BP FCC
+4013,BP Alkylation
+4014,BP Thermal Cracking
+4015,BP CRF
+4016,BP TC proxy1
+4017,BP TC proxy2
+4018,BP Gas boiler
+4019,BP Gas boiler proxy1
+4021,Shell Base refinery
+4022,Shell CRF Feedstock module
+4023,Shell SMR
+4024,Shell FCC
+4025,Shell HCK
+4026,Shell Alkylation
+4027,Shell Thermal cracking
+4028,Shell Fuel oil gasification
+4029,Shell HCK proxy1
+4031,Gunvor Base refinery
+4032,Gunvor CRF
+4033,Gunvor Lube Oils
+4034,Gunvor Thermal cracking
+4035,Gunvor TC proxy1
+4036,Gunvor TC proxy2
+4041,Vitol
+5001,Zeeland Base refinery
+5002,Zeeland SMR
+5003,Zeeland HCK
+5004,Zeeland CRF
+5005,Zeeland HCK proxy1
+5006,Zeeland HCK proxy2
+5007,Zeeland HCK proxy3
+6001,Air Liquide Botlek SMR HyCO
+6002,Air Liquide Botlek SMR
+6003,Air Liquide Botlek SMR Syngas module
+6004,Air Liquide Botlek SMR hyCO
+6005,Air Liquide Botlek ATR
+6006,Air Liquide Botlek ATR Syngas module
+6007,Air Liquide Botlek ATR SMR
+6008,Air Products Botlek SMR
+7010,Neste_Biorefinery
+7020,Alco_Energy
+7021,Alco_Energy_Boiler
+7022,Alco_Energy_CHP
+7023,Alco_Energy_Boiler_proxy
+7030,BioPetrol
+10000,Heat module 300-500°C
+10001,LPG_product
+10002,Naphtha_product
+10003,Gasoline_product
+10004,Kerosene_product
+10005,Diesel_product
+10006,Fuel_oil_product
+10007,Bitumen_Product
+10008,Reformate_Product
+10009,Lubricants_Product
+10010,Olefines_Product
+10011,Pet Coke_Product
+40010,Esso Gas boiler
+40011,Esso Gas boiler proxy1
+40012,Esso Gas boiler proxy2
+40013,Esso CHP
+40014,Esso DCU Feedstockmodule
+40015,Esso Base refinery feedstock module
+40016,Esso CRF Feedstock proxy
+40017,Refinery heat module 300-500°C Derived gases
+40110,BP Gas boiler proxy2
+40111,BP CHP
+40112,BP Base refinery feedstock module 
+40113,BP Alkylation Feedstock module
+40114,BP CRF Feedstock module
+40210,Shell HCK proxy2
+40211,Shell HCK proxy3
+40212,Shell TC proxy1
+40213,Shell TC proxy2
+40214,Shell CHP
+40215,Shell heat module 300-500°C
+40216,Shell Base refinery  Feedstock module
+40217,Shell CRF
+40218,Shell FCC Feedstock module

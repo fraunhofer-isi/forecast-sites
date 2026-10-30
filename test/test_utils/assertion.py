@@ -1,6 +1,7 @@
-# © 2024-2026 Fraunhofer-Gesellschaft e.V., München
-#
+# SPDX-FileCopyrightText: 2026 Fraunhofer-Gesellschaft e.V., München
 # SPDX-License-Identifier: AGPL-3.0-or-later
+#
+# AI-assisted code generation was used during development.
 
 # assertion module you can import tests from
 import numpy as np

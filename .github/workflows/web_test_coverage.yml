@@ -1,0 +1,49 @@
+# SPDX-FileCopyrightText: 2026 Fraunhofer-Gesellschaft e.V., München
+# SPDX-License-Identifier: AGPL-3.0-or-later
+#
+# AI-assisted code generation was used during development.
+
+name: web_coverage
+
+on:
+  push:
+    branches: [ '**' ]
+  pull_request:
+    branches: [ '**' ]
+
+jobs:
+  test_coverage:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v6
+    - name: extract node version
+      uses: ./.github/actions/extract-node-version
+    - name: Set up Node.js
+      uses: actions/setup-node@v6
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+    - name: install dependencies
+      run: |      
+        cd web
+        npm install
+    - name: test
+      run: |      
+        cd web
+        mkdir .coverage
+        npm run test-coverage | tee ./.coverage/coverage.log     
+        JEST_COVERAGE=$(awk '$1 == "All" {print $4+0}' ./.coverage/coverage.log)
+        echo "JEST_COVERAGE=$JEST_COVERAGE" >> $GITHUB_ENV
+        echo "Jest test coverage is $JEST_COVERAGE"
+    - name: badge
+      uses: schneegans/dynamic-badges-action@v1.9.0
+      with:
+        # The Variables GIST_SECRET and GIST_Id need to be stored in the GitHub repository secrets
+        # If you do not have a Gist, you can create one at https://gist.github.com/
+        auth: ${{ secrets.GIST_SECRET }}
+        gistID: ${{ secrets.GIST_ID }}
+        filename: forecast-sites_web_test_coverage.json
+        label: coverage
+        message: ${{ env.JEST_COVERAGE }}
+        valColorRange: ${{ env.JEST_COVERAGE }}
+        maxColorRange: 100
+        minColorRange: 0

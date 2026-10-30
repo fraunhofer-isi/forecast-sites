@@ -4,25 +4,11 @@
 
 /* eslint-disable no-undef */
 
-var $ = window.$;
-var L = window.L;
 
-if (!$) {
-  var jQueryMessage = 'Error: jquery could not be loaded.\n' +
-  'Please ensure that is it present by running "npm install" within directory "web".';
-  window.alert(jQueryMessage);
-  throw new Error(jQueryMessage);
-}
-
-if (!L) {
-  var leafletMessage = 'Error: leaflet could not be loaded.\n' +
-  'Please ensure that is it present by running "npm install" within directory "web".';
-  window.alert(leafletMessage);
-  throw new Error(leafletMessage);
-}
-
- 
 const MapModule = function (view, zoom, mapWidth, mapHeight) {
+
+  _checkJavaScriptLibraries();
+
   // Create the map tag:
   var style = "width:" + mapWidth + "px; height:" + mapHeight + "px;border:1px dotted";
   var mapTag = "<div style='"+ style +"' id='mapid'></div>";
@@ -78,4 +64,23 @@ if (typeof module !== 'undefined' && module){
     'MapModule': MapModule,
     '_popUpProperties': _popUpProperties
   };
+}
+
+function _checkJavaScriptLibraries(){
+  var $ = window.$;
+  var L = window.L;
+
+  if (!$) {
+    var jQueryMessage = 'Error: jquery could not be loaded.\n' +
+    'Please ensure that is it present by running "npm install" within directory "web".';
+    window.alert(jQueryMessage);
+    throw new Error(jQueryMessage);
+  }
+
+  if (!L) {
+    var leafletMessage = 'Error: leaflet could not be loaded.\n' +
+    'Please ensure that is it present by running "npm install" within directory "web".';
+    window.alert(leafletMessage);
+    throw new Error(leafletMessage);
+  }
 }

@@ -1,0 +1,33 @@
+id,name
+3,Captured_CO2
+721,Methanolsyn. feedstock module
+751,MtO Feedstock module
+1003,Captured_CO2_renewable
+3061,MtA Feedstock module
+3071,MtF Feedstock module
+3171,Sweetshift Feedstock module
+3401,FT Feedstock module
+3411,FT wax route capacity link
+3431,Steamcracker Feedstock module
+3432,Steamcracker Feedstock module 2
+3433,Steamcracker Feedstock module 2 renewable
+3434,Electrical steamcracker feedstock module
+3582,Crude oil catalytics cracking Feedstock Module
+3671,MtF Feedstock module 2
+5331,Lignin ecovery Feedstock module
+5355,CHP Feedstock module
+11548,Öignin recovery feedstock module
+15100,Base refinery  feedstock module
+15201,"NSU,NHT,ISO,CRF Feedstock module"
+15401,FCC Feedstock module
+15501,DCU Feedstock module
+15511,HCK Feedstock module
+15601,Alkylation feedstock module
+15701,Base lube oils feedstock module
+15801,Thermal cracking feedstock module
+53399,Hydropyrolysis capacity link
+151001,CRF Feedstockmodule
+151201,CRF - Heavy Naphtha to Reformate Feedstock module
+151311,NSU feedstock module
+1520091,MeOH-Naphtha(HBEA) link
+1520094,MeOH-Kerosene(MtO-Olig) link

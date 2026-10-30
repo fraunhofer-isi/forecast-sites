@@ -1,0 +1,77 @@
+id,name
+1,Electricity
+2,Light Fuel oil
+3,Coal
+4,Natural gas
+5,Other fossil
+6,Waste non-RES
+7,Biomass
+8,District heating
+9,Solar energy
+10,Ambient heat
+11,Derived Gases
+12,EE-Methan
+13,Other RES
+14,Naphtha
+15,H2
+16,Ethanol
+17,coke oven gas
+18,blast furnace gas
+19,BOF gas
+20,waste heat rotary kiln
+21,Coke
+22,Petrol coke
+23,Heavy fuel oil
+24,Methanol
+25,Fossil Oil
+26,Ammonia
+27,Olefines
+28,Aromatics
+29,Jet fuel
+30,Gasoline
+31,HVR
+32,Lubricants
+33,Steam
+34,Reformate
+35,Syngas
+36,Carbon Monoxide
+37,Maize
+38,Plant oil
+39,UCO
+40,Lignin
+41,Carbon Black
+43,Light Naphtha
+44,Heavy Naphtha
+46,LPG
+350,FT wax/syncrude
+1002,Renewable Diesel
+1011,Renewable Derived Gases
+1014,Renewable Naphtha
+1015,Renewable H2
+1016,Bioethanol
+1022,Renewable Petrol coke
+1023,Renewable Heavy fuel oil
+1024,Renewable Methanol
+1025,Renewable Oil
+1026,Renewable Ammonia
+1027,Renewable Olefines
+1028,Renewable Aromatics
+1029,Renewable Jet fuel
+1030,Renewable Gasoline
+1031,Renewable Bitumen
+1032,Renewable Lubricants
+1034,Renewable Reformate
+1035,Renewable Synthesegas
+1036,Renewable CO
+1043,Renewable Light Naphtha
+1044,Renewable Heavy Naphtha
+1046,Renewable LPG
+1350,Renewable FT wax/syncrude
+1352,Renewable Bio-oil
+1353,Renewable Bio-crude
+1355,"Renewable Bio-asphaltene (HTL, ring-fenced)"
+10001,Electricity low cost
+10002,Electricity medium cost
+15000,Refinery heat module 100-300°C
+15001,Refinery heat module 300-500°C
+15002,Refinery heat module 500-1000°C

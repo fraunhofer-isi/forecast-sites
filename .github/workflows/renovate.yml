@@ -1,13 +1,14 @@
-# © 2024 Fraunhofer-Gesellschaft e.V., München
-#
+# SPDX-FileCopyrightText: 2026 Fraunhofer-Gesellschaft e.V., München
 # SPDX-License-Identifier: AGPL-3.0-or-later
+#
+# AI-assisted code generation was used during development.
 
 name: renovate
 on:
   push:
-    branches: [ main ]
+    branches: [ '**' ]
   pull_request:
-    branches: [ main ]
+    branches: [ '**' ]
   schedule:
     # The "*" (#42, asterisk) character has special semantics in YAML, so this
     # string has to be quoted.
@@ -18,12 +19,12 @@ jobs:
   renovate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@v6
       - name: self-hosted renovate
-        uses: renovatebot/github-action@v46.3.11
+        uses: renovatebot/github-action@v46.3.10
         with:
           # the required token can be provided as organization token for public sub projects.
-          # private projects might need an extra tocken variable in the GitHub settings.
+          # private projects might need an extra token variable in the GitHub settings.
           # In order to generate a new access token for renovate see instructions at
           # https://github.com/marketplace/actions/renovate-bot-github-action#token
           token: ${{ secrets.RENOVATE_TOKEN }}

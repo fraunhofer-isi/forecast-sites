@@ -1,0 +1,40 @@
+# SPDX-FileCopyrightText: 2026 Fraunhofer-Gesellschaft e.V., München
+# SPDX-License-Identifier: AGPL-3.0-or-later
+#
+# AI-assisted code generation was used during development.
+
+start_year = 2025
+interim_year = 2040
+end_year = 2050
+year_increment = 5
+scenario_ids = [1]  # list of scenario ids to run, one full simulation per id; valid values come from the id_scenario input table, e.g. [1, 3, 4]
+id_product_filter = []  # only sites producing any of those products will be considered; all sites if empty
+region_ids = [18]
+input_mode = "CSV"  # "CSV" (import csv_input_directory into database_path) or "SQLITE" (use database_path directly)
+optimization_type = "REGION_MULTI_PERIOD"  # "REGION_MULTI_PERIOD" | "LINEAR_PROGRAMMING" | "COMPARING"
+csv_input_directory = "./resources/input/por"
+database_path = "./resources/input/input.sqlite"  # SQLite file generated from csv_input_directory (input_mode = "CSV")
+automatic_output_directory = true
+rolling_output_directory_prefix = "./results/output"  # folder name should start with "output" to be found by the visualization
+                                                      # the name of the output folder will also include the name of the input database (defaults to "input")
+
+rolling_output_directory_timestamp_format = "%Y%m%d_%H%M"
+rolling_planning_horizon_in_years = 1
+optimize_start_year = true        # true = Start year is optimized, false = Start year is calculated from existing Subpoduction units
+start_year_capex_factor = 5.0      # Scales the CAPEX of new processes in the start year before the investment funding is deducted.
+# It is a calibration penalty against unrealistic technology switching, so that the model sticks to the
+# available sub production units. Only relevant if "optimize_start_year" is true.
+use_groups = false
+headless = true #if false opens map in the beginning and you can calulate stepwise; if false just starts automatically
+emission_limit_in_t_co2 = 10e20 # Controls which emissions count toward annual emission limits,
+emission_constraint_scope = ["direct", "upstream", "renewably_bound", "downstream"] # Also controls cumulative CO2 budgets and budget-relevant output tables.
+# Supported components:
+# - "direct" = direct energy + direct process - captured emissions
+# - "upstream" = upstream carrier emissions
+# - "renewably_bound" = subtract renewably bound CO2
+# - "downstream" = downstream carrier emissions
+#overall_emission_budget_in_t_co2 = 10.0e20 # Optional cumulative CO2 budget for REGION_MULTI_PERIOD only.
+# Counts all annual years represented by each modeled period.
+#emission_budget_end_year = 2054 # Optional explicit end year for the cumulative budget horizon.
+# If omitted, the budget counts through the end of the final modeled block
+# (for end_year=2050 and year_increment=5 this means through 2054).

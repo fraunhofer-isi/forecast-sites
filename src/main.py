@@ -1,82 +1,89 @@
-# © 2024-2026 Fraunhofer-Gesellschaft e.V., München
-#
+# SPDX-FileCopyrightText: 2026 Fraunhofer-Gesellschaft e.V., München
 # SPDX-License-Identifier: AGPL-3.0-or-later
+#
+# AI-assisted code generation was used during development.
+import logging
+import shutil
+from collections.abc import Mapping
+from pathlib import Path
+from typing import Any
 
+from cluster import grouping_utils
+from input.csv_to_sqlite import csv_to_sqlite
+from input.input_mode import InputMode
 from mesa_wrapper.mesa_server import MesaServer
 from region.region_factory import RegionFactory
-from simulation.simulation import Simulation
-from simulation.simulation_mode import SimulationMode
-from utils.logging_utils import initialize_logging
-from utils.time_utils import create_time_span
-from visitor.shape_file_visitor import ShapeFileVisitor
-from visitor.tabular_result_visitor import TabularResultVisitor
+from result.collecting_result_visitor import CollectingResultVisitor
+from result.product_route_share_export import export_product_route_shares
+from result.shape_file_visitor import ShapeFileVisitor
+from utils import config_utils, database_utils, logging_utils
 
 
-def main():
-    initialize_logging()
-    id_scenario = 1
+def main() -> None:
+    logging_utils.initialize_logging()
+    logging.info('Running forecast-sites by Fraunhofer ISI...')
 
-    scenario_options = {
-        'co2_cost_2015_in_euro_per_ton_co2': 80,
-        'co2_cost_2050_in_euro_per_ton_co2': 200,
-        'id_product_filter': [
-            5,
-        ],  # 22, 32, 51],  # only sites producing those products will be considered; all sites if empty array
-        'region_ids': [
-            1,
-            2,
-            4,
-            5,
-            6,
-            7,
-            8,
-            9,
-            10,
-            11,
-            12,
-            13,
-            14,
-            15,
-            16,
-            18,
-            19,
-            20,
-            21,
-            22,
-            23,
-            24,
-            25,
-            26,
-            27,
-            29,
-            31,
-            32,
-        ],
-        'simulation_mode': SimulationMode.DETERMINISTIC,
-        'is_using_mesa': True,
-    }
+    simulation_options = config_utils.simulation_options()
+    _prepare_database_access(simulation_options)
 
-    start_year = 2022
-    end_year = 2050
-    year_increment = 1
-    time_span = create_time_span(start_year, end_year, year_increment)  # for example [2015]
+    _save_simulation_options(simulation_options)
+    database_utils.initialize_output_database(simulation_options)
 
-    simulate(id_scenario, time_span, scenario_options)
+    _simulate_scenarios(simulation_options)
 
 
-def simulate(id_scenario, time_span, scenario_options):
-    region_factory = RegionFactory(id_scenario, scenario_options)
+def _simulate_scenarios(simulation_options):
+    for id_scenario in simulation_options['scenario_ids']:
+        _simulate_scenario(id_scenario, simulation_options)
+
+
+def _prepare_database_access(simulation_options):
+    database_path = simulation_options['database_path']
+
+    if simulation_options['input_mode'] == InputMode.CSV:
+        input_directory = simulation_options['csv_input_directory']
+
+        logging.info('Importing *.csv data from "%s" to "./resources/input/input.sqlite"', input_directory)
+        csv_to_sqlite(input_directory, database_path)
+
+    logging.info('Starting model with input from %s', database_path)
+
+
+def _save_simulation_options(simulation_options: Mapping[str, Any]) -> None:
+    output_directory = simulation_options['output_directory']
+    Path(output_directory).mkdir(parents=True, exist_ok=True)
+
+    # Get the source TOML file path
+    source_toml = Path(__file__).parent / 'simulation_options.toml'
+    destination_toml = Path(output_directory) / 'simulation_options.toml'
+
+    # Copy the TOML file to the output directory
+    shutil.copy2(source_toml, destination_toml)
+
+    logging.info('Simulation options copied to %s', destination_toml)
+
+
+def _simulate_scenario(
+    id_scenario: int,
+    simulation_options: Mapping[str, Any],
+) -> None:
+    region_factory = RegionFactory(id_scenario, simulation_options)
     regions = region_factory.create_regions()
 
-    visitors = [TabularResultVisitor(), ShapeFileVisitor()]
+    grouping_utils.assign_groups_after_load(regions, simulation_options)
 
-    simulation_mode = scenario_options['simulation_mode']
-    if scenario_options['is_using_mesa']:
-        mesa_server = MesaServer(simulation_mode, time_span, regions, visitors)
-        mesa_server.run()
-    else:
-        simulation = Simulation(simulation_mode, time_span, regions, visitors)
-        simulation.run()
+    visitors = [
+        CollectingResultVisitor(simulation_options),
+        ShapeFileVisitor(simulation_options),
+    ]
+
+    mesa_server = MesaServer(
+        regions,
+        simulation_options,
+        visitors,
+    )
+    mesa_server.run()  # Also see MesaSimulation.step() for the main simulation steps
+    export_product_route_shares(id_scenario, simulation_options)
 
 
 if __name__ == '__main__':

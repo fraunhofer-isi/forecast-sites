@@ -1,48 +1,83 @@
-# © 2024-2026 Fraunhofer-Gesellschaft e.V., München
-#
+# SPDX-FileCopyrightText: 2026 Fraunhofer-Gesellschaft e.V., München
 # SPDX-License-Identifier: AGPL-3.0-or-later
+#
+# AI-assisted code generation was used during development.
+from carrier.carrier import Carrier
+from carrier.carrier_unit import CarrierUnit
+from interpolation import interpolator
+from interpolation.interpolation_data import InterpolationData
 
-from entity import Entity
 
+class Product(Carrier):
+    def __init__(self, id_product: int, name: str, data: dict) -> None:
+        super().__init__(id_product, name)
+        self.name = name
 
-class Product(Entity):
-    def __init__(self, product_id, available_processes):
-        self.id = product_id
-        self.available_processes = available_processes
+        self._purchase_price_in_euro_per_t = data['purchase_price_in_euro_per_t']
+        self._sell_price_in_euro_per_t = data['sell_price_in_euro_per_t']
 
-    def accept(self, visitor, year):
-        visitor.visit_product(self, year)
+        self._upstream_emission_interpolation_data_in_t_co2_per_t = InterpolationData(
+            data['upstream_emission_start_year_in_t_co2_per_t'],
+            data['upstream_emission_end_year_in_t_co2_per_t'],
+        )
+        self._renewably_bound_co2_emission_in_t_co2_per_t = 0
 
-    def virtual_production_cost_per_process_for_comparison(self, year):
-        virtual_production_cost = {}
-        for process in self.available_processes:
-            virtual_production_cost[process.id] = process.production_cost_in_euro_per_ton(year)
-        return virtual_production_cost
+        self._downstream_emission_in_t_co2_per_t = data['downstream_emission_in_t_co2_per_t']
 
-    def virtual_process_emission_cost_per_process_for_comparison(self, production_in_tons, co2_price_in_euro_per_ton):
-        virtual_process_emission_cost = {}
-        for process in self.available_processes:
-            virtual_process_emission_cost[process.id] = (
-                process.process_emission_in_tons(production_in_tons) / production_in_tons
-            ) * co2_price_in_euro_per_ton
-        return virtual_process_emission_cost
+        self._maximum_production_in_t = data['maximum_production_in_t']
 
-    def virtual_energy_emission_cost_per_process_for_comparison(self, year, co2_price_in_euro_per_ton):
-        virtual_energy_emission_cost = {}
-        for process in self.available_processes:
-            virtual_energy_emission_cost[process.id] = (
-                process.energy_emissions_in_ton_co2_per_ton(year) * co2_price_in_euro_per_ton
-            )
-        return virtual_energy_emission_cost
+    @property
+    def unit(self) -> CarrierUnit:
+        t = CarrierUnit.T
+        return t
 
-    def virtual_annuity_per_process(self, year):
-        virtual_annuity_per_process = {}
-        for process in self.available_processes:
-            virtual_annuity_per_process[process.id] = process.annuity_on_investment_per_ton(year)
-        return virtual_annuity_per_process
+    @property
+    def maximum_production_in_unit(self) -> float:
+        return self._maximum_production_in_t
 
-    def virtual_opex_per_process(self, year):
-        virtual_opex = {}
-        for process in self.available_processes:
-            virtual_opex[process.id] = process.opex_in_euro_per_ton(year)
-        return virtual_opex
+    def minimum_use_in_unit(self, _year: int, _simulation_options: dict) -> float:
+        return 0
+
+    def purchase_price_in_euro_per_t(self, year: int) -> float:
+        year_string = str(year)
+        if year_string in self._purchase_price_in_euro_per_t:
+            return self._purchase_price_in_euro_per_t[year_string]
+        last_year_str = max(self._purchase_price_in_euro_per_t.keys())
+        self._check_for_non_exiting_interim_year(year, last_year_str)
+        return self._purchase_price_in_euro_per_t[last_year_str]
+
+    def purchase_price_in_euro_per_unit(self, year: int) -> float:
+        return self.purchase_price_in_euro_per_t(year)
+
+    def purchase_cost_in_euro(self, amount_in_t: float, year: int) -> float:
+        price_in_euro_per_t = self.purchase_price_in_euro_per_t(year)
+        cost_in_euro = amount_in_t * price_in_euro_per_t
+        return cost_in_euro
+
+    def sell_price_in_euro_per_unit(self, year: int) -> float:
+        return self.sell_price_in_euro_per_t(year)
+
+    def sell_price_in_euro_per_t(self, year: int) -> float:
+        year_string = str(year)
+        if year_string in self._sell_price_in_euro_per_t:
+            return self._sell_price_in_euro_per_t[year_string]
+        last_year_str = max(self._sell_price_in_euro_per_t.keys())
+        self._check_for_non_exiting_interim_year(year, last_year_str)
+        return self._sell_price_in_euro_per_t[last_year_str]
+
+    def upstream_emission_in_t_co2_per_t(self, year: int, simulation_options: dict) -> float:
+        return interpolator.interpolate(
+            year,
+            simulation_options,
+            self._upstream_emission_interpolation_data_in_t_co2_per_t,
+        )
+
+    def upstream_emission_in_t_co2_per_unit(self, year: int, simulation_options: dict) -> float:
+        emission = self.upstream_emission_in_t_co2_per_t(year, simulation_options)
+        return emission
+
+    def downstream_emission_in_t_co2_per_unit(self, _year: int, _simulation_options: dict) -> float:
+        return self._downstream_emission_in_t_co2_per_t
+
+    def renewably_bound_co2_emission_in_t_co2_per_unit(self, _year: int, _simulation_options: dict) -> float:
+        return self._renewably_bound_co2_emission_in_t_co2_per_t

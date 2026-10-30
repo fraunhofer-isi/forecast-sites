@@ -1,4 +1,4 @@
-// © 2024 Fraunhofer-Gesellschaft e.V., München
+// © 2026 Fraunhofer-Gesellschaft e.V., München
 //
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
@@ -15,7 +15,7 @@
     ":disableDependencyDashboard"
   ],
   "forkProcessing": "enabled",
-    "autodiscoverFilter": ["fraunhofer-isi/forecast-sites"],
+  "autodiscoverFilter": ["fraunhofer-isi/forecast-sites"],
   "packageRules": [
     {
      "description": "lockFileMaintenance",
@@ -33,20 +33,5 @@
      "dependencyDashboardApproval": false,
      "minimumReleaseAge": null
     },
-    {
-      "description": "Pin numpy to version 2.0.2, required by numba/mesa-geo",
-      "matchPackageNames": ["numpy"],
-      "allowedVersions": "2.0.2"  // Replace with the desired version
-    },
-    {
-      "description": "Pin mesa to version 3.0.3, due to breaking changes",
-      "matchPackageNames": ["mesa"],
-      "allowedVersions": "3.0.3"  // Replace with the desired version
-    },
-    {
-      "description": "Pin mesa-geo to version 0.9.0a1, due to breaking changes",
-      "matchPackageNames": ["mesa-geo"],
-      "allowedVersions": "0.9.0a1"  // Replace with the desired version
-    }
   ]
 }

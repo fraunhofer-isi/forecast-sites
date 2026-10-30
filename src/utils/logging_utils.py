@@ -1,13 +1,14 @@
-# © 2024-2026 Fraunhofer-Gesellschaft e.V., München
-#
+# SPDX-FileCopyrightText: 2026 Fraunhofer-Gesellschaft e.V., München
 # SPDX-License-Identifier: AGPL-3.0-or-later
+#
+# AI-assisted code generation was used during development.
 
 import logging
 
 import colorlog
 
 
-def initialize_logging():
+def initialize_logging(log_level=logging.INFO):
     handler = colorlog.StreamHandler()
     handler.setFormatter(
         colorlog.ColoredFormatter(
@@ -24,4 +25,7 @@ def initialize_logging():
 
     logger = colorlog.getLogger()
     logger.addHandler(handler)
-    logger.setLevel(logging.DEBUG)
+    logger.setLevel(log_level)
+
+    pyogrio_logger = logging.getLogger('pyogrio')
+    pyogrio_logger.setLevel(logging.ERROR)  # raised from WARNING to ERROR (suppresses truncation warning)

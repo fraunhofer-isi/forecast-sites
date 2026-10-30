@@ -1,8 +1,6 @@
-<!--
-© 2024 Fraunhofer-Gesellschaft e.V., München
-
-SPDX-License-Identifier: AGPL-3.0-or-later
--->
+<!-- SPDX-FileCopyrightText: 2026 Fraunhofer-Gesellschaft e.V., München -->
+<!-- SPDX-License-Identifier: AGPL-3.0-or-later -->
+<!-- AI-assisted code generation was used during development. -->
 
 # FORECAST-Sites - A technology diffusion model to simulate industry transformation scenarios with high spatial resolution for energy-intensive industry branches
 
@@ -25,11 +23,13 @@ industry branches.
 4. [Usage](#usage)
 5. [Configuration](#configuration)
 6. [Visualization](#visualization)
-7. [Contributing](#contributing)
-8. [Badges](#badges)
-9. [Architecture](#architecture)
-10. [Contact](#contact)
-11. [Notes](#notes)
+7. [Output files for energy system modellers](#output-files-for-energy-system-modellers)
+8. [Contributing](#contributing)
+9. [Badges](#badges)
+10. [Architecture](#architecture)
+11. [Contact](#contact)
+12. [Licenses](#licenses)
+13. [Notes](#notes)
 
 ## Introduction
 
@@ -48,8 +48,9 @@ impact on energy consumption and greenhouse gas emissions.
   energy price projections and scenario frameworks.
 - **Customizable Parameters**: Allows customization for different industries and scenario assumptions, such as energy
   price projections and different policies.
-- **Visualization Tools**: Provides jupyter notebooks for results visualization and analysis by generation graphs and
-  charts for better data interpretation.
+- **Visualization Tools**: Provides an interactive browser-based map of the modelled sites and a time-series chart of
+  process adoption while the simulation runs, plus tabular result files for your own analysis (see
+  [Output files for energy system modellers](#output-files-for-energy-system-modellers)).
 
 ## Installation
 
@@ -72,7 +73,7 @@ The installation of the model follows typical Git and Python based schemes.
 3. Install the required python packages:
    `pip install .[dev]`
 4. Install the required nodejs packages:
-
+   
    ```
    cd web
    npm install
@@ -80,24 +81,38 @@ The installation of the model follows typical Git and Python based schemes.
 
 ## Usage
 
-1. Configure the model parameters in the following way:
+1. Provide and configure the model input:
 
-- Navigate to the [input](input) folder
-- Open the [input.sqlite](input\input.sqlite) database
-- Manipulate or change the industry site and process information by by navigating through the different tables
-    - Techno-economic process information can be seen and changed in the table `product_process_mapping`
+- The repository ships a small **example input set** under `resources/input/por`, covering a single
+  refinery site in the Rotterdam area across four scenarios. The shipped defaults in
+  [simulation_options.toml](src/simulation_options.toml) already point at it
+  (`region_ids = [18]`, `input_mode = "CSV"`), so the model runs on a fresh clone without further
+  setup. Use it to verify your installation and as a template for the table layout.
+- The input is read either from CSV or from SQLite, selected by `input_mode`. With `"CSV"` the files
+  in `csv_input_directory` are imported into `database_path`
+  (`./resources/input/input.sqlite`) on every start; that database is generated and therefore not
+  part of the repository. With `"SQLITE"` an existing database at `database_path` is used directly.
+- To model your own sites, replace or extend the CSV files. `check/check_csv_integrity.py` imports a
+  CSV directory and reports foreign key violations, which is the quickest way to validate an edit:
+
+  ```
+  python check/check_csv_integrity.py resources/input/por
+  ```
+
+- Manipulate or change the industry site and process information by navigating through the different tables
+  - Techno-economic process information can be seen and changed in the table `process`
 
 2. Configure the modelled products and regions you want to simulate:
 
-- Open the `main.py` file
-- Change `id_product` and `id_region` according to your wishes
+- Open the `src/simulation_options.toml` file
+- Change `id_product_filter` and `region_ids` according to your wishes
 - Activate or deactivate the consideration of hydrogen infrastructure according to plans from the European Hydrogen
   Backbone initiative
-- Select simulation mode: `deterministic` or `monte-carlo`?
+- Select the optimization type: `REGION_MULTI_PERIOD`, `LINEAR_PROGRAMMING` or `COMPARING`
 
 3. Configure scenario parameters like CO2-pricing:
 
-- Open the `main.py` file
+- Open the `src/simulation_options.toml` file
 - Change the values and the interpolation functions between your adjusted start and end year of the simulation
   accordingly
 
@@ -107,32 +122,146 @@ The installation of the model follows typical Git and Python based schemes.
 
 ## Configuration
 
-The input.sqlite database and tables allows you to customize several parameters:
+The input database and its tables allow you to customize several parameters:
 
 - `industry site information`: Add, adjust or delete industry sites with their necessary information on:
-    - Geolocation (longitude, latitude) within the `site` table,
-    - Production units (production output, age, product, and process) within the `production unit` table.
-- `process information`:
-    - Capital expenditures (CAPEX) in the table `product_process_mapping`
-    - Operational expenditures (OPEX) in the table `product_process_mapping`
-    - Specific energy, steam and feedstock consumptions (SEC) in the table `product_process_mapping`
-    - Lifetime in the table `product_process_mapping`
-    - Optional: efficiency gains over years, process emission factors, etc, in the table `product_process_mapping`
-    - Energy carrier and respective shares on energy (`process_energy_carrier_mapping`), steam (
-      `process_steam_mapping`), and feedstock (`process_feedstock_mapping`) demand
-    - Energy carrier emission factors and projections in `energy_carrier_emission`
+  - Geolocation (longitude, latitude) within the `site` table,
+  - Production units within the `production_unit` table, and their installed processes with capacity and
+    reinvestment year within the `sub_production_unit` table.
+- `process information`, all in the `process` table:
+  - Capital expenditures (CAPEX), as `capex_start_year_in_euro_per_process_count` and the matching end year value
+  - Operational expenditures (OPEX), likewise as start and end year values
+  - Investment funding, as `investment_funding_start_year_in_euro_per_process_count` and its end year value
+  - Lifetime (`lifetime_in_years`), depreciation period and life extension factor
+  - Optional: efficiency gains over years (`efficiency_improvement_start_year` and its end year value) and the
+    non-energy process emission factor
+- `process demands and outputs`, each in its own mapping table, all per process count:
+  - `process_energy_carrier_energy_demand_in_gj_per_process_count`
+  - `process_energy_carrier_feedstock_demand_in_gj_per_process_count`
+  - `process_product_feedstock_demand_in_t_per_process_count` and
+    `process_by_product_feedstock_demand_in_t_per_process_count`
+  - `process_energy_carrier_output_in_gj_per_process_count`,
+    `process_product_output_in_t_per_process_count` and
+    `process_by_product_output_in_t_per_process_count`
 - `scenario information`:
-    - Energy carrier price pathways in `energy_carrier_cost`
-    - Pipeline/infrastructure information in the file `pipelines.py`
+  - Energy carrier prices in `energy_carrier_purchase_price_in_euro_per_gj` and
+    `energy_carrier_sell_price_in_euro_per_gj`
+  - Energy carrier emission factors in `energy_carrier_emission_in_t_co2_per_gj`
+  - Energy carrier availability, minimum use, subsidies and taxes in the correspondingly named tables
+  - Product prices and emissions in `product_purchase_price_in_euro_per_t`,
+    `product_sell_price_in_euro_per_t` and `product_emission_in_t_co2_per_t`
+  - Pipeline/infrastructure information in the file [pipelines.py](src/pipelines/pipelines.py)
+
+### Modelling planned future investments
+
+A plant that is already decided but not yet built is expressed through the
+`year_of_last_reinvestment` column of the `sub_production_unit` table. The column accepts any year:
+
+| Value | Meaning |
+|---|---|
+| a past year | the unit exists and is operating |
+| a future year | the unit is planned and becomes available in that year |
+
+Three consequences follow, so no separate "is future" flag is needed:
+
+- **Availability.** The unit counts as available exactly from its reinvestment year onwards
+  (`year_of_last_reinvestment <= year`). Before that year it cannot be used.
+- **Annuity.** No annuity is charged before the reinvestment year, so a decision taken today does
+  not burden today's costs.
+- **New investment.** The investment is booked in the reinvestment year itself, on the installed
+  capacity `max_process_execution_count`.
+
+A planned unit is also protected from the inactivity cleanup: a unit that has gone unused for more
+than four years is normally retired, but a unit whose reinvestment year still lies ahead is kept.
 
 ## Visualization
 
 To visualize the results, the model is provided by a live-visualization based on the mesa package on a openstreetmap
 within an automatically opened tab in the browser.
-All results are saved within the [output](ouput) folder as output.sqlite and individual Excel files.
+All results are saved within a timestamped folder below `results/` (see `rolling_output_directory_prefix` in
+`src/simulation_options.toml`) as `output.sqlite` and individual Excel files.
 
 The runtime of the model is generally quite short and depends on the amount of regions, sites, and products modelled.
 For modelling primary steel and basic chemicals in entire Europe, the runtime is approximately 10 minutes.
+
+## Output files for energy system modellers
+
+This section explains the files a model run produces and how to use them for coupling with energy system models.
+
+### The output directory
+
+Each run creates a timestamped output directory containing:
+
+- `output.sqlite` — the primary result database,
+- one `.xlsx` file per output table,
+- `simulation_options.toml` — a copy of the configuration used for the run,
+- yearly shape file folders such as `shape_file_2025/` for geographic visualization.
+
+### `output.sqlite` is the primary source
+
+At the start of a run the complete input database is copied into the output directory as
+`output.sqlite`. All result tables are then added to that same database. This makes the output
+**self-contained**:
+
+- all input assumptions used for the run are preserved,
+- all result tables sit next to them,
+- and the ID mapping tables needed to interpret the results are already included.
+
+Result tables reference entities by integer IDs (`id_scenario`, `id_region`, `id_site`, `id_sector`,
+`id_production_unit`, `id_sub_production_unit`, `id_process`, `id_energy_carrier`, `id_product`,
+`id_by_product`). Join them against the corresponding `id_*` tables, which follow a simple
+`id` / `name` structure, to recover readable names.
+
+Use `output.sqlite` if you work in Python, R, SQL or Julia, want reproducible extraction, need to
+join results with mapping tables, or want to prepare inputs for another model.
+
+### Excel files are a convenience mirror
+
+For every result table an Excel file with the same name is written, for example
+`region_energy_carrier_total_demand_in_gj.xlsx`. They are convenient for manual inspection and
+sharing, but they contain only the table itself — **not** the ID mappings. For serious model coupling
+treat SQLite as the primary source and Excel as a mirror.
+
+### Year column convention
+
+The two sides of the database use different year column names:
+
+| Table kind | Year columns |
+|---|---|
+| Input tables | `2025`, `2030`, `2040` |
+| Output result tables | `Y2025`, `Y2030`, `Y2040` |
+
+### Gross (brutto) vs net (netto) energy demand
+
+This distinction is essential and decides which tables you should read.
+
+| Concept | Table suffix | Meaning |
+|---|---|---|
+| **Gross / brutto** | `total_demand_in_gj` | Energy required by the modeled industrial processes — internal process demand |
+| **Net / netto** | `purchased_amount_in_gj` | Energy purchased from outside the modeled system boundary — external supply requirement |
+
+The two differ because the model may include internal production of carriers, internal conversion
+chains, exports, feedstock transformations and multi-step industrial routes.
+
+- Use **gross** demand to understand process-side energy use inside industry.
+- Use **net** demand to couple to power, hydrogen, gas or multi-energy system models.
+
+For most coupling to external energy system models, **net demand is the right starting point**.
+
+### Most relevant tables for coupling
+
+| Table | Resolution | Content |
+|---|---|---|
+| `region_energy_carrier_purchased_amount_in_gj` | scenario, region, carrier | **Net** energy demand — the single most important coupling table |
+| `sector_energy_carrier_purchased_amount_in_gj` | scenario, region, sector, carrier | Net energy demand by sector |
+| `region_energy_carrier_total_demand_in_gj` | scenario, region, carrier | Gross energy demand |
+| `sector_energy_carrier_total_demand_in_gj` | scenario, region, sector, carrier | Gross energy demand by sector |
+| `region_direct_emission_in_t_co2` | region | Direct CO2 emissions |
+| `sector_direct_emission_in_t_co2` | region, sector | Direct CO2 emissions by sector |
+| `region_captured_emission_in_t_co2` | region | Captured CO2 quantities |
+| `sector_captured_emission_in_t_co2` | region, sector | Captured CO2 by sector |
+
+Every table listed above also exists as an `.xlsx` file of the same name.
 
 ## Contributing
 
@@ -161,10 +290,10 @@ Checks JavaScript code formatting with [ESlint](https://eslint.org/)
 
 ### Test coverage
 
-[![coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/fhg-isi/4bb6f7ce335564341b0181db14bdc98f/raw/forecast-sites_coverage.json)](https://github.com/fraunhofer-isi/forecast-sites/actions/workflows/coverage.yml)
+[![coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/fhg-isi/4bb6f7ce335564341b0181db14bdc98f/raw/forecast-sites_test_coverage.json)](https://github.com/fraunhofer-isi/forecast-sites/actions/workflows/coverage.yml)
 Determines Python test coverage with [pytest-cov](https://github.com/pytest-dev/pytest-cov)
 
-[![web_coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/fhg-isi/4bb6f7ce335564341b0181db14bdc98f/raw/forecast-sites_web_coverage.json)](https://github.com/fraunhofer-isi/forecast-sites/actions/workflows/web_coverage.yml)
+[![web_coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/fhg-isi/4bb6f7ce335564341b0181db14bdc98f/raw/forecast-sites_web_coverage.json)](https://github.com/fraunhofer-isi/forecast-sites/actions/workflows/web_test_coverage.yml)
 Determines JavaScript test coverage with [jest](https://jestjs.io/)
 
 ### License compliance
@@ -206,8 +335,6 @@ for a description of the Mesa-concepts "model", "agent", and "space" if you are 
 If you do not want to use mesa, you can disable its usage by setting `is_using_mesa` to `False`
 in [main.py](src/main.py).
 
-TODO: clarify/update usage without mesa.
-
 Our class [MesaSimulation](src/mesa_wrapper/mesa_simulation.py) inherits
 from [mesa.Model](https://mesa.readthedocs.io/stable/apis/model.html) and implements following
 workflow functions:
@@ -218,7 +345,7 @@ workflow functions:
 
 For each step, mesa delegates the actual work to [agents](https://mesa.readthedocs.io/stable/apis/agent.html).
 In our case, the agents are instances of the class [SiteAgent](src/mesa_wrapper/site_agent.py). Each SiteAgent wraps
-a [Site](src/industrial_site/site.py) and further delegates work to its underlying elements. Also see
+a [Site](src/sites/site.py) and further delegates work to its underlying elements. Also see
 the [Hierarchy](#hierarchy)
 described below.
 
@@ -235,12 +362,15 @@ The `FORECAST-Sites` model consists of a hierarchical structure and its elements
 * [Region](#region)
 * [Site](#site)
 * [ProductionUnit](#production-unit)
-* [Product](#product)
+* [SubProductionUnit](#sub-production-unit)
 * [Process](#process)
+
+Carriers are *not* levels of this hierarchy. A `Product`, an `EnergyCarrier` and a `ByProduct` are
+referenced by the `Demand` and `Output` objects of a `Process`; see [Carriers](#carriers) below.
 
 #### Region
 
-The class [Region](src/region/region.py) represents a geographical region. Each region can have several [Site](#sites)s.
+The class [Region](src/region/region.py) represents a geographical region. Each region can have several [Site](#site)s.
 Furthermore, each region knows about region specific properties like energy carrier prices and Co2 cost.
 
 The mesa framework does not consider regions in its original workflow. Our model considers regions while
@@ -249,8 +379,11 @@ while processing them. Each agent knows what region it belongs to.
 
 #### Site
 
-The class [Site](src/industrial_site/site.py) represents an industrial site. Each site can have
+The class [Site](src/sites/site.py) represents an industrial site. Each site can have
 several [ProductionUnit](#production-unit)s.
+
+A site also mediates access to the shared carrier pool that its production units buy from
+(`shared_pool_for`). Purchases are deducted from that pool; production does not replenish it.
 
 In order to consider sites in the mesa framework, they are wrapped by the
 class [SiteAgent](src/mesa_wrapper/site_agent.py),
@@ -258,76 +391,100 @@ implementing mesa- and mesa-geo specific functionality.
 
 #### Production Unit
 
-The class [ProductionUnit](src/industrial_site/production_unit.py) represents a production unit.
+The class [ProductionUnit](src/production_unit/production_unit.py) represents a production unit. It owns a
+list of [SubProductionUnit](#sub-production-unit)s and holds the optimization result for them.
 
-Each `ProductionUnit` is responsible to produce one distinct [Product](#product) based on an
-associated [Process](#process).
+A `ProductionUnit` knows the alternative processes it may run and exposes them as
+`available_process_options`. The optimization asks the production unit for those options; it does not
+ask a `Product`.
 
-The `Product` and its produced amount are fixed, while the associated `Process` might change over time.
+A `ProductionUnit` drives its own optimization in `optimize(year, context)`: it retires sub production
+units that have been unused for too long, maps each process option to the sub production unit that
+currently runs it, asks the `OptimizationFactory` for an optimization, runs it and applies the
+resulting process execution counts. For the multi-period optimization type the result covers several
+years at once and is cached, so later years are served from the cache instead of being re-solved.
 
-A `ProductionUnit` maps from a `Product` to a currently applied `Process`. It also knows about the previously used
-`Process`. 
+#### Sub Production Unit
 
-Furthermore, it has knowledge about the timing of investments.
+The class [SubProductionUnit](src/sub_production_unit/sub_production_unit.py) represents one installed
+process at a production unit, together with its capacity and its reinvestment year.
 
-A `ProductionUnit` is responsible for optimizing the process, see function `optimize_process`. It does not know about
-alternative `Process`es itself, but is able to ask its `Product` about them.
+It carries two separate counts and the distinction is load bearing:
+`max_process_execution_count` is the installed capacity and carries the capital costs, while
+`process_execution_count` is the actual utilization and carries the operating costs and emissions.
 
-#### Product
-
-The class [Product](src/product/product.py) represents a product. Each `Product` knows what [Process](#process)es can be
-used to produce it. It is also able to determine the corresponding cost and emission.
+`year_of_last_reinvestment` also expresses *planned future* capacity. Set it to a future year and the
+unit only becomes available from that year onwards, with no annuity charged before it.
 
 #### Process
 
-The class [Process](src/process/process.py) represents a process. Each `Process` includes data related to its energy
-demands,
-investment lifecycle, cost and emissions.
+The class [Process](src/processes/process.py) represents a process. Each `Process` includes data related to its energy
+demands, investment lifecycle, cost and emissions. Its `Demand` and `Output` objects state how much of
+which carrier is consumed or produced per process execution.
+
+A process that is already in place is represented by
+[InstalledProcess](src/processes/installed_process.py), which replaces the investment cost with an
+age-dependent repair cost.
+
+#### Carriers
+
+A carrier is something a process consumes or produces. There are three kinds, all deriving from
+[Carrier](src/carrier/carrier.py):
+
+| Class | Unit | Role |
+|---|---|---|
+| [Product](src/product/product.py) | t | the modelled output, can be sold |
+| [EnergyCarrier](src/energy_carrier/energy_carrier.py) | GJ | energy input, can be subsidized and taxed |
+| [ByProduct](src/by_product/by_product.py) | t | secondary output, can be sold |
+
+A carrier knows its own prices and emission factors. It does **not** know which processes use it.
 
 ### Construction
 
 The [factory method pattern](https://en.wikipedia.org/wiki/Factory_method_pattern) is used to separate the construction
-logic for the model [Hierarchy](hierarchy) from the model itself. The construction works as follows:
+logic for the model [Hierarchy](#hierarchy) from the model itself. The construction works as follows:
 
 * [main.py](src/main.py) applies a [RegionFactory](src/region/region_factory.py) to create [Region](#region)s. A region
-  specific [DataInterface](src/data_interface.py) is passed to the region and its subsequent entities, so that they are
-  able to initialize
-  themselves with the necessary data from [input.sqlite](input/input.sqlite).
-* Each `Region` applies a [SiteFactory](src/industrial_site/site_factory.py) to create corresponding [Site](#site)s,
-  including their
-  [ProductionUnit](#procution-unit)s based on [ProductionUnitFactory](src/production_unit/production_unit_factory.py).
-  The Region also applies an [EnergyCarrierFactory](src/energy_carrier/energy_carrier_factory.py) to create
-  `EnergyCarriers`.
+  specific [DataInterface](src/data_layer/data_interface.py) is passed to the region and its subsequent entities, so that they are
+  able to initialize themselves with the necessary data from the input database
+  (`./resources/input/input.sqlite`, see `database_path` in [simulation_options.toml](src/simulation_options.toml)).
+* The `RegionFactory` builds the carriers and the processes up front, via
+  [EnergyCarrierFactory](src/energy_carrier/energy_carrier_factory.py),
+  [ProductFactory](src/product/product_factory.py), [ByProductFactory](src/by_product/by_product_factory.py) and
+  [ProcessFactory](src/processes/process_factory.py). The results are handed down as lookup maps, so the
+  lower factories do not construct carriers or processes themselves.
+* The `RegionFactory` then applies a [SiteFactory](src/sites/site_factory.py) to create the
+  [Site](#site)s.
+* The `SiteFactory` creates a [SubProductionUnitFactory](src/sub_production_unit/sub_production_unit_factory.py)
+  and a [ProductionUnitFactory](src/production_unit/production_unit_factory.py), which together build the
+  [ProductionUnit](#production-unit)s and their [SubProductionUnit](#sub-production-unit)s.
 
-* The `ProductionUnitFactory` applies a [ProcessFactory](src/process/process_factory.py) and
-  a [ProductFactory](src/product/product_factory.py) to
-  create corresponding entities for the initialization of the `ProductionUnit`s.
-
-Once that [Hierarchy](hierarchy) has been created, the `MesaSimulation` creates
+Once that [Hierarchy](#hierarchy) has been created, the `MesaSimulation` creates
 a [SiteAgent](src/mesa_wrapper/site_agent.py) for each `Site`. (The `MesaSimulation` itself is created by the
 class [MesaServer](src/mesa_wrapper/mesa_server.py).)
 
 ### Visitor pattern
 
 The [Visitor](https://en.wikipedia.org/wiki/Visitor_pattern) design pattern allows us to separate our
-model [Hierarchy](hierarchy) from its processing. It
+model [Hierarchy](#hierarchy) from its processing. It
 enables us to add new operations without touching the existing model classes.
 
-Currently [main.py](src/main.py) creates instances of [TabularResultVisitor](src/visitor/tabular_result_visitor.py) and
-[ShapeFileVisitor](src/visitor/shape_file_visitor.py) to process the model results. You can add new visitors by
+Currently [main.py](src/main.py) creates instances of
+[CollectingResultVisitor](src/result/collecting_result_visitor.py) and
+[ShapeFileVisitor](src/result/shape_file_visitor.py) to process the model results. You can add new visitors by
 inheriting from
-[Visitor](src/visitor/visitor.py) and implementing its standardized functions (for example `visit_region`).
+[Visitor](src/result/visitor/visitor.py) and implementing its standardized functions (for example `visit_region`).
 
 As part of each simulation step, all the visitors will be passed down the model hierarchy to visit all the elements and
 interact with them. Also see the `step` function in [MesaSimulation](src/mesa_wrapper/mesa_simulation.py) and the
 `accept` functions
-in [Region](src/region/region.py), [Site](src/industrial_site/site.py), and so on.
+in [Region](src/region/region.py), [Site](src/sites/site.py), and so on.
 At the end of the simulation, the `finalize` function of each visitor will be called.
 
 ### Data collection
 
 The mesa concept of [DataCollector](https://mesa.readthedocs.io/stable/apis/datacollection.html) and reporters serves
-a similar purpose as our [Visitor](#visitor) pattern but differs in its details.
+a similar purpose as our [Visitor](#visitor-pattern) pattern but differs in its details.
 
 If you are interested in the mesa data collection workflow, you can take the property `agent_count` as en example.
 Also see the related methods `_create_data_collector` in [MesasSimulation](src/mesa_wrapper/mesa_simulation.py) and
@@ -335,7 +492,7 @@ Also see the related methods `_create_data_collector` in [MesasSimulation](src/m
 
 Also see related visualization classes
 
-* [MapModule](src/mesa_warpper/map_module.py) (custom implementation for leaflet maps) and
+* [MapModule](src/mesa_wrapper/map_module.py) (custom implementation for leaflet maps) and
 * [ChartVisualization](https://github.com/projectmesa/mesa-viz-tornado/blob/main/mesa_viz_tornado/modules/ChartVisualization.py)
   from [mesa-viz-tornado](https://github.com/projectmesa/mesa-viz-tornado).
 
@@ -350,10 +507,10 @@ This project is free and open source software:
 * It is licensed under the GNU Affero General Public License v3 or later (AGPLv3+) -
   see [LICENSE](./LICENSES/AGPL-3.0-or-later.txt).
 * It uses third-party open source modules, see<br>
-    * [pyproject.toml](./pyproject.toml)
-    * [THIRDPARTY.md](./THIRDPARTY.md)
-    * [package.json](./web/package.json)
-    * [web/THIRDPARTY.md](./web/THIRDPARTY.md).
+  * [pyproject.toml](./pyproject.toml)
+  * [THIRDPARTY.md](./THIRDPARTY.md)
+  * [package.json](./web/package.json)
+  * [web/THIRDPARTY.md](./web/THIRDPARTY.md).
 
 ## Notes
 
@@ -363,3 +520,4 @@ This project has received funding from the European Union’s Horizon Europe res
 agreement No. 101137606.
 
 <img src="https://raw.githubusercontent.com/fraunhofer-isi/.github/refs/heads/main/eu_flag.jpg" alt="eu_flag" width="100px"/>
+

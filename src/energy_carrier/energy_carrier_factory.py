@@ -1,78 +1,80 @@
-# © 2024-2026 Fraunhofer-Gesellschaft e.V., München
-#
+# SPDX-FileCopyrightText: 2026 Fraunhofer-Gesellschaft e.V., München
 # SPDX-License-Identifier: AGPL-3.0-or-later
+#
+# AI-assisted code generation was used during development.
 
 from energy_carrier.energy_carrier import EnergyCarrier
 
 
 class EnergyCarrierFactory:
     def __init__(self, data_interface):
-        self._id_scenario = data_interface.id_scenario
-        self._id_region = data_interface.id_region
         self._energy_carrier_data = data_interface.energy_carrier_data
-        self._energy_carrier_cost_mapping = data_interface.energy_carrier_cost_mapping
-        self._energy_carrier_emission_mapping = data_interface.energy_carrier_emission_mapping
-        self._region_energy_carrier_availability_mapping = data_interface.region_energy_carrier_availability_mapping
-        self._region_energy_carrier_subsidies_mapping = data_interface.region_energy_carrier_subsidies
-        self._region_energy_carrier_taxes_mapping = data_interface.region_energy_carrier_taxes
 
-    def create_energy_carrier_map(self):
+        self._purchase_price = data_interface.energy_carrier_purchase_price
+
+        self._sell_price = data_interface.energy_carrier_sell_price
+
+        self._minimum_use = data_interface.energy_carrier_minimum_use
+
+        self._emission = data_interface.energy_carrier_emission
+
+        self._subsidies = data_interface.energy_carrier_subsidies
+
+        self._taxes = data_interface.energy_carrier_taxes
+
+        self._maximum_production = data_interface.energy_carrier_maximum_production
+
+    def create_map(self):
         energy_carrier_map = {}
         for _, row in self._energy_carrier_data.iterrows():
             id_energy_carrier = row['id']
             name = row['name']
-            energy_carrier_map[id_energy_carrier] = self._create_energy_carrier(id_energy_carrier, name)
+            energy_carrier_map[id_energy_carrier] = self._energy_carrier(id_energy_carrier, name)
         return energy_carrier_map
 
-    def _create_energy_carrier(self, id_energy_carrier, name):
-        row_cost = self._energy_carrier_cost_mapping.loc[self._id_scenario, self._id_region, id_energy_carrier]
+    def _energy_carrier(self, id_energy_carrier, name):
+        emission = self._emission.loc[id_energy_carrier]
+        direct_emission_in_t_per_gj = emission['direct_emission_in_t_co2_per_gj']
 
-        row_emission = self._energy_carrier_emission_mapping.loc[self._id_scenario, self._id_region, id_energy_carrier]
+        upstream_emission_start_year_in_t_co2_per_gj = emission['upstream_emission_start_year_in_t_co2_per_gj']
+        upstream_emission_end_year_in_t_co2_per_gj = emission['upstream_emission_end_year_in_t_co2_per_gj']
 
-        row_availability = self._region_energy_carrier_availability_mapping.loc[
-            self._id_scenario,
-            self._id_region,
-            id_energy_carrier,
-        ]
+        renewably_bound_co2_emission_in_t_co2_per_gj = emission['renewably_bound_co2_emission_in_t_co2_per_gj']
 
-        row_subsidies = self._region_energy_carrier_subsidies_mapping.loc[
-            self._id_scenario,
-            self._id_region,
-            id_energy_carrier,
-        ]
+        subsidies = self._subsidies.loc[id_energy_carrier]
+        subsidies_start_year_in_euro_per_gj = subsidies['subsidies_start_year_in_euro_per_gj']
+        subsidies_interim_year_in_euro_per_gj = subsidies['subsidies_interim_year_in_euro_per_gj']
+        subsidies_end_year_in_euro_per_gj = subsidies['subsidies_end_year_in_euro_per_gj']
 
-        row_taxes = self._region_energy_carrier_taxes_mapping.loc[self._id_scenario, self._id_region, id_energy_carrier]
+        taxes = self._taxes.loc[id_energy_carrier]
+        taxes_start_year_in_euro_per_gj = taxes['taxes_start_year_in_euro_per_gj']
+        taxes_end_year_in_euro_per_gj = taxes['taxes_end_year_in_euro_per_gj']
 
-        cost_2015_in_euro_per_gj = row_cost['cost_2015_in_euro_per_gj']
-        cost_2030_in_euro_per_gj = row_cost['cost_2030_in_euro_per_gj']
-        cost_2050_in_euro_per_gj = row_cost['cost_2050_in_euro_per_gj']
+        minimum_use = self._minimum_use.loc[id_energy_carrier]
+        minimum_use_start_year_in_gj = minimum_use['minimum_use_start_year_in_gj']
+        minimum_use_end_year_in_gj = minimum_use['minimum_use_end_year_in_gj']
 
-        emission_2015_in_ton_per_gj = row_emission['emission_2015_in_ton_per_gj']
-        emission_2050_in_ton_per_gj = row_emission['emission_2050_in_ton_per_gj']
+        purchase_price_in_euro_per_gj = self._purchase_price.loc[id_energy_carrier]
 
-        availability_2015_in_gj = row_availability['availability_2015_in_gj']
-        availability_2050_in_gj = row_availability['availability_2050_in_gj']
+        sell_price_in_euro_per_gj = self._sell_price.loc[id_energy_carrier]
 
-        subsidies_2015_in_euro_per_gj = row_subsidies['subsidies_2015_in_euro_per_gj']
-        subsidies_2030_in_euro_per_gj = row_subsidies['subsidies_2030_in_euro_per_gj']
-        subsidies_2050_in_euro_per_gj = row_subsidies['subsidies_2050_in_euro_per_gj']
-
-        taxes_2015_in_euro_per_gj = row_taxes['taxes_2015_in_euro_per_gj']
-        taxes_2050_in_euro_per_gj = row_taxes['taxes_2050_in_euro_per_gj']
+        maximum_production_in_gj = self._maximum_production['maximum_production_in_gj'][id_energy_carrier]
 
         data = {
-            'cost_2015_in_euro_per_gj': cost_2015_in_euro_per_gj,
-            'cost_2030_in_euro_per_gj': cost_2030_in_euro_per_gj,
-            'cost_2050_in_euro_per_gj': cost_2050_in_euro_per_gj,
-            'emission_2015_in_ton_per_gj': emission_2015_in_ton_per_gj,
-            'emission_2050_in_ton_per_gj': emission_2050_in_ton_per_gj,
-            'availability_2015_in_gj': availability_2015_in_gj,
-            'availability_2050_in_gj': availability_2050_in_gj,
-            'subsidies_2015_in_euro_per_gj': subsidies_2015_in_euro_per_gj,
-            'subsidies_2030_in_euro_per_gj': subsidies_2030_in_euro_per_gj,
-            'subsidies_2050_in_euro_per_gj': subsidies_2050_in_euro_per_gj,
-            'taxes_2015_in_euro_per_gj': taxes_2015_in_euro_per_gj,
-            'taxes_2050_in_euro_per_gj': taxes_2050_in_euro_per_gj,
+            'direct_emission_in_t_co2_per_gj': direct_emission_in_t_per_gj,
+            'upstream_emission_start_year_in_t_co2_per_gj': upstream_emission_start_year_in_t_co2_per_gj,
+            'upstream_emission_end_year_in_t_co2_per_gj': upstream_emission_end_year_in_t_co2_per_gj,
+            'renewably_bound_co2_emission_in_t_co2_per_gj': renewably_bound_co2_emission_in_t_co2_per_gj,
+            'minimum_use_start_year_in_gj': minimum_use_start_year_in_gj,
+            'minimum_use_end_year_in_gj': minimum_use_end_year_in_gj,
+            'purchase_price_in_euro_per_gj': purchase_price_in_euro_per_gj,
+            'sell_price_in_euro_per_gj': sell_price_in_euro_per_gj,
+            'subsidies_start_year_in_euro_per_gj': subsidies_start_year_in_euro_per_gj,
+            'subsidies_interim_year_in_euro_per_gj': subsidies_interim_year_in_euro_per_gj,
+            'subsidies_end_year_in_euro_per_gj': subsidies_end_year_in_euro_per_gj,
+            'taxes_start_year_in_euro_per_gj': taxes_start_year_in_euro_per_gj,
+            'taxes_end_year_in_euro_per_gj': taxes_end_year_in_euro_per_gj,
+            'maximum_production_in_gj': maximum_production_in_gj,
         }
 
         energy_carrier = EnergyCarrier(id_energy_carrier, name, data)

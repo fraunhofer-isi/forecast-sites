@@ -1,0 +1,283 @@
+id,name
+1,CHP
+72,Methanol Synthesis
+75,MtO
+302,Waste Incineration
+303,Waste Incineration CHP
+306,MtA
+307,MtF
+308,"Catalysed Plastic Waste Pyrolysis Naphtha
+"
+309,"Catalysed Plastic Waste Pyrolysis Aromatics
+"
+310,Gasif.MeOH
+311,Heat Pump
+317,Sweet Shift1
+318,Sweet Shift2
+319,Sweet Shift3
+320,Sweet Shift4
+321,Sweet Shift5
+322,Sweet Shift6
+323,Land_Transport_Fuel_Product
+324,Gasoline as land tranpsort fuel
+325,Methanol as navigation fuel
+326,Heavy fuel oil as navigation fuel
+327,Aviation_Fuel_product
+336,Navigation_Fuel_Product
+337,Gasoline as navigation fuel
+340,Fischer Tropsch Synthesis
+341,Fischer Tropsch Synthesis (wax route)
+342,Kersosin as navigation fuel
+343,Steam Cracker
+344,Electrical Steam Cracker
+347,Biomass pyrolysis to coal
+352,Alkaline water electrolyser
+367,MTF Fuel mix
+582,Crude oil catalytic cracking
+583,Crude oil catalytic cracking feedstock module
+584,Crude oil catalytic cracking feedstock module2
+721,Methanol Synthesis Feedstock module
+722,Sustainable Methanol Synthesis Feedstock module
+751,MtO Feedstock module (fossil)
+752,MtO Feedstock module (renewable)
+753,Biomass gasification to producer gas
+754,Methane pyrolysis (thermal-assisted moving-bed pyrolysis reactor) TRL 4 
+755,Steam boiler wood
+756,Organosolv lignin
+757,Ammonia cracking
+1318,Renewable Sweet Shift1
+1319,Renewable Sweet Shift2
+1320,Renewable Sweet Shift3
+1321,Renewable Sweet Shift4
+1322,Renewable Sweet Shift5
+1583,Crude oil catalytic cracking feedstock module3
+1584,Crude oil catalytic cracking feedstock module4
+1601,LB Botlek
+1602,Huntsman
+1603,Nobian
+1604,ShinEtsu
+1605,ExxonMobil
+1606,Shell Pernis Chemicals
+3061,MtA Feedstock module
+3062,MtA Feedstock module renewable
+3071,MtF Feedstock module
+3072,Renewable MtF Feedstock module
+3401,Fischer Trops Synthesis Feddstock module
+3402,Fischer Trops Synthesis Feddstock module2
+3403,Renewable Fischer Trops Synthesis Feedstock module
+3404,Renewable Fischer Trops Synthesis Lubricants
+3412,Fischer Tropsch Synthesis (wax route) feedstock module
+3413,Renewable Fischer Tropsch Synthesis (wax route) feedstock module
+3431,Steam Cracker feedstock module
+3432,Steam Cracker feedstock module6
+3433,Steam Cracker feedstock module3
+3434,Steam Cracker feedstock module4
+3435,Steam Cracker feedstock module5
+3436,Electrical Steam Cracker feedstock module 2 renewable
+3437,Electrical Steam Cracker feedstock module 2
+3438,Steam Cracker feedstock module 2 renewable
+3439,Steam Cracker feedstock module 2
+3671,MTF Fuel mix Feedstock module
+3672,MTF Fuel mix Feedstock module renewable
+4431,Renewable Steam Cracker feedstock module
+4432,Renewable Steam Cracker feedstock module2
+4433,Renewable Steam Cracker feedstock module3
+4434,Renewable Steam Cracker feedstock module4
+4435,Renewable Steam Cracker feedstock module5
+4600,LPG to Derived Gases conversion
+4601,Renewable LPG to Renewable Derived Gases conversion
+5212,Gasif.MeOH Synthesis
+5301,DAC
+5313,Lignin_to_BTX
+5331,Lignin recovery
+5338,Biomass pyrolysis (fast pyrolysis to bio-oil)
+5339,"Hydropyrolysis (gasoline variant, feedstock module)"
+5343,Bio-oil hydrodeoxygenation upgrading
+5344,Biomass hydrothermal liquefaction (HTL)
+5345,Fischer Tropsch
+5351,Biomass Fischer Tropsch
+5354,Gasif.MeOH Synthesis2
+5355,CHP2
+11554,Renewable Naphtha Product
+15000,Refinery CC
+15001,Refinery heat module 300-500°C Derived gases
+15002,Refinery heat module 300-500°C NG
+15003,Refinery heat module 300-500°C Hydrogen
+15004,Refinery heat module 300-500°C Electricity
+15005,Refinery heat module 300-500°C Derived gases renewable
+15021,Refinery heat module 500-1000°C Derived gases
+15022,Refinery heat module  500-1000°C NG
+15023,Refinery heat module 500-1000°C Hydrogen
+15024,Refinery heat module  500-1000°C Electricity
+15025,Refinery heat module 500-1000°C Derived gases renewable
+15100,Base refinery
+15101,Base refinery fossil feedstock module
+15102,Base refinery renewable feedstock module
+15103,Base refinery bio-oil feedstock module
+15200,"NSU,NHT,ISO,CRF"
+15201,"NSU,NHT,ISO,CRF Feedstock module"
+15202,"NSU,NHT,ISO,CRF Feedstock module2"
+15300,SMR
+15310,SMR HyCO
+15311,SMR HyCO Syngas module
+15320,ATR
+15400,FCC
+15401,FCC Feedstock module
+15402,FCC Feedstock module2
+15500,DCU
+15501,DCU Feedstock module
+15502,DCU Feedstock module2
+15510,HCK
+15511,Hydrocracking feedstock module Heavy fuel oil - light fuel oil
+15512,Hydrocracking feedstock module - Light fuel oil - Jet fuel
+15513,Hydrocracking fuel module - HVR - HFO
+15514,Hydrocracking fuel module - Fuel Oil - Lube oil
+15515,Hydrocracking feedstock module renewable Heavy fuel oil - light fuel oil
+15516,Renewable Hydrocracking feedstock module - Light fuel oil - Jet fuel
+15517,Renewable Hydrocracking fuel module - HVR - HFO
+15518,Renewable Hydrocracking fuel module - Fuel Oil - Lube oil
+15519,HCK feedstock module - FT wax to fuels
+15520,Renewable HCK feedstock module - FT wax to fuels
+15521,HCK feedstock module - FT wax to lube
+15522,Renewable HCK feedstock module - FT wax to lube
+15523,HCK feedstock module - FT wax to jet fuel (high severity)
+15524,Renewable HCK feedstock module - FT wax to jet fuel (high severity)
+15525,HCK feedstock module - FT wax to naphtha+jet
+15526,Renewable HCK feedstock module - FT wax to naphtha+jet
+15527,HCK feedstock module - FT wax to lube+jet
+15528,Renewable HCK feedstock module - FT wax to lube+jet
+15529,HCK feedstock module - FT wax to lube+naphtha
+15530,Renewable HCK feedstock module - FT wax to lube+naphtha
+15533,HCK feedstock module - FT wax to real default slate (jet60/LFO30/naphtha10)
+15534,Renewable HCK feedstock module - FT wax to real default slate (jet60/LFO30/naphtha10)
+15600,Alkylation
+15601,Alkylation feedstock module
+15602,Renewable Alkylation feedstock module
+15700,Base lube oils production Plant
+15701,Base lube oils feedstock module
+15702,Base lube oils feedstock module2
+15800,Visbreaker/Thermal Cracker
+15801,Thermal Cracking feedstock module 1 - Heavy fractions - Gas oil
+15802,Thermal Cracking feedstock module 2 - Fuel and gas oil  - Naphtha
+15803,Renewable Thermal Cracking feedstock module 1 - Heavy fractions - Gas oil
+15804,Renewable Thermal Cracking feedstock module 2 - Fuel and gas oil  - Naphtha
+15805,Thermal Cracking feedstock module 3 - HVR - HFO
+15806,Renewable Thermal Cracking feedstock module 3 - HVR - HFO
+15900,Fuel oil gasification for hydrogen production
+53226,Light Naphtha steamcracker feedstock module
+53227,Renewable Light Naphtha steamcracker feedstock module
+53311,Lignin recovery Feedstock module
+53312,Lignin recovery Feedstock module2
+53398,Hydropyrolysis capacity (IH2)
+53401,"Hydropyrolysis (naphtha variant, feedstock module)"
+53551,CHP Feedstock module
+53552,CHP Feedstock module2
+150002,Renewable Diesel (to Light Fuel oil)
+150003,Renewable Derived Gases
+150004,Renewable Naphtha (unused)
+150005,Renewable Diesel (unused)
+150006,Bioethanol
+150007,Renewable Petrol coke
+150008,Renewable Heavy fuel oil
+150009,Renewable Methanol
+150010,Renewable Oil
+150011,Renewable DG
+150012,Renewable Olefines
+150013,Renewable Aromatics
+150014,Renewable Naphtha (to Naphtha)
+150015,Renewable H2
+150016,Renewable Ethanol
+150017,Renewable Lubricants
+150018,Renewable Reformate
+150019,Renewable Synthesegas
+150020,Renewable CO
+150026,Renewable Ammonia
+150029,Renewable Jet fuel
+150030,Renewable Gasoline
+150031,Renewable HVR
+151000,CRF 
+151001,LPG_product
+151002,Naphtha_product
+151003,Gasoline_product
+151004,Kerosene_product
+151005,Diesel_product
+151006,Fuel_oil_product
+151007,Diesel_blend
+151100,Gas Boiler
+151101,Gas boiler proxy 1
+151102,Gas boiler proxy 2
+151103,Gas boiler proxy 3
+151104,Gas boiler proxy 4
+151110,Electrical Gas Boiler
+151200,CRF - Heavy Naphtha to Reformate
+151201,CRF - Heavy Naphtha to Reformate Feedstock module
+151202,CRF - Heavy Naphtha to Reformate Feedstock module2
+151300,Maize to Ethanol - Dry milling and fermentation process
+151301,NSU feedstock module
+151302,NSU feedstock module renewable
+151305,Light Naphtha to Naphtha_Product
+151306,Renewable Light Naphtha to Naphtha_Product
+151307,Heavy Naphtha to Naphtha_Product
+151308,Renewable Heavy Naphtha to Naphtha_Product
+151310,NSU (Naphtha Splitting Unit)
+151400,Plant oil to biodiesel Transesterification process
+151500,HVO -NExBTL process
+152001,Renewable_LPG_product
+152002,Renewable_Naphtha_product
+152003,Renewable_Gasoline_product
+152004,Renewable_Kerosene_product
+152005,Renewable_Diesel_product
+152006,Renewable_Fuel_oil_product
+152090,Bio-asphaltene as Renewable_Bitumen_Product (direct)
+152091,Lignin + Bio-asphaltene as Bitumen_Product (blend)
+1510010,CRF Feedstockmodule
+1510020,Renewable CRF Feedstockmodule
+1520048,Bitumen_Product
+1520049,Reformate_Product
+1520050,Lubricants_Product
+1520051,Olefines_Product
+1520052,Pet Coke_Product
+1520053,Renewable_Bitumen_Product
+1520054,Renewable_Reformate_Product
+1520055,Renewable_Lubricants_Product (from carrier)
+1520056,Renewable_Olefines_Product
+1520057,Renewable_Pet Coke_Product
+1520058,Renewable_LPG_product_Renewable
+1520059,Renewable_Naphtha_product_Renewable
+1520060,Renewable_Gasoline_product_Renewable
+1520061,Renewable_Diesel_product_Renewable
+1520062,Renewable_Kerosene_product_Renewable
+1520063,Renewable_Fuel_oil_product_Renewable
+1520064,Renewable_Bitumen_Product_Renewable
+1520065,Renewable_Reformate_Product_Renewable
+1520066,Renewable_Lubricants_Product_Renewable
+1520067,Renewable_Olefines_Product_Renewable
+1520068,Renewable_Pet Coke_Product_Renewable
+1520069,"Renewable_Ethanol_Product
+"
+1520070,Reformate_Gasoline_Product
+1520071,Renewable_Aviation_Product
+1520072,Renewable_Navigation_Product
+1520073,Renewable_Land_transport_Product
+1520074,Renewable_Lubricants_Product (from product)
+1520075,Renewable_Olefines__Product
+1520076,Renewable_Pet Coke_Product2
+1520077,Lignin_as_Asphalt
+1520078,Lignin_as_Asphalt_renewable
+1520079,Renewable_CO2_storage
+1520080,H2_as_DG
+1520081,BTX_as_Reformate
+1520082,Renewable_BTX_as_Reformate
+1520083,Renewable_methanol_as_navigation_fuel
+1520084,Renewable_diesel_as_navigation_fuel
+1520085,Renewable_hfo_as_navigation_fuel
+1520086,Renewable_Diesel_land_transport_fuel
+1520087,Renewable_Gasoline_land_transport_fuel
+1520088,Elecitricty_medium
+1520089,Electricity_low
+1520090,MeOH/DME to Naphtha (H-BEA)
+1520091,MeOH/DME to Naphtha (H-BEA) Feedstock module
+1520092,Renewable MeOH/DME to Naphtha (H-BEA) Feedstock module
+1520093,Methanol to Kerosene (MtO/Oligomerization)
+1520094,Methanol to Kerosene (MtO/Oligomerization) Feedstock module
+1520095,Renewable Methanol to Kerosene (MtO/Oligomerization) Feedstock module

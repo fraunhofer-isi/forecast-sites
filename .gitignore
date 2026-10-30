@@ -1,17 +1,55 @@
-# © 2024 Fraunhofer-Gesellschaft e.V., München
-#
+# SPDX-FileCopyrightText: 2026 Fraunhofer-Gesellschaft e.V., München
 # SPDX-License-Identifier: AGPL-3.0-or-later
+#
+# AI-assisted code generation was used during development.
 
 __pycache__
 .idea
+!.idea/forecast-sites-dev.iml
 .vscode
 node_modules
 pylint.log
 report.xml
 package-lock.json
 coverage
+/output*
+/results/output*
 /data.json
 /web/eslint.json
-output
 .coverage
 .ruff_cache
+.run
+build
+results
+results_*/
+.snakemake
+nul
+editor_temp.sqlite
+input.sqlite
+.beads
+.opencode/
+tmp/
+dashboard_next_js/out/
+
+# Beads / Dolt files (added by bd init)
+.dolt/
+*.db
+.beads-credential-key
+
+# Open-source branch: internal CI/CD infrastructure
+#.gitlab/
+#.gitlab-ci.yml
+
+# Session planning artifacts
+tmpsession-*/
+COVERAGE_IMPROVEMENT_SUMMARY.md
+
+# GitLab credentials (keep only .template)
+gitlab_credentials.toml
+
+# Test files
+/coverage.json
+
+# Beads / Dolt files (added by bd init)
+.beads/proxieddb/
+*.gate.lock*

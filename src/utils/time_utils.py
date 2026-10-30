@@ -1,9 +1,19 @@
-# © 2024-2026 Fraunhofer-Gesellschaft e.V., München
-#
+# SPDX-FileCopyrightText: 2026 Fraunhofer-Gesellschaft e.V., München
 # SPDX-License-Identifier: AGPL-3.0-or-later
+#
+# AI-assisted code generation was used during development.
 
-def create_time_span(start_year, end_year, year_increment):
-    return list(range(start_year, end_year + 1, year_increment))
+
+def create_time_span(start_year, end_year, year_increment=1):
+    """
+    Build year anchors as list from start_year to end_year with given increment.
+
+    Ensure end_year is included, even if not divisible by increment.
+    """
+    years = list(range(start_year, end_year + 1, year_increment))
+    if years[-1] != end_year:
+        years.append(end_year)
+    return years
 
 
 def to_year_strings(time_span):
@@ -13,31 +23,3 @@ def to_year_strings(time_span):
 
 def _add_year_prefix(year):
     return 'Y' + str(year)
-
-
-def interpolate(year, value_2015, value_2050):
-    slope = (value_2050 - value_2015) / (2050 - 2022)
-    value = value_2015 + slope * (year - 2022)
-    return value
-
-
-def interpolate_cost(year, value_2015, value_2030, value_2050):
-    year_threshold = 2030
-    if year <= year_threshold:
-        slope = (value_2030 - value_2015) / (year_threshold - 2022)
-        value = value_2015 + slope * (year - 2022)
-    else:
-        slope = (value_2050 - value_2030) / (2050 - year_threshold)
-        value = value_2030 + slope * (year - year_threshold)
-    return value
-
-
-def exponential_decrease(year, value_2015, value_2030, value_2050):
-    year_threshold = 2030
-    if year <= year_threshold:
-        slope = (value_2030 / value_2015) ** (1 / (year_threshold - 2022))
-        value = value_2015 * slope ** (year - 2022)
-    else:
-        slope = (value_2050 - value_2030) / (2050 - year_threshold)
-        value = value_2030 + slope * (year - year_threshold)
-    return value

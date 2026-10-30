@@ -1,6 +1,8 @@
-# © 2024 Fraunhofer-Gesellschaft e.V., München
+# SPDX-FileCopyrightText: 2026 Fraunhofer-Gesellschaft e.V., München
 #
 # SPDX-License-Identifier: AGPL-3.0-or-later
+#
+# AI-assisted code generation was used during development.
 
 import logging
 import os
@@ -24,11 +26,31 @@ def main(directory_to_check='.'):
         '.pytest_cache',
         '.vscode',
         '__pycache__',
+        '.beads',
+        '.opencode',
+        '.snakemake',
+        '.next',
+        'node_modules',
+        'dashboard_next_js',
+        'doc',
+        'docs',
+        '_static',
+        'results',
+        '.ipynb_checkpoints',
+        'tmp',
     ]
     file_names_to_exclude = [
+        'AGENTS.md',
+        'CITATION.cff',
+        'CODE_OF_CONDUCT.md',
+        'CONTRIBUTING.md',
         'Dockerfile',
         'README.md',
+        'SECURITY.md',
         'THIRDPARTY.md',
+        'REUSE.toml',
+        'Snakefile',
+        '__init__.py',
     ]
     check_folders_and_files_to_be_in_snake_case(
         directory_to_check,

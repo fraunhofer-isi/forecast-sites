@@ -1,0 +1,70 @@
+id,name
+1501,LPG_Product
+1502,Naphtha_Product
+1503,Gasoline_Product
+1504,Kerosene_Product
+1505,Diesel_Product
+1506,Fuel_oil_product
+1507,Isobutene
+1508,Butene
+1509,Oxygen
+1510,Propylene Oxide
+1511,ETBE
+1512,MTBE
+1513,PG (Propylene Glycol)
+1514,TBA (tert-Butanol)
+1515,"BDO (1,4-Butanediol)"
+1516,Methyl propanediol
+1517,Allyl Alcohol
+1518,Caustic Soda (NaOH)
+1519,Aniline
+1520,Formaldehyde (aqueous)
+1521,Ethylene Oxide
+1522,MDI
+1523,Paraxylene
+1524,Monoethylene Glycol (MEG)
+1525,PET
+1526,PTA
+1527,Salt (NaCl)
+1528,Chlorine
+1529,Hydrogen Chloride (HCl)
+1530,VCM
+1531,PVC
+1532,Higher Olefins (C6+)
+1533,Benzene
+1534,Cyclohexane
+1535,Plasticizers (phthalates)
+1536,Acetone (DMK)
+1537,Hydrocarbon solvents
+1538,Isopropyl Alcohol (IPA)
+1539,SBA (sec-Butanol)
+1540,MEK
+1541,POGEs (PO glycol ethers)
+1542,Polyether Polyols
+1543,MIBK
+1544,DIBK
+1545,MIBC
+1546,SAN Polyols
+1547,"PGME
+"
+1548,Bitumen_Product
+1549,Reformate_Product
+1550,Lubricants_Product
+1551,Olefines_Product
+1552,Pet Coke_Product
+1553,Aviation_Fuel_product
+1554,Navigation_Fuel_Product
+1555,Land_Transport_Fuel_Product
+11501,LPG_Product Renewable
+11502,Aromatics_Product Renewable
+11503,Aviation_Fuel_Product Renewable
+11504,Navigation_Fuel_Product Renewable
+11505,Land_Transport_Fuel_Product Renewable
+11506,Fuel_oil_product Renewable
+11548,Renewable_Bitumen_Product
+11549,Renewable_Reformate_Product
+11550,Renewable_Lubricants_Product
+11551,Renewable_Olefines_Product
+11552,Renewable_Pet Coke_Product
+11553,Renewable_Ethanol_Product
+11554,Renewable_Naphtha

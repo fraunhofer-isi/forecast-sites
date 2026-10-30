@@ -1,6 +1,8 @@
-# © 2024 Fraunhofer-Gesellschaft e.V., München
-#
+# SPDX-FileCopyrightText: 2026 Fraunhofer-Gesellschaft e.V., München
 # SPDX-License-Identifier: AGPL-3.0-or-later
+#
+# AI-assisted code generation was used during development.
+
 
 # This file is the central configuration file for a python project.
 # It specified the required python dependencies/packages.
@@ -16,51 +18,77 @@ build-backend = "hatchling.build"
 
 [project]
 name = 'forecast-sites'
-version = '1.0'
-requires-python = '>=3.12'
+version = '2.0'
+description = 'Technology diffusion model for simulating industry transformation scenarios with high spatial resolution'
+requires-python = '>=3.14'
 license = { text = 'GNU Affero General Public License v3 or later (AGPLv3+)' }
-
-dependencies = [
-
-    'pandas==3.1.0',
-    'geopandas==1.2.0',
-    'numpy==2.0.2', # required by numba 0.60.0: numpy<2.1  # 2.1.3', also see .github/renovate.json5 if you change this
-    'mesa==3.0.3',
-    'mesa-geo==0.9.0',
-    'mesa_viz_tornado==0.1.3',
-    'numba>=0.60.0', # required by mesa-geo
-    'libpysal==4.15.1',
-    'fiona==1.10.1',
-    'shapely==2.2.0', # 2.0.6 has a bug; working versions not compatible to python 3.12: https://github.com/shapely/shapely/issues/2186
-    'pyproj==3.8.0',
-    'rtree==1.4.1',
-    'scipy==1.18.1',
-    'jsonpickle==4.1.4',
-    'matplotlib==3.11.2',
-    'colorlog==6.12.0'
+authors = [
+    { name = 'Marius Neuwirth', email = 'Marius.Neuwirth@isi.fraunhofer.de' },
+    { name = 'Simon Bussmann' },
+    { name = 'Stefan Eidolloth' },
 ]
+keywords = ['energy', 'industry', 'decarbonization', 'technology diffusion', 'simulation']
+classifiers = [
+    'Development Status :: 5 - Production/Stable',
+    'Intended Audience :: Science/Research',
+    'License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)',
+    'Programming Language :: Python :: 3',
+    'Topic :: Scientific/Engineering',
+]
+dependencies = [
+    'pandas>=3.1.0',
+    'geopandas>=1.2.0',
+    'shapely>=2.1.2',
+    'numpy>=2.5.4,<2.6',
+    'scipy>=1.16.2',
+    'mesa>=3.5.2',
+    'mesa-geo>=0.9.3',
+    'mesa_viz_tornado>=0.1.3',
+    'fiona>=1.10.1',
+    'pyproj>=3.7.2',
+    'rtree>=1.4.1',
+    'libpysal>=4.15.1',
+    'jsonpickle>=4.1.1',
+    'colorlog>=6.12.0',
+    'flask>=3.1.0',
+    'werkzeug>=3.1.0',
+    'toml>=0.10.2',
+    'pyyaml>=6.0.2',
+    'numexpr>=2.14.2',
+]
+
+[project.urls]
+Homepage = 'https://github.com/fraunhofer-isi/forecast-sites'
+Repository = 'https://github.com/fraunhofer-isi/forecast-sites'
+'Bug Tracker' = 'https://github.com/fraunhofer-isi/forecast-sites/issues'
 
 [project.optional-dependencies]
 lint = [
-	'ruff==0.14.0',
+    'ruff>=0.16.3',
+    'pyspellchecker>=0.8.3',
+]
+
+format = [
+    'black[d]>=25.9.0',
 ]
 
 test = [
-	'pytest==9.2.0',
-	'pytest-cov==7.1.0',
-	'coverage==7.17.0',
-	'mock==5.2.0',
+    'pytest>=8.4.2',
+    'pytest-cov>=7.0.0',
+    'coverage>=7.10.7',
+    'mock>=5.2.0',
+    'openpyxl>=3.0.0',
 ]
 
 license = [
-	'licensecheck==2026.0.8',
-	'license_scanner==0.4.4',
-	'reuse==6.3.0',
-	'pipreqs==0.5.0',
-	'third-party-license-file-generator==2025.12.31.post2'
+    'licensecheck>=2026.0.8',
+    'license_scanner>=0.3.2',
+    'reuse>=6.1.2',
+    'pip-licenses-cli>=4.1.0', # needed by check/generate_thirdparty_license_file.py
 ]
 
-dev = ['forecast-sites[lint, test, license]']
+dev = ['forecast-sites[lint, format, test, license]']
+
 
 [tool.hatch.build.targets.wheel]
 packages = ['src', 'test/test_utils']
@@ -69,9 +97,21 @@ packages = ['src', 'test/test_utils']
 'test/test_utils' = 'test_utils'
 
 [tool.licensecheck]
-using = 'PEP631'
 zero = true  # results in non-zero exit code if incompatibilities are found
-ignore_licenses = ['ZOPE PUBLIC LICENSE', 'REPOZE PUBLIC LICENSE', 'Apache Software License']
+extras = ['dev']
+ignore_licenses = [
+    'ZOPE PUBLIC LICENSE',
+    'REPOZE PUBLIC LICENSE',
+    'Apache Software License',
+    'APACHE SOFTWARE LICENSE',
+    'MIT License;; Academic Free License (AFL)',
+]
+ignore_packages = [
+    'third-party-license-file-generator',
+    'waitress',
+    'reuse',
+    'referencing',
+]
 
 
 [tool.isort]
@@ -82,24 +122,35 @@ profile = 'black'
 # Also see
 # https://docs.pytest.org/en/7.1.x/customize.html#pyproject-toml
 # https://pytest-cov.readthedocs.io/en/latest/config.html
-# If you want to see console output from tests, include -s flag
+# If you want to see console output from tests, run: pytest -s
 addopts = [
     # !! do not include --cov option here because it would destroy PyCharm debug feature !!
     # Also see https://stackoverflow.com/questions/40718760/unable-to-debug-in-pycharm-with-pytest
     '--import-mode=importlib',
     '--junitxml=report.xml',
-    '-s'  # enables logging output in console while debugging tests
 ]
 pythonpath = ['src', 'test']
 testpaths = 'test'
+log_cli_level = 'ERROR'
+filterwarnings = [
+    # coverage package leaves its internal sqlite3 database open during collection — not fixable in our code
+    'ignore::ResourceWarning',
+    # pandas deprecation: raw sqlite3.Connection will require SQLAlchemy in a future version.
+    # Fixing requires adding SQLAlchemy as a dependency (tracked separately).
+    'ignore:pandas only supports SQLAlchemy:UserWarning',
+]
 
 [tool.coverage.run]
+# Measure coverage only for src folder, not test folder
 source = ['src']
+branch = true
+disable_warnings = ['pragma-not-used']
 
 [tool.coverage.report]
 # Also see
-# https://coverage.readthedocs.io/en/6.4.4/config.html#config
-fail_under = 100
+# https://docs.pytest.org/en/7.1.x/customize.html#pyproject-toml
+# https://pytest-cov.readthedocs.io/en/latest/config.html
+fail_under = 99.9
 show_missing = true
 include_namespace_packages = true
 
@@ -108,7 +159,7 @@ directory = '.coverage'
 
 [tool.ruff]
 target-version = "py312"
-line-length = 120
+line-length = 130
 
 [tool.ruff.lint]
 select = ["ALL"]
@@ -122,6 +173,10 @@ exclude = [
 ignore = [
     # doc on rule codes:
     # https://docs.astral.sh/ruff/rules/
+
+    "CPY001", # missing-copyright-notice (using REUSE annotations instead)
+    "FIX002", # line-contains-todo
+    "LOG015", # root-logger-call
 
     "ANN001", # missing-type-function-argument
     "ANN002", # missing-type-args
@@ -152,14 +207,12 @@ ignore = [
     "INP001", # implicit-namespace-package
     "ISC001", # single-line-implicit-string-concatenation
 
-    "PD901", # pandas-df-variable-name
-
     "Q000", # bad-quotes-inline-string
     "Q003", # avoidable-escaped-quote
 
     "RET504", # unnecessary-assign
 
-    "RUF012", #	mutable-class-default
+    "RUF012", # mutable-class-default
 
     "S311", # suspicious-non-cryptographic-random-usage
 
@@ -167,6 +220,17 @@ ignore = [
 
     "TD002", # missing-todo-author
     "TD004", # missing-todo-colon
+
+    "S608", # possible SQL injection via string-based query construction
+
+    "SLF001", # private-member-access (intentional internal API access within package)
+    "ANN401", # dynamically-typed-expression (Any type sometimes necessary for flexibility)
+    "ARG002", # unused-method-argument (sometimes required by interface contracts)
+    "FBT001", # boolean-positional-arg-in-function-definition (sometimes necessary)
+    "FBT002", # boolean-default-value-in-function-definition (sometimes necessary)
+    "PLR0915", # too-many-statements (initialization functions may need many statements)
+    "TRY004", # tryexcept-type-exception (ValueError appropriate for invalid type values)
+
 ]
 
 [tool.ruff.lint.pylint]
@@ -175,7 +239,12 @@ max-args = 10  # Set the allowed number of function arguments
 [tool.ruff.lint.per-file-ignores]
 # doc on rule codes:
 # https://docs.astral.sh/ruff/rules/
-"test/*" = [
+
+"workflow/Snakefile" = [
+    "F821" # undefined-name
+]
+
+"test*/**/*.py" = [
     "PLR2004", # magic-value-comparison
 
     "PD901", # pandas-df-variable-name
@@ -185,10 +254,51 @@ max-args = 10  # Set the allowed number of function arguments
     "SLF001", # private-member-access
 
     "UP026", # deprecated-mock-import (we use own "mock" package)
+
+    "FBT003", # Boolean positional value in function call
+
+    "ERA001", # commented-out-code (test documentation comments)
+
+    "ARG002", # unused-method-argument (test fixtures)
+
+    "ARG005", # unused-lambda-argument (test fixtures)
+
+    "PLC0415", # import-outside-top-level (test fixtures need local scope)
+
+    "RUF002", # ambiguous-unicode-character-docstring (× in doc examples)
+
+    "RUF001", # ambiguous-unicode-character-string (× in test strings)
+
+    "RUF003", # ambiguous-unicode-character-comment (× in comment)
+
+    "RUF043", # pytest-raises-ambiguous-pattern (regex patterns in tests)
+
+    "S104", # hardcoded-bind-all-interfaces (test string literals)
+
+    "ARG001", # unused-function-argument (some test functions use fixtures for side effects)
+
+    "D401", # non-imperative-mood (test docstrings)
+
+    "D205", # missing-blank-line-after-summary (test docstrings)
+]
+
+"src/result/*.py" = [
+    "SLF001", # private-member-access (visitor pattern delegation)
+]
+
+"src/optimization/*.py" = [
+    "SLF001", # private-member-access (optimization delegation patterns)
+]
+
+"src/processes/*.py" = [
+    "SLF001", # private-member-access (domain model patterns)
+]
+
+"src/input/*.py" = [
+    "SLF001", # private-member-access (data processing patterns)
 ]
 
 [tool.ruff.format]
 # Also see
 # https://docs.astral.sh/ruff/configuration/
 quote-style = "single"
-

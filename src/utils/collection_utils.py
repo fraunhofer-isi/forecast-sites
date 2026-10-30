@@ -1,6 +1,8 @@
-# © 2024-2026 Fraunhofer-Gesellschaft e.V., München
-#
+# SPDX-FileCopyrightText: 2026 Fraunhofer-Gesellschaft e.V., München
 # SPDX-License-Identifier: AGPL-3.0-or-later
+#
+# AI-assisted code generation was used during development.
+
 
 def min_object(collection, min_function, default_object):
     # Loops over the collection and returns the default_object or an object of the collection,
@@ -29,15 +31,15 @@ def object_sum(collection, value_function):
     return result
 
 
-def object_subtract(collection, value_function):
-    # Loops over the collection and returns the sum of the values returned
-    # by the value_function (that is called for each object in the collection)
-
-    result = 0
-    for current_object in collection:
-        result -= value_function(current_object)
-    return result
-
-
 def join_with_comma(collection):
     return ', '.join(list(map(str, collection)))
+
+
+def unique_list_preserving_order(collection):
+    already_included_items = set()
+    ordered_unique_list = []
+    for item in collection:
+        if item not in already_included_items:
+            already_included_items.add(item)
+            ordered_unique_list.append(item)
+    return ordered_unique_list

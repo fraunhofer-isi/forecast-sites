@@ -1,21 +1,41 @@
-# © 2024-2026 Fraunhofer-Gesellschaft e.V., München
-#
+# SPDX-FileCopyrightText: 2026 Fraunhofer-Gesellschaft e.V., München
 # SPDX-License-Identifier: AGPL-3.0-or-later
+#
+# AI-assisted code generation was used during development.
+import pathlib
 
-from unittest.mock import patch
+from test_utils.isi_mock import patch
 
 from utils import file_utils
 
 
-def test_create_folder_if_not_exists():
-    with patch('os.path.isdir', return_value=False) as patched_isdir, patch('os.mkdir') as patched_mkdir:
-        file_utils.create_folder_if_not_exists('folder_path')
-        assert patched_isdir.called
-        assert patched_mkdir.called
+class TestCreateFolderIfNotExists:
+    @patch(pathlib.Path.__init__, None)
+    @patch(pathlib.Path.is_dir, True)
+    def test_folder_exists(self):
+        with patch(pathlib.Path.mkdir) as mocked_mkdir:
+            file_utils.create_folder_if_not_exists('folder_path')
+            assert not mocked_mkdir.called
+
+    @patch(pathlib.Path.__init__, None)
+    @patch(pathlib.Path.is_dir, False)
+    def test_folder_does_not_exist(self):
+        with patch(pathlib.Path.mkdir) as mocked_mkdir:
+            file_utils.create_folder_if_not_exists('folder_path')
+            assert mocked_mkdir.called
 
 
-def test_delete_file_if_exists():
-    with patch('os.path.isfile', return_value=True) as patched_isfile, patch('os.remove') as patched_remove:
-        file_utils.delete_file_if_exists('file_path')
-        assert patched_isfile.called
-        assert patched_remove.called
+class TestDeleteFileIfExists:
+    @patch(pathlib.Path.__init__, None)
+    @patch(pathlib.Path.is_file, True)
+    def test_file_exists(self):
+        with patch(pathlib.Path.unlink) as mocked_unlink:
+            file_utils.delete_file_if_exists('file_path')
+            assert mocked_unlink.called
+
+    @patch(pathlib.Path.__init__, None)
+    @patch(pathlib.Path.is_file, False)
+    def test_does_not_exist(self):
+        with patch(pathlib.Path.unlink) as mocked_unlink:
+            file_utils.delete_file_if_exists('file_path')
+            assert not mocked_unlink.called

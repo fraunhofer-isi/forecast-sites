@@ -1,6 +1,7 @@
-# © 2024 Fraunhofer-Gesellschaft e.V., München
-#
+# SPDX-FileCopyrightText: 2026 Fraunhofer-Gesellschaft e.V., München
 # SPDX-License-Identifier: AGPL-3.0-or-later
+#
+# AI-assisted code generation was used during development.
 
 name: reuse_compliance
 
@@ -13,7 +14,7 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@v6
       - name: reuse compliance check
         # also see https://reuse.readthedocs.io/en/v2.1.0/usage.html
         uses: fsfe/reuse-action@v6
