@@ -23,7 +23,7 @@ jobs:
         node-version: ${{ env.NODE_VERSION }}
     - name: extract python version
       uses: ./.github/actions/extract-python-version
-    - uses: actions/setup-python@v6
+    - uses: actions/setup-python@v7
       with:
         python-version: ${{ env.PYTHON_VERSION }}
     - name: install dependencies
