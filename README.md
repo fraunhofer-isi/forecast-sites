@@ -14,8 +14,9 @@ The development of the framework was conducted within the Horizon Europe project
 Transience</a> under grant agreement No. 101137606.
 Within this repository also a first part of Fraunhofer ISI IndustrialSiteDatabase for European primary steel and basic
 chemical (high value chemicals (HVC), ammonia, and methanol) is published to directly start exporting scenarios for
-those
-industry branches.
+those industry branches.
+
+A newer version of the model is available at the main branch. 
 
 ## Table of Contents
 
