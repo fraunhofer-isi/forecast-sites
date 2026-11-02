@@ -53,3 +53,6 @@ gitlab_credentials.toml
 # Beads / Dolt files (added by bd init)
 .beads/proxieddb/
 *.gate.lock*
+
+# Environment settings and local credentials
+.env
