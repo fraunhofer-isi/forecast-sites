@@ -77,7 +77,10 @@ def _generate_with_npm(output: Path) -> None:
                 '--input',
                 'package.json',
                 '--output',
-                'THIRDPARTY.md',
+                # The subprocess runs from web/, while --output is interpreted
+                # relative to the repository root. Pass an absolute path so both
+                # default and custom output paths resolve consistently.
+                str(output.resolve()),
                 '--overwrite',
             ],
             check=True,
