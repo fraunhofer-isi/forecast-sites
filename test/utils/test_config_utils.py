@@ -180,7 +180,8 @@ def test_validated_scenario_ids_accepts_list():
 
 
 def test_validated_scenario_ids_rejects_bare_scalar():
-    """A bare int (the pre-rename id_scenario = 1 style) is rejected, unlike region_ids.
+    """
+    A bare int (the pre-rename id_scenario = 1 style) is rejected, unlike region_ids.
 
     DECISION: scenario_ids requires a list, matching region_ids, rather than silently
     wrapping a scalar. See bd forecast-sites-private (scenario-id cleanup) for the

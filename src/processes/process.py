@@ -141,6 +141,7 @@ class Process(AbstractProcess, ProcessDataSpec):
             simulation_options,
             self.investment_funding_interpolation_data_in_euro_per_process_count,
         )
+
     def _value_added_in_euro_per_process_count(self, year, co2_price_in_euro_per_t_co2, simulation_options):
         production_gain = 0
 

@@ -11,7 +11,8 @@ class LinearProgrammingHelper:
 
     @staticmethod
     def planning_years(current_year, simulation_options):
-        """Get planning years for the optimization horizon.
+        """
+        Get planning years for the optimization horizon.
 
         Args:
             current_year: The current year
@@ -19,6 +20,7 @@ class LinearProgrammingHelper:
 
         Returns:
             List of planning years
+
         """
         end_year = current_year + simulation_options['rolling_planning_horizon_in_years']
         planning_year_increment = 1

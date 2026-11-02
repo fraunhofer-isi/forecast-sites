@@ -143,6 +143,7 @@ def test_consume_purchased_carrier_amounts(sut):
 
 class TestExportProducedCarrierAmounts:
     """Tests for exporting produced carriers - no longer provides to pool."""
+
     @patch_property(ProductionUnit.used_carriers, ['mocked_carrier'])
     @patch(ProductionUnit._export_amount_for_carrier, 0)
     def test_with_zero_value(self, sut):

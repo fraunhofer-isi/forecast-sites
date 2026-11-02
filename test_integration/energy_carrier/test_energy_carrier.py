@@ -3,7 +3,7 @@
 #
 # AI-assisted code generation was used during development.
 
-from _pytest.python_api import approx
+import pytest
 from test_utils.isi_mock import fixture
 
 
@@ -38,24 +38,24 @@ def test_direct_emission(sut):
 
 def test_upstream_emission(sut, simulation_options):
     result = sut.upstream_emission_in_t_co2_per_gj(2025, simulation_options)
-    assert result == approx(0.075)  # 0.1 + (0.05 - 0.1)/ 2
+    assert result == pytest.approx(0.075)  # 0.1 + (0.05 - 0.1)/ 2
 
 
 def test_upstream_emission_per_unit(sut, simulation_options):
     result = sut.upstream_emission_in_t_co2_per_unit(2025, simulation_options)
-    assert result == approx(0.075)
+    assert result == pytest.approx(0.075)
 
 
 def test_minimum_use(sut, simulation_options):
     result = sut.minimum_use_in_unit(2025, simulation_options)
-    assert result == approx(0)
+    assert result == pytest.approx(0)
 
 
 def test_subsidies(sut, simulation_options):
     result = sut.subsidies_in_euro_per_gj(2025, simulation_options)
-    assert result == approx(1)
+    assert result == pytest.approx(1)
 
 
 def test_taxes(sut, simulation_options):
     result = sut.taxes_in_euro_per_gj(2025, simulation_options)
-    assert result == approx(5.5)  # 5 + (6 - 5)/2
+    assert result == pytest.approx(5.5)  # 5 + (6 - 5)/2

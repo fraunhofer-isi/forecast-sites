@@ -6,4 +6,3 @@
 import pytest
 
 pytest.skip('Obsolete tests for removed DebuggingResultVisitor skipped', allow_module_level=True)
-

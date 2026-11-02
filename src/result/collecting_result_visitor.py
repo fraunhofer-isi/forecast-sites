@@ -807,4 +807,3 @@ class CollectingResultVisitor(TabularVisitor):
             process_saving_due_to_captured_emission_in_euro,
             year,
         )
-

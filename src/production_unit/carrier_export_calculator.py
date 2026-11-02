@@ -11,7 +11,8 @@ class CarrierExportCalculator:
 
     @staticmethod
     def normalize_export_amount(export_amount, carrier=None):
-        """Normalize export amount, handling small negative values due to numerical precision.
+        """
+        Normalize export amount, handling small negative values due to numerical precision.
 
         Args:
             export_amount: The calculated export amount
@@ -22,6 +23,7 @@ class CarrierExportCalculator:
 
         Raises:
             ValueError: If export is significantly negative (< -epsilon)
+
         """
         if export_amount < 0:
             if export_amount < -CarrierExportCalculator.EPSILON:

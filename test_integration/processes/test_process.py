@@ -3,7 +3,7 @@
 #
 # AI-assisted code generation was used during development.
 
-from _pytest.python_api import approx
+import pytest
 from test_utils.isi_mock import fixture
 
 
@@ -52,7 +52,7 @@ def test_depreciation_period(sut):
 
 def test_non_energy_direct_process_emission_in_t_co2_per_process_count(sut):
     result = sut.non_energy_direct_process_emission_in_t_co2_per_process_count
-    assert result == approx(0.05)
+    assert result == pytest.approx(0.05)
 
 
 def test_capex_interpolation_data_in_euro_per_process_count(sut):
@@ -82,13 +82,13 @@ def test_efficiency_improvement_interpolation_data(sut):
 def test_compound_factor(sut, region):
     interest_rate = region.interest_rate
     result = sut._compound_factor(interest_rate)
-    assert result == approx(2.07892, 1e-5)  # (1 + 0.05) ** 15
+    assert result == pytest.approx(2.07892, 1e-5)  # (1 + 0.05) ** 15
 
 
 def test_annuity_factor(sut, region):
     interest_rate = region.interest_rate
     result = sut._annuity_factor(interest_rate)
-    assert result == approx(0.096342, 1e-5)  # 0.05 * 2.07892 / (2.07892 - 1)
+    assert result == pytest.approx(0.096342, 1e-5)  # 0.05 * 2.07892 / (2.07892 - 1)
 
 
 def test_used_carriers(sut):
@@ -163,7 +163,7 @@ def test_production_in_gj(sut):
 
 def test_net_capex_in_euro_per_process_count(sut, simulation_options):
     result = sut.net_capex_in_euro_per_process_count(2000, simulation_options)
-    assert result == approx(2e6)  # 2e6 - 0
+    assert result == pytest.approx(2e6)  # 2e6 - 0
 
 
 def test_annual_cost_in_euro_per_process_count(
@@ -179,7 +179,7 @@ def test_invest_cost_in_euro_per_process_count(sut, simulation_options, region):
     interest_rate = region.interest_rate
     result = sut.invest_cost_in_euro_per_process_count(2000, interest_rate, simulation_options)
     # Returning capex value at start year
-    assert result == approx(2000000.0, 1e-1)  # 2e6
+    assert result == pytest.approx(2000000.0, 1e-1)  # 2e6
 
 
 def test_year_of_new_investment(sut):
@@ -190,36 +190,36 @@ def test_production_cost_in_euro_per_process_count(sut, simulation_options, regi
     interest_rate = region.interest_rate
     result = sut.production_cost_in_euro_per_process_count(2000, interest_rate, simulation_options)
     # annuity + opex + purchase = 192684 + 150000 + 8400 = 350684
-    assert result == approx(350684, 1e-1)  # 192684 + 150_000 + 8400
+    assert result == pytest.approx(350684, 1e-1)  # 192684 + 150_000 + 8400
 
 
 def test_annuity_on_investment_in_euro_per_process_count(sut, simulation_options, region):
     interest_rate = region.interest_rate
     result = sut.annuity_on_investment_in_euro_per_process_count(2000, interest_rate, simulation_options)
-    assert result == approx(192684, 1e-1)  # 0.096342 * (2e6 - 0)
+    assert result == pytest.approx(192684, 1e-1)  # 0.096342 * (2e6 - 0)
 
 
 def test_purchase_cost_in_euro_per_process_count(sut):
     result = sut.purchase_cost_in_euro_per_process_count(2000)
     # purchase cost is raw only: 8400
-    assert result == approx(8400)
+    assert result == pytest.approx(8400)
 
 
 def test_capex_in_euro_per_process_count(sut, simulation_options):
     result = sut.capex_in_euro_per_process_count(2000, simulation_options)
-    assert result == approx(2e6)
+    assert result == pytest.approx(2e6)
 
 
 def test_opex_in_euro_per_process_count(sut, simulation_options):
     result = sut.opex_in_euro_per_process_count(2000, simulation_options)
-    assert result == approx(0.15e6)
+    assert result == pytest.approx(0.15e6)
 
 
 def test_subsidies_in_euro_per_process_count(sut, simulation_options):
     result = sut.subsidies_in_euro_per_process_count(2000, simulation_options)
-    assert result == approx(400)
+    assert result == pytest.approx(400)
 
 
 def test_taxes_in_euro_per_process_count(sut, simulation_options):
     result = sut.taxes_in_euro_per_process_count(2000, simulation_options)
-    assert result == approx(1200)
+    assert result == pytest.approx(1200)

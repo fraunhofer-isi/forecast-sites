@@ -3,7 +3,7 @@
 #
 # AI-assisted code generation was used during development.
 
-from _pytest.python_api import approx
+import pytest
 from test_utils.isi_mock import fixture
 
 from carrier.carrier_unit import CarrierUnit
@@ -50,4 +50,4 @@ class TestSellPriceInEuroPerT:
 
 def test_upstream_emission_in_t_co2_per_t(sut, simulation_options):
     result = sut.upstream_emission_in_t_co2_per_t(2025, simulation_options)
-    assert result == approx(1.6)  # 1.5 + (1.7 - 1.5)/ 2
+    assert result == pytest.approx(1.6)  # 1.5 + (1.7 - 1.5)/ 2

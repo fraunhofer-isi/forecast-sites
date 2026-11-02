@@ -294,7 +294,8 @@ def _read_chain_tables(database_path: str | Path) -> dict[str, pd.DataFrame]:
 
 
 def _read_required_table(connection: sqlite3.Connection, table_name: str, database_path: str) -> pd.DataFrame:
-    """Read a table that the export depends on, failing with a clear remedy if it is missing.
+    """
+    Read a table that the export depends on, failing with a clear remedy if it is missing.
 
     An empty-but-present table is a legitimate result of a simulation that produced no data for
     that table (TabularVisitor always creates its result tables, even when empty); only a missing

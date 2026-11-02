@@ -56,7 +56,6 @@ class RegionResultApplier:
 
         return deltas
 
-
     def _apply_pool_deltas(self, year, pool_deltas, context):
         for (pool, carrier), consumed in pool_deltas.items():
             if consumed > 0:

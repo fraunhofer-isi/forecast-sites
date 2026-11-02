@@ -3,8 +3,9 @@
 #
 # AI-assisted code generation was used during development.
 
-import pytest
 from unittest.mock import MagicMock
+
+import pytest
 
 from carrier.carrier_unit import CarrierUnit
 from result.carrier_result_dispatcher import CarrierResultDispatcher

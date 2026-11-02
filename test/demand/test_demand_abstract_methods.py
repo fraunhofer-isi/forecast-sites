@@ -3,8 +3,9 @@
 #
 # AI-assisted code generation was used during development.
 
-import pytest
 from unittest.mock import MagicMock
+
+import pytest
 
 from demand.demand import Demand
 from demand.demand_factory import DemandFactory
@@ -46,9 +47,8 @@ class TestDemandFactoryAbstractMethods:
         """Test that _demand_entries_for_process raises KeyError when no entries found."""
         mock_data = MagicMock()
         mock_data.query.side_effect = KeyError('id_process')
-        
+
         factory = DemandFactory(mock_data, None, None, {})
-        
+
         with pytest.raises(KeyError, match='No entries for id_process 123'):
             factory._demand_entries_for_process(123)
-

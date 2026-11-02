@@ -3,7 +3,6 @@
 #
 # AI-assisted code generation was used during development.
 
-import pytest
 from shapely.geometry.linestring import LineString
 from test_utils.isi_mock import Mock, patch
 

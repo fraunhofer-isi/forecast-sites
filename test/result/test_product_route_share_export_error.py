@@ -38,7 +38,8 @@ class TestProductRouteShareExportMissingResultTables(unittest.TestCase):
     """Test export_product_route_shares when output.sqlite exists but has no result tables."""
 
     def test_export_with_missing_result_tables(self):
-        """Test export_product_route_shares raises RuntimeError naming the missing table.
+        """
+        Test export_product_route_shares raises RuntimeError naming the missing table.
 
         This is distinct from the missing-database case above: the file exists (so the
         FileNotFoundError guard passes), but a simulation never ran against it, so none of

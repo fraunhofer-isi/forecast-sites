@@ -306,3 +306,8 @@ max-args = 10  # Set the allowed number of function arguments
 # Also see
 # https://docs.astral.sh/ruff/configuration/
 quote-style = "single"
+# Do not format Python snippets embedded in markdown. The AGENTS.md files use
+# deliberate column alignment in their example blocks to teach conventions, and
+# ruff's reformatting destroys that alignment while adding no value. Discovery
+# for .md is on by default, so excluding it here keeps documentation intact.
+exclude = ["*.md"]

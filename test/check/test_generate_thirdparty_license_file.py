@@ -117,4 +117,6 @@ def test_format_header_starts_with_spdx_tags():
     spdx_end = header.index('AI-assisted code generation was used during development.')
     heading_pos = header.index('# Third-party licenses')
     assert spdx_end < heading_pos
+
+
 # REUSE-IgnoreEnd

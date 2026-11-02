@@ -11,7 +11,6 @@ from carrier.carrier_unit import CarrierUnit
 from optimization.linear_programming_constraint import LinearProgrammingConstraint
 from optimization.linear_programming_helper import LinearProgrammingHelper
 from processes.installed_process import InstalledProcess
-from utils.time_utils import create_time_span
 
 
 class LinearProgrammingModelBuilder:

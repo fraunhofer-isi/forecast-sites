@@ -126,7 +126,7 @@ class RegionMultiPeriodOptimization:
 
     # ── Objective ──────────────────────────────────────────────────────
 
-    def _build_objective(self, interest_rate, simulation_options):  # noqa: C901
+    def _build_objective(self, interest_rate, simulation_options):
         c = [0.0] * self._total_variables
 
         for pu in self._production_units:

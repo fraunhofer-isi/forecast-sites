@@ -11,7 +11,6 @@ from optimization.linear_programming_helper import LinearProgrammingHelper
 from optimization.linear_programming_optimization_result import (
     LinearProgrammingOptimizationResult,
 )
-from utils.time_utils import create_time_span
 
 
 class LinearProgrammingResultParser:

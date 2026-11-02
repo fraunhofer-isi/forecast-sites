@@ -93,7 +93,8 @@ class ShapeFileVisitor(Visitor):
 
     @staticmethod
     def _join_within_limit(ids):
-        """Join ids as comma-separated string, staying within ESRI_MAX_FIELD_LENGTH.
+        """
+        Join ids as comma-separated string, staying within ESRI_MAX_FIELD_LENGTH.
 
         When all ids fit, the result is identical to join_with_comma(ids).
         When they do not all fit, the result is '<first ids>, ..., <last id>'
@@ -111,7 +112,7 @@ class ShapeFileVisitor(Visitor):
 
         if len(suffix) >= ESRI_MAX_FIELD_LENGTH:
             # Defensive: last id alone fills the field (impossible for integer ids).
-            return full[:ESRI_MAX_FIELD_LENGTH - len(', ...')] + ', ...'
+            return full[: ESRI_MAX_FIELD_LENGTH - len(', ...')] + ', ...'
 
         budget = ESRI_MAX_FIELD_LENGTH - len(suffix)
         prefix = ''
