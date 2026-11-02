@@ -16,7 +16,9 @@ pushd "%~dp0.."
 
 
 echo "Installing python requirements..."
-pip install .[dev] | findstr /V /C:"Requirement already satisfied"
+REM No pipe here: piping to findstr would make the exit code findstr's, so a
+REM failed install would be reported as success.
+pip install --quiet .[dev]
 
 echo "Formatting code..."
 isort .

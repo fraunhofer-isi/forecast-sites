@@ -11,6 +11,9 @@ on:
   pull_request:
     branches: [ '**' ]
 
+permissions:
+  contents: read
+
 jobs:
   test_coverage:
     runs-on: ubuntu-latest
@@ -27,14 +30,24 @@ jobs:
         cd web
         npm install
     - name: test
-      run: |      
+      # pipefail so a failing jest run is not masked by `tee` succeeding.
+      shell: bash
+      run: |
+        set -o pipefail
         cd web
-        mkdir .coverage
+        mkdir -p .coverage
         npm run test-coverage | tee ./.coverage/coverage.log     
         JEST_COVERAGE=$(awk '$1 == "All" {print $4+0}' ./.coverage/coverage.log)
+        if [ -z "$JEST_COVERAGE" ]; then
+          echo "Could not parse coverage from ./.coverage/coverage.log; refusing to publish a bogus badge."
+          exit 1
+        fi
         echo "JEST_COVERAGE=$JEST_COVERAGE" >> $GITHUB_ENV
         echo "Jest test coverage is $JEST_COVERAGE"
     - name: badge
+      # Fork pull requests get no repository secrets, so the gist update would
+      # always fail there. Badges are only meaningful for the main branch anyway.
+      if: github.event_name != 'pull_request'
       uses: schneegans/dynamic-badges-action@v1.9.0
       with:
         # The Variables GIST_SECRET and GIST_Id need to be stored in the GitHub repository secrets

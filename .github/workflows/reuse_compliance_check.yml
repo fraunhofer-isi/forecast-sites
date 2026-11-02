@@ -10,11 +10,22 @@ on:
     workflows: [ "reuse_annotate" ]
     types: [ completed ]
 
+permissions:
+  contents: read
+
 jobs:
   check:
     runs-on: ubuntu-latest
+    # This workflow_run payload describes reuse_annotate (whose own trigger is
+    # workflow_run), not the original push. Require successful annotation; a
+    # skipped or failed run must not report compliance against the wrong tree.
+    if: github.event.workflow_run.conclusion == 'success'
     steps:
       - uses: actions/checkout@v7
+        with:
+          # Verify the branch annotated by the upstream workflow, not the
+          # default branch when this job happens to start.
+          ref: ${{ github.event.workflow_run.head_branch }}
       - name: reuse compliance check
         # also see https://reuse.readthedocs.io/en/v2.1.0/usage.html
         uses: fsfe/reuse-action@v6

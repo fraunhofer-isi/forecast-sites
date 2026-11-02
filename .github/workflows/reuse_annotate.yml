@@ -13,15 +13,27 @@ on:
     workflows: [ "third_party_license_file_generation" ]
     types: [ completed ]
 
+permissions:
+  contents: read
+
 jobs:
   annotate:
     runs-on: ubuntu-latest
     permissions:
-      # Give the default GITHUB_TOKEN write permission to commit and push the
-      # added or changed files to the repository.
       contents: write
+    # `workflow_run` fires for pull_request-triggered runs too, but the checkout
+    # below lands on the default branch and the token cannot push to a fork.
+    # Annotating is only meaningful for the branch the upstream run pushed to.
+    if: >-
+      github.event.workflow_run.event == 'push' &&
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.actor.login != 'github-actions[bot]'
     steps:
       - uses: actions/checkout@v7
+        with:
+          # Check out the branch the upstream workflow ran against. This picks
+          # up any generated-file commit made before that workflow completed.
+          ref: ${{ github.event.workflow_run.head_branch }}
       - name: extract python version
         uses: ./.github/actions/extract-python-version
       - uses: actions/setup-python@v7
@@ -29,7 +41,7 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
       - name: install dependencies
         run: |
-          pip install .[license]
+          pip install --quiet .[license]
       - name: create copyright and license annotations
         # The reuse version here must match the one developers run locally via
         # .github/pipeline.bat. Otherwise the two write different header forms and
@@ -52,6 +64,8 @@ jobs:
         run: |
           python -m reuse annotate --copyright="Fraunhofer-Gesellschaft e.V., München" --merge-copyrights --license=AGPL-3.0-or-later --skip-unrecognised -t fraunhofer --recursive src test THIRDPARTY.md
       - name: push changes made by reuse annotate
+        # Do not let a bot-triggered upstream run start another write-back.
+        if: github.actor != 'github-actions[bot]'
         # also see https://github.com/stefanzweifel/git-auto-commit-action
         uses: stefanzweifel/git-auto-commit-action@v7
         with:

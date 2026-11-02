@@ -11,15 +11,24 @@ on:
   pull_request:
     branches: [ '**' ]
 
+permissions:
+  contents: read
+
 jobs:
   generate:
     runs-on: ubuntu-latest
-
     permissions:
+      # Required by the push-only auto-commit step; pull requests only verify.
       contents: write
 
     steps:
     - uses: actions/checkout@v7
+    - name: update branch before generation
+      # Start from the latest commit to avoid rebasing generated changes over
+      # concurrent edits to THIRDPARTY.md.
+      if: github.event_name == 'push' && github.actor != 'github-actions[bot]'
+      run: |
+        git pull --rebase --autostash
     - name: extract python version
       uses: ./.github/actions/extract-python-version
     - uses: actions/setup-python@v7
@@ -27,15 +36,25 @@ jobs:
         python-version: ${{ env.PYTHON_VERSION }}
     - name: install dependencies
       run: |
-        pip install .[license]
+        pip install --quiet .[license]
     - name: generate third party license file
       run: |
         python check/generate_thirdparty_license_file.py
-    - name: Update branch before commit
+    - name: fail if the committed file is stale
+      # Pull requests (especially from forks) must not push, so they verify
+      # instead: a stale THIRDPARTY.md fails the check rather than being
+      # silently rewritten by CI for a branch it does not own.
+      if: github.event_name == 'pull_request'
       run: |
-        git pull --rebase --autostash origin main
+        if ! git diff --quiet -- THIRDPARTY.md; then
+          echo "THIRDPARTY.md is out of date. Run 'pip install .[license] && python check/generate_thirdparty_license_file.py' and commit the result."
+          git --no-pager diff -- THIRDPARTY.md
+          exit 1
+        fi
     - name: push changes
-      # also see https://github.com/stefanzweifel/git-auto-commit-action
+      # Do not use [skip ci]: it leaves required checks pending on PRs. Instead,
+      # prevent bot-triggered runs from starting another write-back.
+      if: github.event_name == 'push' && github.actor != 'github-actions[bot]'
       uses: stefanzweifel/git-auto-commit-action@v7
       with:
         commit_message: updated third party license file
