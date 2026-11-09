@@ -1267,7 +1267,7 @@ SOFTWARE.
 ----------------------------------------
 
 Package: click
-Version: 8.5.0
+Version: 8.5.1
 License: BSD-3-Clause
 URL: https://github.com/pallets/click/
 
@@ -4705,7 +4705,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ----------------------------------------
 
 Package: pandas
-Version: 3.1.0
+Version: 3.1.1
 License: BSD-3-Clause
 URL: https://pandas.pydata.org
 
@@ -5108,7 +5108,7 @@ ISC LICENSE
 ----------------------------------------
 
 Package: platformdirs
-Version: 4.14.3
+Version: 4.14.5
 License: MIT
 URL: https://github.com/tox-dev/platformdirs
 
@@ -8449,7 +8449,7 @@ That's all there is to it!
 ----------------------------------------
 
 Package: soupsieve
-Version: 3.0.4
+Version: 4.0.1
 License: MIT License
 URL: https://github.com/facelessuser/soupsieve
 
@@ -8507,7 +8507,7 @@ SOFTWARE.
 ----------------------------------------
 
 Package: threadpoolctl
-Version: 3.7.0
+Version: 3.8.0
 License: BSD-3-Clause
 URL: https://github.com/joblib/threadpoolctl
 
