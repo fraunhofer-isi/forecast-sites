@@ -8449,7 +8449,7 @@ That's all there is to it!
 ----------------------------------------
 
 Package: soupsieve
-Version: 4.0.1
+Version: 4.1
 License: MIT License
 URL: https://github.com/facelessuser/soupsieve
 
@@ -8574,7 +8574,7 @@ THE SOFTWARE.
 ----------------------------------------
 
 Package: tornado
-Version: 6.6
+Version: 6.6.1
 License: Apache Software License
 URL: http://www.tornadoweb.org/
 
