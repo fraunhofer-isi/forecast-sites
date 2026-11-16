@@ -1437,7 +1437,7 @@ SOFTWARE.
 ----------------------------------------
 
 Package: folium
-Version: 0.20.0
+Version: 1.0.0
 License: MIT License
 URL: https://github.com/python-visualization/folium
 
@@ -2573,7 +2573,7 @@ THE SOFTWARE.
 ----------------------------------------
 
 Package: numpy
-Version: 2.5.4
+Version: 2.5.5
 License: BSD-3-Clause AND 0BSD AND MIT AND Zlib AND CC0-1.0
 URL: https://numpy.org
 
@@ -2707,9 +2707,9 @@ License: BSD-3-Clause-Open-MPI
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
-Name: GCC runtime library
-Files: numpy.libs/libgfortran*.so
-Description: dynamically linked to files compiled with gcc
+Name: GCC runtime library libgfortran
+Files: numpy.libs/libscipy_openblas*.so
+Description: statically linked to files compiled with gcc
 Availability: https://gcc.gnu.org/git/?p=gcc.git;a=tree;f=libgfortran
 License: GPL-3.0-or-later WITH GCC-exception-3.1
   Copyright (C) 2002-2017 Free Software Foundation, Inc.
@@ -3490,28 +3490,6 @@ may consider it more useful to permit linking proprietary applications with
 the library.  If this is what you want to do, use the GNU Lesser General
 Public License instead of this License.  But first, please read
 <https://www.gnu.org/licenses/why-not-lgpl.html>.
-
-Name: libquadmath
-Files: numpy.libs/libquadmath*.so
-Description: dynamically linked to files compiled with gcc
-Availability: https://gcc.gnu.org/git/?p=gcc.git;a=tree;f=libquadmath
-License: LGPL-2.1-or-later
-
-    GCC Quad-Precision Math Library
-    Copyright (C) 2010-2019 Free Software Foundation, Inc.
-    Written by Francois-Xavier Coudert  <fxcoudert@gcc.gnu.org>
-
-    This file is part of the libquadmath library.
-    Libquadmath is free software; you can redistribute it and/or
-    modify it under the terms of the GNU Library General Public
-    License as published by the Free Software Foundation; either
-    version 2.1 of the License, or (at your option) any later version.
-
-    Libquadmath is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-    Lesser General Public License for more details.
-    https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html
 
 zlib License
   ------------
@@ -8449,7 +8427,7 @@ That's all there is to it!
 ----------------------------------------
 
 Package: soupsieve
-Version: 4.1
+Version: 4.1.1
 License: MIT License
 URL: https://github.com/facelessuser/soupsieve
 
