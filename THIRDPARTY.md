@@ -120,7 +120,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ----------------------------------------
 
 Package: Mesa
-Version: 3.5.2
+Version: 3.5.3
 License: Apache Software License
 URL: https://github.com/mesa/mesa
 
@@ -747,7 +747,7 @@ Apache License
 ----------------------------------------
 
 Package: PyYAML
-Version: 6.0.3
+Version: 6.0.4
 License: MIT License
 URL: https://pyyaml.org/
 
@@ -1210,7 +1210,7 @@ SOFTWARE.
 ----------------------------------------
 
 Package: certifi
-Version: 2026.10.23
+Version: 2026.11.20
 License: Mozilla Public License 2.0 (MPL 2.0)
 URL: https://github.com/certifi/python-certifi
 
@@ -1238,7 +1238,7 @@ one at http://mozilla.org/MPL/2.0/.
 ----------------------------------------
 
 Package: charset-normalizer
-Version: 3.5.2
+Version: 3.5.3
 License: MIT
 URL: https://charset-normalizer.readthedocs.io/
 
@@ -1303,8 +1303,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ----------------------------------------
 
 Package: cloudpickle
-Version: 3.1.2
-License: BSD License
+Version: 3.1.3
+License: BSD-3-Clause
 URL: https://github.com/cloudpipe/cloudpickle
 
 This module was extracted from the `cloud` package, developed by
@@ -1567,7 +1567,7 @@ SOFTWARE.
 ----------------------------------------
 
 Package: ipython
-Version: 9.18.1
+Version: 9.19.1
 License: BSD-3-Clause
 URL: https://ipython.org
 
@@ -2515,7 +2515,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ----------------------------------------
 
 Package: narwhals
-Version: 2.28.0
+Version: 2.29.0
 License: MIT
 URL: https://github.com/narwhals-dev/narwhals
 
@@ -4471,7 +4471,7 @@ the component code.
 ----------------------------------------
 
 Package: packaging
-Version: 26.3
+Version: 26.4
 License: Apache-2.0 OR BSD-2-Clause
 URL: https://github.com/pypa/packaging
 
@@ -5086,7 +5086,7 @@ ISC LICENSE
 ----------------------------------------
 
 Package: platformdirs
-Version: 4.14.5
+Version: 4.14.8
 License: MIT
 URL: https://github.com/tox-dev/platformdirs
 
@@ -8427,7 +8427,7 @@ That's all there is to it!
 ----------------------------------------
 
 Package: soupsieve
-Version: 4.1.1
+Version: 4.1.3
 License: MIT License
 URL: https://github.com/facelessuser/soupsieve
 
