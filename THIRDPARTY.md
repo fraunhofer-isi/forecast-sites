@@ -120,7 +120,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ----------------------------------------
 
 Package: Mesa
-Version: 3.5.3
+Version: 3.5.4
 License: Apache Software License
 URL: https://github.com/mesa/mesa
 
